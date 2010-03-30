@@ -2,17 +2,14 @@ module Montage
   # Represents a directory in which it is expected that there be a
   # configuration file, and source images.
   class Project
-    # Returns the path to the project root.
-    #
-    # @return [String]
-    #
-    attr_reader :root
+    # Stores all the paths the project needs.
+    Paths = Struct.new(:root, :config, :sources, :output, :css, :sass, :url)
 
-    # Returns the path to the configuration file.
+    # Returns the Paths instance for the project.
     #
-    # @return [String]
+    # @return [Montage::Project::Paths]
     #
-    attr_reader :config_path
+    attr_reader :paths
 
     # Creates a new Project instance.
     #
@@ -28,7 +25,7 @@ module Montage
     #   otherwise.
     #
     def initialize(root_path, config_path)
-      @root, @config_path = root_path, config_path
+      @paths = Paths.new(root_path, config_path)
     end
 
     class << self
@@ -102,7 +99,7 @@ module Montage
           # Hurrah!
         else
           raise ProjectExists, "A Montage project exists in a " \
-            "parent directory at `#{found.root}'"
+            "parent directory at `#{found.paths.root}'"
         end
 
         config_path = if File.directory?(File.join(dir, 'config'))

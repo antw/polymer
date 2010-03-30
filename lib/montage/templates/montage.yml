@@ -1,0 +1,18 @@
+---
+  config:
+    sources:     "public/images/sprites/src"
+    output:      "public/images/sprites"
+    css_output:  "public/images/sprites"
+    sprite_url:  "/images/sprites"
+    css_output:  "public/stylesheets"
+    sass_output: "public/stylesheets/sass"
+
+  sprite_one:
+    - source_one
+    - source_two
+    - source_three
+
+  sprite_two:
+    - source_four
+    - source_five
+    - source_six

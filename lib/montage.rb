@@ -1,4 +1,5 @@
 require 'yaml'
+require 'pathname'
 require 'fileutils'
 
 # On with the library...

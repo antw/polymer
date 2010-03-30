@@ -25,29 +25,26 @@ module Montage
     # to be correct. If you're not sure of the exact paths, use +Project.find+
     # instead.
     #
-    # @param [String] root
+    # @param [String, Pathname] root_path
     #   Path to the root of the Montage project.
-    # @param [String] config
+    # @param [String, Pathname] config_path
     #   Path to the config file.
     #
-    def initialize(root, config)
-      montage_yml = YAML.load_file(config)
-      conf = montage_yml['config'] || {}
+    def initialize(root_path, config_path)
+      root_path   = Pathname.new(root_path)
+      config_path = Pathname.new(config_path)
+
+      montage_yml = YAML.load_file(config_path)
+      config = montage_yml['config'] || {}
 
       @paths = Paths.new(
-        root, config,
-        File.join(root, conf.fetch('sources',     DEFAULTS[:sources])),
-        File.join(root, conf.fetch('output',      DEFAULTS[:output])),
-        File.join(root, conf.fetch('css_output',  DEFAULTS[:css_output])),
-        File.join(root, conf.fetch('sass_output', DEFAULTS[:sass_output])),
-        conf.fetch('sprite_url', DEFAULTS[:sprite_url])
+        root_path, config_path,
+        root_path + config.fetch('sources',     DEFAULTS[:sources]),
+        root_path + config.fetch('output',      DEFAULTS[:output]),
+        root_path + config.fetch('css_output',  DEFAULTS[:css_output]),
+        root_path + config.fetch('sass_output', DEFAULTS[:sass_output]),
+        config.fetch('sprite_url', DEFAULTS[:sprite_url])
       )
-    end
-
-    private
-
-    def path_for(root_path, config, key)
-      File.join(root_path, config.fetch(key.to_s, DEFAULTS[key]))
     end
 
     class << self
@@ -72,7 +69,7 @@ module Montage
       #     directory up. It continues until it finds a valid project or runs
       #     out of parent directories.
       #
-      # @param [String] path
+      # @param [String, Pathname] path
       #   Path to the configuration or directory.
       #
       # @return [Montage::Project]
@@ -81,40 +78,43 @@ module Montage
       # @raise [MissingProject]
       #   Raised when a project directory couldn't be found.
       #
-      def find(dir)
-        dir = File.expand_path(dir)
+      def find(path)
+        path = Pathname(path).expand_path
+        config_path, root_path = nil, nil
 
-        if File.directory?(dir)
-          if config_file = find_config(dir)
-            root = dir
+        if path.file?
+          root_path = find_root(path)
+          config_path = path
+        elsif path.directory?
+          if config_path = find_config(path)
+            root_path = path
           else
-            # Assume we're in a subdirectory of the current project.
-            tokens = dir.split(%r{/|\\})
-            while tokens.pop
-              config_file = find_config(File.join(*tokens))
-              root = find_root(config_file) if config_file
-              break if root
+            # Assume we're in a subpathectory of the current project.
+            path.split.first.ascend do |directory|
+              if config_path = find_config(directory)
+                break if root_path = find_root(config_path)
+              end
             end
           end
-        elsif File.file?(dir)
-          root, config_file = find_root(dir), dir
         end
 
-        raise MissingProject,
-          "Montage couldn't find a project to work on at #{dir}" if root.nil?
+        raise MissingProject, "Montage couldn't find a project to work " \
+          "on at `#{path}'" if root_path.nil?
 
-        new(root, config_file)
+        new(root_path, config_path)
       end
 
       # Sets up a new project file structure.
       #
-      # @param [String] dir
+      # @param [String, Pathname] dir
       #   Path to the project root.
       #
       # @return [Montage::Project]
       #   Returns the Project instance representing the created project.
       #
       def init(dir)
+        dir = Pathname.new(dir)
+
         begin
           found = find(dir)
         rescue MissingProject
@@ -124,15 +124,14 @@ module Montage
             "parent directory at `#{found.paths.root}'"
         end
 
-        config_path = if File.directory?(File.join(dir, 'config'))
-          File.join(dir, 'config', 'montage.yml')
+        config_path = if (dir + 'config').directory?
+          dir + 'config/montage.yml'
         else
-          File.join(dir, 'montage.yml')
+          dir + 'montage.yml'
         end
 
-        FileUtils.cp(
-          File.join(File.dirname(__FILE__), 'templates', 'montage.yml'),
-          config_path)
+        template = (Pathname.new(__FILE__).dirname + 'templates/montage.yml')
+        FileUtils.cp(template, config_path)
 
         new(dir, config_path)
       end
@@ -145,11 +144,8 @@ module Montage
       # @return [String]
       #
       def find_config(dir)
-        config_paths = [
-          File.join(dir, 'montage.yml'),
-          File.join(dir, 'config', 'montage.yml') ]
-
-        config_paths.detect { |config| File.file?(config) }
+        config_paths = [ dir + 'montage.yml', dir + 'config/montage.yml' ]
+        config_paths.detect { |config| config.file? }
       end
 
       # Attempts to find the project root for the configuration file. If the
@@ -159,10 +155,10 @@ module Montage
       # @return [String]
       #
       def find_root(config)
-        config_dir = File.dirname(config)
+        config_dir = config.dirname
 
-        if config_dir.split(%r{/|\\}).last == 'config'
-          File.expand_path(File.join(config_dir, '..'))
+        if config_dir.split.last.to_s == 'config'
+          (config_dir + '..').expand_path
         else
           config_dir
         end

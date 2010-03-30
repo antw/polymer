@@ -19,12 +19,13 @@ describe Montage::Project do
       end
 
       it 'should set the project root path' do
-        @project.paths.root.should == fixture_path(:root_config)
+        @project.paths.root.should ==
+          Pathname.new(fixture_path(:root_config))
       end
 
       it 'should set the configuration file path' do
         @project.paths.config.should ==
-          fixture_path(:root_config, 'montage.yml')
+          Pathname.new(fixture_path(:root_config, 'montage.yml'))
       end
     end # when given a project root with montage.yml in the root
 
@@ -34,12 +35,13 @@ describe Montage::Project do
       end
 
       it 'should set the project root path' do
-        @project.paths.root.should == fixture_path(:directory_config)
+        @project.paths.root.should ==
+          Pathname.new(fixture_path(:directory_config))
       end
 
       it 'should set the configuration file path' do
-        @project.paths.config.should ==
-          fixture_path(:directory_config, 'config', 'montage.yml')
+        @project.paths.config.should == Pathname.new(
+          fixture_path(:directory_config, 'config', 'montage.yml'))
       end
     end # when given a project root with montage.yml in ./config
 
@@ -49,11 +51,13 @@ describe Montage::Project do
       end
 
       it 'should set the project root path' do
-        @project.paths.root.should == fixture_path(:subdirs)
+        @project.paths.root.should ==
+          Pathname.new(fixture_path(:subdirs))
       end
 
       it 'should set the configuration file path' do
-        @project.paths.config.should == fixture_path(:subdirs, 'montage.yml')
+        @project.paths.config.should ==
+          Pathname.new(fixture_path(:subdirs, 'montage.yml'))
       end
     end # when given a project subdirectory
 
@@ -64,12 +68,13 @@ describe Montage::Project do
       end
 
       it 'should set the project root path' do
-        @project.paths.root.should == fixture_path(:root_config)
+        @project.paths.root.should ==
+          Pathname.new(fixture_path(:root_config))
       end
 
       it 'should set the configuration file path' do
         @project.paths.config.should ==
-          fixture_path(:root_config, 'montage.yml')
+          Pathname.new(fixture_path(:root_config, 'montage.yml'))
       end
     end # when given a configuration file in the root
 
@@ -80,12 +85,13 @@ describe Montage::Project do
       end
 
       it 'should set the project root path' do
-        @project.paths.root.should == fixture_path(:directory_config)
+        @project.paths.root.should ==
+          Pathname.new(fixture_path(:directory_config))
       end
 
       it 'should set the configuration file path' do
-        @project.paths.config.should ==
-          fixture_path(:directory_config, 'config', 'montage.yml')
+        @project.paths.config.should == Pathname.new(
+          fixture_path(:directory_config, 'config', 'montage.yml'))
       end
     end # when given a configuration file in ./config
 

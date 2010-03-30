@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+
+require File.dirname(__FILE__) + '/../lib/montage/version'
+
+puts <<-OUT
+
+    \033[02;32mMontage v#{Montage::VERSION}
+    =========#{'=' * Montage::VERSION.length}\033[00m
+
+    The montage script isn't done yet.
+
+OUT
+
+exit(1)
+
+require File.dirname(__FILE__) + '/../lib/montage'
+require File.dirname(__FILE__) + '/../lib/montage/command'
+
+Montage::Command.run(*ARGV)

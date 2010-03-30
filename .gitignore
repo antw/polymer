@@ -1,0 +1,30 @@
+## MAC OS
+.DS_Store
+Icon*
+
+## TEXTMATE
+*.tmproj
+tmtags
+
+## EMACS
+*~
+\#*
+.\#*
+
+## VIM
+*.swp
+
+## RUBINIUS
+*.rbc
+rakefile.compiled.rbc
+
+## PROJECT::GENERAL
+.yardoc
+coverage
+doc
+measurements
+pkg
+rdoc
+tmp
+
+## PROJECT::SPECIFIC

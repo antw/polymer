@@ -2,6 +2,14 @@ module Montage
   # Represents a directory in which it is expected that there be a
   # configuration file, and source images.
   class Project
+    DEFAULTS = {
+      :sources     => 'public/images/sprites/src',
+      :output      => 'public/images/sprites',
+      :css_output  => 'public/stylesheets',
+      :sass_output => 'public/stylesheets/sass',
+      :sprite_url  => '/images/sprites'
+    }
+
     # Stores all the paths the project needs.
     Paths = Struct.new(:root, :config, :sources, :output, :css, :sass, :url)
 
@@ -17,15 +25,29 @@ module Montage
     # to be correct. If you're not sure of the exact paths, use +Project.find+
     # instead.
     #
-    # @param [String] root_path
+    # @param [String] root
     #   Path to the root of the Montage project.
-    #   Expects either a path to a project directory, or a path to a config
-    #   file. If providing a config file, the directory in which the file
-    #   resides is assumed to be the project root unless the config specifies
-    #   otherwise.
+    # @param [String] config
+    #   Path to the config file.
     #
-    def initialize(root_path, config_path)
-      @paths = Paths.new(root_path, config_path)
+    def initialize(root, config)
+      montage_yml = YAML.load_file(config)
+      conf = montage_yml['config'] || {}
+
+      @paths = Paths.new(
+        root, config,
+        File.join(root, conf.fetch('sources',     DEFAULTS[:sources])),
+        File.join(root, conf.fetch('output',      DEFAULTS[:output])),
+        File.join(root, conf.fetch('css_output',  DEFAULTS[:css_output])),
+        File.join(root, conf.fetch('sass_output', DEFAULTS[:sass_output])),
+        conf.fetch('sprite_url', DEFAULTS[:sprite_url])
+      )
+    end
+
+    private
+
+    def path_for(root_path, config, key)
+      File.join(root_path, config.fetch(key.to_s, DEFAULTS[key]))
     end
 
     class << self
@@ -108,7 +130,10 @@ module Montage
           File.join(dir, 'montage.yml')
         end
 
-        File.open(config_path, 'w') { |file| file.puts('') }
+        FileUtils.cp(
+          File.join(File.dirname(__FILE__), 'templates', 'montage.yml'),
+          config_path)
+
         new(dir, config_path)
       end
 

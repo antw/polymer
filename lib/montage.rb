@@ -1,4 +1,5 @@
 require 'yaml'
+require 'fileutils'
 
 # On with the library...
 require 'montage/project'

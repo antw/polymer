@@ -1,11 +1,22 @@
 ---
-  config:
-    sources:     "public/images/sprites/src"
-    output:      "public/images/sprites"
-    css_output:  "public/images/sprites"
-    sprite_url:  "/images/sprites"
-    css_output:  "public/stylesheets"
-    sass_output: "public/stylesheets/sass"
+
+  # If you need to specify non-standard locations for the source
+  # files, or the output locations for the sprites, CSS, or SASS,
+  # uncomment the relevant option below. Directories are relative
+  # to the project root unless they have a leading slash.
+  #
+  # config.sources:     "public/images/sprites/src"
+  # config.output:      "public/images/sprites"
+  # config.css_output:  "public/images/sprites"
+  # config.css_output:  "public/stylesheets"
+  # config.sass_output: "public/stylesheets/sass"
+  # config.sprite_url:  "/images/sprites"
+
+  # --------------------------------------------------------------------------
+
+  # The sample below will produce two sprites (sprite_one.png and
+  # sprite_two.png) with the specified source images. You can omit
+  # file extensions.
 
   sprite_one:
     - source_one

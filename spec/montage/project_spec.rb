@@ -68,6 +68,33 @@ describe Montage::Project do
       it_should_behave_like 'a project with correct paths'
     end # when given a configuration file in ./config
 
+    describe 'when the config file specifies custom directories' do
+      before(:all) do
+        @project = Montage::Project.find(fixture_path(:custom_dirs))
+        @base = Pathname.new(fixture_path(:custom_dirs)) + 'custom'
+      end
+
+      it 'should set the sources path' do
+        @project.paths.sources.should == @base + 'sources'
+      end
+
+      it 'should set the sprites path' do
+        @project.paths.sprites.should == @base + 'output'
+      end
+
+      it 'should set the CSS output path' do
+        @project.paths.css.should == @base + 'css'
+      end
+
+      it 'should set the SASS output path' do
+        @project.paths.sass.should == @base + 'sass'
+      end
+
+      it 'should set the CSS sprite URL' do
+        @project.paths.url.should == 'custom/images'
+      end
+    end
+
     describe 'when given an empty directory' do
       it 'should raise an error' do
         running = lambda { Montage::Project.find(fixture_path(:empty)) }

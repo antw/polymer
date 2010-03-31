@@ -4,14 +4,14 @@ module Montage
   class Project
     DEFAULTS = {
       :sources     => 'public/images/sprites/src',
-      :output      => 'public/images/sprites',
-      :css_output  => 'public/stylesheets',
-      :sass_output => 'public/stylesheets/sass',
+      :sprites     => 'public/images/sprites',
+      :css         => 'public/stylesheets',
+      :sass        => 'public/stylesheets/sass',
       :sprite_url  => '/images/sprites'
     }
 
     # Stores all the paths the project needs.
-    Paths = Struct.new(:root, :config, :sources, :output, :css, :sass, :url)
+    Paths = Struct.new(:root, :config, :sources, :sprites, :css, :sass, :url)
 
     # Returns the Paths instance for the project.
     #
@@ -34,16 +34,15 @@ module Montage
       root_path   = Pathname.new(root_path)
       config_path = Pathname.new(config_path)
 
-      montage_yml = YAML.load_file(config_path)
-      config = montage_yml['config'] || {}
+      config = YAML.load_file(config_path)
 
       @paths = Paths.new(
         root_path, config_path,
-        root_path + config.fetch('sources',     DEFAULTS[:sources]),
-        root_path + config.fetch('output',      DEFAULTS[:output]),
-        root_path + config.fetch('css_output',  DEFAULTS[:css_output]),
-        root_path + config.fetch('sass_output', DEFAULTS[:sass_output]),
-        config.fetch('sprite_url', DEFAULTS[:sprite_url])
+        root_path + (config.delete('config.sources')    || DEFAULTS[:sources]),
+        root_path + (config.delete('config.sprites')    || DEFAULTS[:sprites]),
+        root_path + (config.delete('config.css')        || DEFAULTS[:css]),
+        root_path + (config.delete('config.sass')       || DEFAULTS[:sass]),
+                    (config.delete('config.sprite_url') || DEFAULTS[:sprite_url])
       )
     end
 

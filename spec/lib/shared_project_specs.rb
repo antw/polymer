@@ -18,11 +18,19 @@ describe 'a project with correct paths', :shared => true do
     @project.paths.sources.should == @root + 'public/images/sprites/src'
   end
 
+  it 'should set the sprite path' do
+    @project.paths.sprites.should == @root + 'public/images/sprites'
+  end
+
   it 'should set the CSS output path' do
     @project.paths.css.should == @root + 'public/stylesheets'
   end
 
   it 'should set the SASS output path' do
     @project.paths.sass.should == @root + 'public/stylesheets/sass'
+  end
+
+  it 'should set the CSS sprite URL' do
+    @project.paths.url.should == '/images/sprites'
   end
 end

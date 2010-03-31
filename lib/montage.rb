@@ -3,7 +3,9 @@ require 'pathname'
 require 'fileutils'
 
 # On with the library...
+require 'montage/core_ext'
 require 'montage/project'
+require 'montage/sprite'
 require 'montage/version'
 
 module Montage
@@ -15,4 +17,7 @@ module Montage
 
   # Raised when a creating a new project in an existing project directory.
   ProjectExists = Class.new(MontageError)
+
+  # Raised when a sprite set expects a source image, but none could be found.
+  MissingSource = Class.new(MontageError)
 end

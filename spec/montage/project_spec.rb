@@ -16,83 +16,56 @@ describe Montage::Project do
     describe 'when given a project root with montage.yml in the root' do
       before(:all) do
         @project = Montage::Project.find(fixture_path(:root_config))
+        @root    = Pathname.new(fixture_path(:root_config))
+        @config  = Pathname.new(fixture_path(:root_config, 'montage.yml'))
       end
 
-      it 'should set the project root path' do
-        @project.paths.root.should ==
-          Pathname.new(fixture_path(:root_config))
-      end
-
-      it 'should set the configuration file path' do
-        @project.paths.config.should ==
-          Pathname.new(fixture_path(:root_config, 'montage.yml'))
-      end
+      it_should_behave_like 'a project with correct paths'
     end # when given a project root with montage.yml in the root
 
     describe 'when given a project root with montage.yml in ./config' do
       before(:all) do
         @project = Montage::Project.find(fixture_path(:directory_config))
+        @root    = Pathname.new(fixture_path(:directory_config))
+        @config  = Pathname.new(
+          fixture_path(:directory_config, 'config/montage.yml'))
       end
 
-      it 'should set the project root path' do
-        @project.paths.root.should ==
-          Pathname.new(fixture_path(:directory_config))
-      end
-
-      it 'should set the configuration file path' do
-        @project.paths.config.should == Pathname.new(
-          fixture_path(:directory_config, 'config', 'montage.yml'))
-      end
+      it_should_behave_like 'a project with correct paths'
     end # when given a project root with montage.yml in ./config
 
     describe 'when given a project subdirectory' do
       before(:all) do
-        @project = Montage::Project.find(fixture_path(:subdirs, 'sub', 'sub'))
+        @project = Montage::Project.find(fixture_path(:subdirs, 'sub/sub'))
+        @root    = Pathname.new(fixture_path(:subdirs))
+        @config  = Pathname.new(fixture_path(:subdirs, 'montage.yml'))
       end
 
-      it 'should set the project root path' do
-        @project.paths.root.should ==
-          Pathname.new(fixture_path(:subdirs))
-      end
-
-      it 'should set the configuration file path' do
-        @project.paths.config.should ==
-          Pathname.new(fixture_path(:subdirs, 'montage.yml'))
-      end
+      it_should_behave_like 'a project with correct paths'
     end # when given a project subdirectory
 
     describe 'when given a configuration file in the root' do
       before(:all) do
         @project = Montage::Project.find(
           fixture_path(:root_config, 'montage.yml'))
+
+        @root    = Pathname.new(fixture_path(:root_config))
+        @config  = Pathname.new(fixture_path(:root_config, 'montage.yml'))
       end
 
-      it 'should set the project root path' do
-        @project.paths.root.should ==
-          Pathname.new(fixture_path(:root_config))
-      end
-
-      it 'should set the configuration file path' do
-        @project.paths.config.should ==
-          Pathname.new(fixture_path(:root_config, 'montage.yml'))
-      end
+      it_should_behave_like 'a project with correct paths'
     end # when given a configuration file in the root
 
     describe 'when given a configuration file in ./config' do
       before(:all) do
         @project = Montage::Project.find(
-          fixture_path(:directory_config, 'config', 'montage.yml'))
+          fixture_path(:directory_config, 'config/montage.yml'))
+        @root    = Pathname.new(fixture_path(:directory_config))
+        @config  = Pathname.new(
+          fixture_path(:directory_config, 'config/montage.yml'))
       end
 
-      it 'should set the project root path' do
-        @project.paths.root.should ==
-          Pathname.new(fixture_path(:directory_config))
-      end
-
-      it 'should set the configuration file path' do
-        @project.paths.config.should == Pathname.new(
-          fixture_path(:directory_config, 'config', 'montage.yml'))
-      end
+      it_should_behave_like 'a project with correct paths'
     end # when given a configuration file in ./config
 
     describe 'when given an empty directory' do

@@ -2,6 +2,8 @@ module Montage
   # Represents a collection of images which will be used to make a sprite.
   #
   class Sprite
+    attr_reader :name, :sources
+
     # Creates a new Sprite instance.
     #
     # @param [String] name
@@ -74,7 +76,7 @@ module Montage
         unless entries.key?(source)
           raise MissingSource, <<-MESSAGE.compress_lines
             Couldn't find a matching file for source image `#{source}' as part
-            of the `#{@name}' sprite.
+            of the `#{@name}' sprite. Was looking in `#{@dir}'.
           MESSAGE
         end
 

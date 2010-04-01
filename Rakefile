@@ -23,8 +23,9 @@ begin
     gem.add_dependency 'rmagick', '>= 2.12'
 
     # Development dependencies.
-    gem.add_development_dependency 'rspec', '>= 1.3.0'
-    gem.add_development_dependency 'yard',  '>= 0.5'
+    gem.add_development_dependency 'rspec',    '>= 1.3.0'
+    gem.add_development_dependency 'cucumber', '>= 0.6'
+    gem.add_development_dependency 'yard',     '>= 0.5'
   end
 
   Jeweler::GemcutterTasks.new

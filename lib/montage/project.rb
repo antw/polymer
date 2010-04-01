@@ -19,6 +19,12 @@ module Montage
     #
     attr_reader :paths
 
+    # Returns an Array containing all the Sprites defined in the project.
+    #
+    # @return [Array<Montage::Sprite>]
+    #
+    attr_reader :sprites
+
     # Creates a new Project instance.
     #
     # Note that +new+ does no validation of the given paths: it expects them
@@ -44,6 +50,11 @@ module Montage
         root_path + (config.delete('config.sass')       || DEFAULTS[:sass]),
                     (config.delete('config.sprite_url') || DEFAULTS[:sprite_url])
       )
+
+      # All remaining config keys are sprite defintions.
+      @sprites = config.inject([]) do |sprites, (name, sources)|
+        sprites << Sprite.new(name, sources, @paths.sources)
+      end
     end
 
     class << self

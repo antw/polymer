@@ -59,8 +59,8 @@ Ward specs are run against:
 * Ruby (MRI) 1.8.6 p399,
 * Ruby (MRI) 1.8.7 p249,
 * Ruby (YARV) 1.9.1 p378,
-* JRuby 1.4.0,
-* Rubinius RC2.
+
+Montage requires RMagick which presently rules out support for JRuby and Rubinius. Ruby 1.8.6 users will require the 'backports' gem installed.
 
 CONTRIBUTING
 ------------

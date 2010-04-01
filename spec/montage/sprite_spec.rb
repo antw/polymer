@@ -117,4 +117,34 @@ describe Montage::Sprite do
     end
   end # images
 
+  it { should have_public_method_defined(:position_of) }
+
+  describe '#images' do
+    before(:all) do
+      project = Montage::Project.new(
+        fixture_path(:root_config),
+        fixture_path(:root_config, 'montage.yml'))
+
+      @sprite = Montage::Sprite.new(
+        'sprite', %w( source_one source_two source_three ),
+        project.paths.sources)
+    end
+
+    it 'should raise a MissingSource when the given source is not present' do
+      running = lambda { @sprite.position_of('__invalid__') }
+      running.should raise_error(Montage::MissingSource,
+        "Source image '__invalid__' is not present in the 'sprite' sprite")
+    end
+
+    it 'should return an integer' do
+      @sprite.position_of('source_one').should == 0
+    end
+
+    it 'should account for the padding' do
+      # 1px source, plus 20px padding
+      @sprite.position_of('source_two').should   == 21
+      @sprite.position_of('source_three').should == 42
+    end
+  end # position_of
+
 end

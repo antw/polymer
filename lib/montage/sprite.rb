@@ -34,6 +34,33 @@ module Montage
       @images ||= paths.map { |source| Magick::Image.read(source).first }
     end
 
+    # Returns the y-position of a given source.
+    #
+    # @return [Integer]
+    #   The vertical position of the source image.
+    #
+    def position_of(source)
+      unless @sources.include?(source)
+        raise MissingSource,
+          "Source image '#{source}' is not present in the '#{@name}' sprite"
+      end
+
+      unless @positions
+        # Rather than calculate each time we call position_of, cache the
+        # position of each image the first time it is called. Since we almost
+        # always want the position of each image at some point (when
+        # generating CSS), it works out faster to fetch each source height
+        # just once.
+        @positions, offset = {}, 0
+        @sources.each_with_index do |src, idx|
+          @positions[src] = offset
+          offset += images[idx].rows + 20
+        end
+      end
+
+      @positions[source]
+    end
+
     private
 
     # Resolves the source names into full file paths (with extensions).

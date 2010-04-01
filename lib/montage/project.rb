@@ -88,7 +88,7 @@ module Montage
           if config_path = find_config(path)
             root_path = path
           else
-            # Assume we're in a subpathectory of the current project.
+            # Assume we're in a subdirectory of the current project.
             path.split.first.ascend do |directory|
               if config_path = find_config(directory)
                 break if root_path = find_root(config_path)

@@ -25,6 +25,15 @@ module Montage
       @paths ||= resolve_paths!
     end
 
+    # Returns an array of RMagick image instances; one for each source.
+    #
+    # @return [Array<Magick::Image>]
+    #   The Image instances for the sources.
+    #
+    def images
+      @images ||= paths.map { |source| Magick::Image.read(source).first }
+    end
+
     private
 
     # Resolves the source names into full file paths (with extensions).

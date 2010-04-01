@@ -72,5 +72,49 @@ describe Montage::Sprite do
       end
     end # when the source directory is missing
 
-  end
+  end # paths
+
+  it { should have_public_method_defined(:images) }
+
+  describe '#images' do
+    describe 'when the sprite contains no sources' do
+      before(:all) do
+        project = Montage::Project.new(
+          fixture_path(:root_config),
+          fixture_path(:root_config, 'montage.yml'))
+
+        @sprite = Montage::Sprite.new('sprite', %w( ), project.paths.sources)
+      end
+
+      it 'should return an array' do
+        @sprite.images.should be_kind_of(Array)
+      end
+
+      it 'should be empty' do
+        @sprite.images.should be_empty
+      end
+    end
+
+    describe 'when the sprite contains three sources' do
+      before(:all) do
+        project = Montage::Project.new(
+          fixture_path(:root_config),
+          fixture_path(:root_config, 'montage.yml'))
+
+        @sprite = Montage::Sprite.new(
+          'sprite', %w( source_one source_two source_three ),
+          project.paths.sources)
+      end
+
+      it 'should return an array' do
+        @sprite.images.should be_kind_of(Array)
+        @sprite.images.should have(3).images
+      end
+
+      it 'should contain Magick::Image instances' do
+        @sprite.images.each { |i| i.should be_kind_of(Magick::Image) }
+      end
+    end
+  end # images
+
 end

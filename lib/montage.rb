@@ -2,6 +2,9 @@ require 'yaml'
 require 'pathname'
 require 'fileutils'
 
+# Gems.
+require 'rmagick'
+
 # On with the library...
 require 'montage/core_ext'
 require 'montage/project'

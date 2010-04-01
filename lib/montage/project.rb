@@ -117,22 +117,20 @@ module Montage
         begin
           found = find(dir)
         rescue MissingProject
-          # Hurrah!
+          if (dir + 'config').directory?
+            config_path = dir + 'config/montage.yml'
+          else
+            config_path = dir + 'montage.yml'
+          end
+
+          template = (Pathname.new(__FILE__).dirname + 'templates/montage.yml')
+          FileUtils.cp(template, config_path)
+
+          new(dir, config_path)
         else
           raise ProjectExists, "A Montage project exists in a " \
             "parent directory at `#{found.paths.root}'"
         end
-
-        config_path = if (dir + 'config').directory?
-          dir + 'config/montage.yml'
-        else
-          dir + 'montage.yml'
-        end
-
-        template = (Pathname.new(__FILE__).dirname + 'templates/montage.yml')
-        FileUtils.cp(template, config_path)
-
-        new(dir, config_path)
       end
 
       private

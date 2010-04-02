@@ -10,8 +10,8 @@ class FixtureHelper
     @root = Dir.mktmpdir
 
     # Copy the fixture to a temporary location.
-    files = (Dir[FIXTURES_DIR + "#{fixture_name}/*"] +
-             Dir[FIXTURES_DIR + "#{fixture_name}/**/*"]).uniq
+    files = (Dir[(FIXTURES_DIR + "#{fixture_name}/*").to_s] +
+             Dir[(FIXTURES_DIR + "#{fixture_name}/**/*").to_s]).uniq
 
     FileUtils.cp_r(files, @root)
 

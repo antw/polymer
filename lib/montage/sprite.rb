@@ -1,11 +1,8 @@
 module Montage
   # Represents a collection of images which will be used to make a sprite.
   #
-  # This would ideally be separate Sprite and Source classes but it's not
-  # really important enough to warrant the effort.
-  #
   class Sprite
-    attr_reader :name, :sources
+    attr_reader :name
 
     # Creates a new Sprite instance.
     #
@@ -18,16 +15,20 @@ module Montage
     #   The directory in which the source images are stored.
     #
     def initialize(name, sources, dir)
-      @name, @sources, @dir = name, sources, dir
+      @name, @dir = name, dir
+
+      @sources =
+        sources.inject(ActiveSupport::OrderedHash.new) do |hash, source|
+          hash[source] = Source.new(@dir, source, @name) ; hash
+        end
     end
 
-    # Returns an array of paths to the source files. A MissingSource error
-    # will be raised if a source image could not be found.
+    # Returns an array of Source instances held by this Sprite.
     #
-    # @return [Array<Pathname>]
+    # @return [Array<Source>]
     #
-    def paths
-      @paths ||= resolve_paths!
+    def sources
+      @sources.map { |_, source| source }
     end
 
     # Returns an array of RMagick image instances; one for each source.
@@ -36,16 +37,18 @@ module Montage
     #   The Image instances for the sources.
     #
     def images
-      @images ||= paths.map { |source| Magick::Image.read(source).first }
+      sources.map { |source| source.image }
     end
 
     # Returns the y-position of a given source.
     #
-    # @return [Integer]
+    # @return [Integer, Source]
     #   The vertical position of the source image.
     #
     def position_of(source)
-      unless @sources.include?(source)
+      source = source.name if source.is_a?(Source)
+
+      unless @sources.keys.include?(source)
         raise MissingSource,
           "Source image '#{source}' is not present in the '#{@name}' sprite"
       end
@@ -56,10 +59,10 @@ module Montage
         # always want the position of each image at some point (when
         # generating CSS), it works out faster to fetch each source height
         # just once.
-        @positions, offset = {}, 0
-        @sources.each_with_index do |src, idx|
-          @positions[src] = offset
-          offset += images[idx].rows + 20
+        @positions = {}
+        @sources.inject(0) do |offset, (name, src)|
+          @positions[name] = offset
+          offset + src.image.rows + 20
         end
       end
 
@@ -72,39 +75,7 @@ module Montage
     # @return [Digest::SHA256]
     #
     def digest
-      digests = @sources.inject([]) do |digests, source|
-        digests << Digest::SHA256.hexdigest(source)
-        digests << Digest::SHA256.file(paths[@sources.index(source)])
-      end
-
-      Digest::SHA256.hexdigest(digests.join)
-    end
-
-    private
-
-    # Resolves the source names into full file paths (with extensions).
-    #
-    def resolve_paths!
-      entries = @dir.entries.inject({}) do |hash, path|
-        hash[ path.to_s.chomp(path.extname) ] = @dir + path ; hash
-      end
-
-      @sources.map do |source|
-        unless entries.key?(source)
-          raise MissingSource, <<-MESSAGE.compress_lines
-            Couldn't find a matching file for source image `#{source}' as part
-            of the `#{@name}' sprite. Was looking in `#{@dir}'.
-          MESSAGE
-        end
-
-        entries[source]
-      end
-    rescue Errno::ENOENT
-      raise MissingSource, <<-MESSAGE.compress_lines
-        Couldn't find the source directory for the `#{@name}' sprite. Montage
-        was looking for #{@dir}; if your sprites are in a different location,
-        add a 'config.sources' option your config file.
-      MESSAGE
+      Digest::SHA256.hexdigest(sources.map { |source| source.digest }.join)
     end
 
   end # Set

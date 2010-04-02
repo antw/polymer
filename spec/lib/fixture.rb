@@ -20,7 +20,9 @@ class FixtureHelper
 
   # Updates montage.yml with new contents.
   def replace_config(config)
-    File.open(@project.paths.config, 'w') { |f| f.puts(config) }
+    File.open(@project.paths.config, 'w') do |file|
+      file.puts(config.unindent)
+    end
   end
 
   # Replaces an image file.

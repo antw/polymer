@@ -25,6 +25,13 @@ module Montage
     #
     attr_reader :sprites
 
+    # Returns the amount of space to be used between each source image when
+    # saving sprites.
+    #
+    # @return [Integer]
+    #
+    attr_reader :padding
+
     # Creates a new Project instance.
     #
     # Note that +new+ does no validation of the given paths: it expects them
@@ -51,9 +58,11 @@ module Montage
                     (config.delete('config.sprite_url') || DEFAULTS[:sprite_url])
       )
 
+      @padding = (config.delete('config.padding') || 20).to_i
+
       # All remaining config keys are sprite defintions.
       @sprites = config.inject([]) do |sprites, (name, sources)|
-        sprites << Sprite.new(name, sources, @paths.sources)
+        sprites << Sprite.new(name, sources, self)
       end
     end
 

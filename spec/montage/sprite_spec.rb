@@ -135,7 +135,7 @@ describe Montage::Sprite do
 
   # --- write ----------------------------------------------------------------
 
-  it { should have_public_method_defined(:write_to) }
+  it { should have_public_method_defined(:write) }
 
   describe '#write_to' do
     before(:each) do
@@ -147,7 +147,7 @@ describe Montage::Sprite do
 
     it 'should raise an error if the target is not writeable' do
       @dir.chmod(555)
-      running = lambda { @sprite.write_to(@dir) }
+      running = lambda { @sprite.write }
       running.should raise_error(Montage::TargetNotWritable)
     end
 
@@ -155,12 +155,12 @@ describe Montage::Sprite do
       it_should_behave_like 'saving a sprite'
 
       it 'should be 20 pixels wide' do
-        @sprite.write_to(@dir)
+        @sprite.write
         Magick::Image.ping(@output).first.columns.should == 20
       end
 
       it 'should be 60 pixels tall' do
-        @sprite.write_to(@dir)
+        @sprite.write
         Magick::Image.ping(@output).first.rows.should == 60
       end
     end
@@ -171,22 +171,45 @@ describe Montage::Sprite do
       it_should_behave_like 'saving a sprite'
 
       it 'should be 100 pixels wide' do
-        @sprite.write_to(@dir)
+        @sprite.write
         Magick::Image.ping(@output).first.columns.should == 100
       end
 
       it 'should be 140 pixels tall' do
-        @sprite.write_to(@dir)
+        @sprite.write
         Magick::Image.ping(@output).first.rows.should == 140
       end
     end
 
-    context 'when the sprite contains two sources, at 20x20px each, and the' \
-            "project uses 50px padding" do
+    context 'when the sprite contains two sources, at 20x20px each, and ' \
+            'the project uses 50px padding' do
+      before(:each) do
+        @helper.replace_config <<-CONFIG
+          ---
+            config.padding: 50
+
+            sprite_one:
+              - one
+              - two
+
+            sprite_two:
+              - three
+        CONFIG
+        @helper.reload!
+        @sprite = @helper.project.sprite('sprite_one')
+      end
+
       it_should_behave_like 'saving a sprite'
 
-      it 'should be 20 pixels wide'
-      it 'should be 90 pixels tall'
+      it 'should be 20 pixels wide' do
+        @sprite.write
+        Magick::Image.ping(@output).first.columns.should == 20
+      end
+
+      it 'should be 90 pixels tall' do
+        @sprite.write
+        Magick::Image.ping(@output).first.rows.should == 90
+      end
     end
   end
 

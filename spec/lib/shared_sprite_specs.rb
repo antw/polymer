@@ -6,12 +6,12 @@ describe 'saving a sprite', :shared => true do
   #   @output => Pathname (path for the final sprite)
   #
   it 'should save the sprite to the specified directory' do
-    lambda { @sprite.write_to(@dir) }.should \
+    lambda { @sprite.write }.should \
       change(&lambda { @output.file? })
   end
 
   it 'should save an 8-bit PNG with transparency' do
-    @sprite.write_to(@dir)
+    @sprite.write
     image = Magick::Image.ping(@output).first
     image.format.should == 'PNG'
     image.quantum_depth.should == 8 # 8-bits per channel.
@@ -20,7 +20,7 @@ describe 'saving a sprite', :shared => true do
   it 'should overwrite an existingn file' do
     FileUtils.touch(@output)
     orig_size = @output.size
-    @sprite.write_to(@dir)
+    @sprite.write
 
     # Using touch should create an empty file. Saving the PNG
     # should result in a larger file.

@@ -4,6 +4,7 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'tmpdir'
 
 require 'rubygems'
+require 'unindent'
 require 'spec'
 require 'spec/autorun'
 

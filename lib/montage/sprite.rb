@@ -11,15 +11,16 @@ module Montage
     #   extension added).
     # @param [Array<String>] sources
     #   The name of each source image.
-    # @param [Pathname] dir
-    #   The directory in which the source images are stored.
+    # @param [Project] Project
+    #   The project to which the sprite belongs.
     #
-    def initialize(name, sources, dir)
-      @name, @dir = name, dir
+    def initialize(name, sources, project)
+      @name, @project = name, project
 
       @sources =
         sources.inject(ActiveSupport::OrderedHash.new) do |hash, source|
-          hash[source] = Source.new(@dir, source, @name) ; hash
+          hash[source] = Source.new(@project.paths.sources, source, @name)
+          hash
         end
     end
 
@@ -83,23 +84,22 @@ module Montage
     #
     # If a file exists at the output path, it will be overwritten.
     #
-    # @param [Pathname] sprites_dir
-    #   The directory into which the sprite will be saved.
-    #
     # @raise [Montage::TargetNotWritable]
     #   Raised when the output directory can not be written to.
     #
-    def write_to(sprites_dir)
-      raise TargetNotWritable, <<-MESSAGE unless sprites_dir.writable?
-        Montage can't save the sprite in `#{sprites_dir.to_s}' as it
-        isn't writable.
-      MESSAGE
+    def write
+      unless @project.paths.sprites.writable?
+        raise TargetNotWritable, <<-MESSAGE
+          Montage can't save the sprite in `#{@project.paths.sprites.to_s}'
+          as it isn't writable.
+        MESSAGE
+      end
 
-      path = sprites_dir + "#{@name}.png"
-
-      list = sources.inject(Magick::ImageList.new) do |m, source|
-        m << source.image
-        m << Magick::Image.new(1, 20) { self.background_color = '#FFF0' }
+      list = sources.inject(Magick::ImageList.new) do |list, source|
+        list << source.image
+        list << Magick::Image.new(1, @project.padding) do
+          self.background_color = '#FFF0'
+        end
       end
 
       # RMagick uses instance_eval, @set isn't available in the block below.
@@ -116,8 +116,8 @@ module Montage
       end
 
       # Remove the blank space from the bottom of the image.
-      montage.crop!(0, 0, 0, (montage.first.rows) - 20)
-      montage.write("PNG32:#{path}")
+      montage.crop!(0, 0, 0, (montage.first.rows) - @project.padding)
+      montage.write("PNG32:#{@project.paths.sprites + @name}.png")
     end
 
   end # Set

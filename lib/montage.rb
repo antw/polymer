@@ -26,4 +26,7 @@ module Montage
 
   # Raised when a sprite set expects a source image, but none could be found.
   MissingSource = Class.new(MontageError)
+
+  # Raised when a sprite can't be saved due to incorrect permissions.
+  TargetNotWritable = Class.new(MontageError)
 end

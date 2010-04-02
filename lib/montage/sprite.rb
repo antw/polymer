@@ -78,5 +78,47 @@ module Montage
       Digest::SHA256.hexdigest(sources.map { |source| source.digest }.join)
     end
 
+    # Uses RMagick to creates a 8-bit (with alpha) PNG containing all of the
+    # source files.
+    #
+    # If a file exists at the output path, it will be overwritten.
+    #
+    # @param [Pathname] sprites_dir
+    #   The directory into which the sprite will be saved.
+    #
+    # @raise [Montage::TargetNotWritable]
+    #   Raised when the output directory can not be written to.
+    #
+    def write_to(sprites_dir)
+      raise TargetNotWritable, <<-MESSAGE unless sprites_dir.writable?
+        Montage can't save the sprite in `#{sprites_dir.to_s}' as it
+        isn't writable.
+      MESSAGE
+
+      path = sprites_dir + "#{@name}.png"
+
+      list = sources.inject(Magick::ImageList.new) do |m, source|
+        m << source.image
+        m << Magick::Image.new(1, 20) { self.background_color = '#FFF0' }
+      end
+
+      # RMagick uses instance_eval, @set isn't available in the block below.
+      sources_length = sources.length
+
+      montage = list.montage do
+        self.gravity = Magick::NorthWestGravity
+        # Transparent background.
+        self.background_color = '#FFF0'
+        # Allow each image to take up as much space as it needs.
+        self.geometry = '+0+0'
+        # columns=1, rows=Sources plus padding.
+        self.tile = Magick::Geometry.new(1, sources_length * 2)
+      end
+
+      # Remove the blank space from the bottom of the image.
+      montage.crop!(0, 0, 0, (montage.first.rows) - 20)
+      montage.write("PNG32:#{path}")
+    end
+
   end # Set
 end # Montage

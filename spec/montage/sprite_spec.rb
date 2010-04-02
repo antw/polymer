@@ -133,4 +133,61 @@ describe Montage::Sprite do
     end # when changing the image for a source
   end
 
+  # --- write ----------------------------------------------------------------
+
+  it { should have_public_method_defined(:write_to) }
+
+  describe '#write_to' do
+    before(:each) do
+      @helper = FixtureHelper.new
+      @sprite = @helper.project.sprite('sprite_one')
+      @dir    = @helper.project.paths.sprites
+      @output = @dir + "#{@sprite.name}.png"
+    end
+
+    it 'should raise an error if the target is not writeable' do
+      @dir.chmod(555)
+      running = lambda { @sprite.write_to(@dir) }
+      running.should raise_error(Montage::TargetNotWritable)
+    end
+
+    context 'when the sprite contains two sources, at 20x20px each' do
+      it_should_behave_like 'saving a sprite'
+
+      it 'should be 20 pixels wide' do
+        @sprite.write_to(@dir)
+        Magick::Image.ping(@output).first.columns.should == 20
+      end
+
+      it 'should be 60 pixels tall' do
+        @sprite.write_to(@dir)
+        Magick::Image.ping(@output).first.rows.should == 60
+      end
+    end
+
+    context 'when the sprite contains two sources, at 20x20px and 100x100' do
+      before(:each) { @helper.replace_source('one', 'hundred') }
+
+      it_should_behave_like 'saving a sprite'
+
+      it 'should be 100 pixels wide' do
+        @sprite.write_to(@dir)
+        Magick::Image.ping(@output).first.columns.should == 100
+      end
+
+      it 'should be 140 pixels tall' do
+        @sprite.write_to(@dir)
+        Magick::Image.ping(@output).first.rows.should == 140
+      end
+    end
+
+    context 'when the sprite contains two sources, at 20x20px each, and the' \
+            "project uses 50px padding" do
+      it_should_behave_like 'saving a sprite'
+
+      it 'should be 20 pixels wide'
+      it 'should be 90 pixels tall'
+    end
+  end
+
 end

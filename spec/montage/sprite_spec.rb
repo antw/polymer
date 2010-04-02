@@ -8,13 +8,17 @@ describe Montage::Sprite do
   it { should have_public_method_defined(:images) }
 
   describe '#images' do
-    describe 'when the sprite contains no sources' do
-      before(:all) do
-        project = Montage::Project.new(
-          fixture_path(:root_config),
-          fixture_path(:root_config, 'montage.yml'))
+    before(:each) do
+      @helper = FixtureHelper.new
+      @sprite = @helper.project.sprite('sprite_one')
+    end
 
-        @sprite = Montage::Sprite.new('sprite', %w( ), project.paths.sources)
+    after(:each) { @helper.cleanup! }
+
+    describe 'when the sprite contains no sources' do
+      before(:each) do
+        @sprite = Montage::Sprite.new('sprite', [],
+          @helper.project.paths.sources)
       end
 
       it 'should return an array' do
@@ -26,20 +30,10 @@ describe Montage::Sprite do
       end
     end
 
-    describe 'when the sprite contains three sources' do
-      before(:all) do
-        project = Montage::Project.new(
-          fixture_path(:root_config),
-          fixture_path(:root_config, 'montage.yml'))
-
-        @sprite = Montage::Sprite.new(
-          'sprite', %w( source_one source_two source_three ),
-          project.paths.sources)
-      end
-
+    describe 'when the sprite contains two sources' do
       it 'should return an array' do
         @sprite.images.should be_kind_of(Array)
-        @sprite.images.should have(3).images
+        @sprite.images.should have(2).images
       end
 
       it 'should contain Magick::Image instances' do
@@ -53,30 +47,26 @@ describe Montage::Sprite do
   it { should have_public_method_defined(:position_of) }
 
   describe '#position_of' do
-    before(:all) do
-      project = Montage::Project.new(
-        fixture_path(:root_config),
-        fixture_path(:root_config, 'montage.yml'))
-
-      @sprite = Montage::Sprite.new(
-        'sprite', %w( source_one source_two source_three ),
-        project.paths.sources)
+    before(:each) do
+      @helper = FixtureHelper.new
+      @sprite = @helper.project.sprite('sprite_one')
     end
+
+    after(:each) { @helper.cleanup! }
 
     it 'should raise a MissingSource when the given source is not present' do
       running = lambda { @sprite.position_of('__invalid__') }
       running.should raise_error(Montage::MissingSource,
-        "Source image '__invalid__' is not present in the 'sprite' sprite")
+        /'__invalid__' is not present in the 'sprite_one' sprite/)
     end
 
     it 'should return an integer' do
-      @sprite.position_of('source_one').should == 0
+      @sprite.position_of('one').should == 0
     end
 
     it 'should account for the padding' do
-      # 1px source, plus 20px padding
-      @sprite.position_of('source_two').should   == 21
-      @sprite.position_of('source_three').should == 42
+      # 20px source, plus 20px padding
+      @sprite.position_of('two').should == 40
     end
 
     it 'should accept a Source instance' do

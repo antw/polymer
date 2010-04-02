@@ -8,7 +8,7 @@ describe Montage::Project do
   it { should respond_to(:find) }
   it { should respond_to(:init) }
 
-  # --- find--- --------------------------------------------------------------
+  # --- find -----------------------------------------------------------------
 
   describe '.find' do
     describe 'when given a project root with montage.yml in the root' do

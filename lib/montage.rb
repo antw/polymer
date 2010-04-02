@@ -1,6 +1,7 @@
 require 'yaml'
 require 'pathname'
 require 'fileutils'
+require 'digest'
 
 # Gems.
 require 'rmagick'

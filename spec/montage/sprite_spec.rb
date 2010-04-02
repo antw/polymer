@@ -3,6 +3,8 @@ require File.expand_path('../../spec_helper', __FILE__)
 describe Montage::Sprite do
   subject { Montage::Sprite }
 
+  # --- paths ----------------------------------------------------------------
+
   it { should have_public_method_defined(:paths) }
 
   describe '#paths' do
@@ -71,8 +73,9 @@ describe Montage::Sprite do
         running.should raise_error(Montage::MissingSource, /source directory/)
       end
     end # when the source directory is missing
+  end
 
-  end # paths
+  # --- images ---------------------------------------------------------------
 
   it { should have_public_method_defined(:images) }
 
@@ -115,11 +118,13 @@ describe Montage::Sprite do
         @sprite.images.each { |i| i.should be_kind_of(Magick::Image) }
       end
     end
-  end # images
+  end
+
+  # --- position_of ----------------------------------------------------------
 
   it { should have_public_method_defined(:position_of) }
 
-  describe '#images' do
+  describe '#position_of' do
     before(:all) do
       project = Montage::Project.new(
         fixture_path(:root_config),
@@ -145,6 +150,65 @@ describe Montage::Sprite do
       @sprite.position_of('source_two').should   == 21
       @sprite.position_of('source_three').should == 42
     end
-  end # position_of
+  end
+
+  # --- digest ---------------------------------------------------------------
+
+  it { should have_public_method_defined(:digest) }
+
+  describe '#digest' do
+    before(:each) { @helper = FixtureHelper.new }
+    after(:each)  { @helper.cleanup! }
+
+    it 'should return a string' do
+      @helper.project.sprites.first.digest.should be_a(String)
+    end
+
+    context 'when changing the source order for a sprite' do
+      before(:each) do
+        @sprite_one_digest = @helper.project.sprite('sprite_one').digest
+        @sprite_two_digest = @helper.project.sprite('sprite_two').digest
+        @helper.replace_config <<-CONFIG
+        ---
+          sprite_one:
+            - two
+            - one
+
+          sprite_two:
+            - three
+        CONFIG
+        @helper.reload!
+      end
+
+      it 'should return something different when it is affected' do
+        @helper.project.sprite('sprite_one').digest.should_not ==
+          @sprite_one_digest
+      end
+
+      it 'should return the same value when unaffected' do
+        @helper.project.sprite('sprite_two').digest.should ==
+          @sprite_two_digest
+      end
+    end # when changing the source order for a sprite
+
+    context 'when changing the image for a source' do
+      before(:each) do
+        @sprite_one_digest = @helper.project.sprite('sprite_one').digest
+        @sprite_two_digest = @helper.project.sprite('sprite_two').digest
+        @helper.replace_source('one', 'other')
+        @helper.reload!
+      end
+
+      it 'should return something different when it is affected' do
+        @helper.project.sprite('sprite_one').digest.should_not ==
+          @sprite_one_digest
+      end
+
+      it 'should return the same value when unaffected' do
+        @helper.project.sprite('sprite_two').digest.should ==
+          @sprite_two_digest
+      end
+    end # when changing the image for a source
+  end
 
 end

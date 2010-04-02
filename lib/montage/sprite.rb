@@ -63,6 +63,20 @@ module Montage
       @positions[source]
     end
 
+    # Returns a digest which represents the sprite and it's contents. If any
+    # of the file _contents_ or source names change, so will the hash.
+    #
+    # @return [Digest::SHA256]
+    #
+    def digest
+      digests = @sources.inject([]) do |digests, source|
+        digests << Digest::SHA256.hexdigest(source)
+        digests << Digest::SHA256.file(paths[@sources.index(source)])
+      end
+
+      Digest::SHA256.hexdigest(digests.join)
+    end
+
     private
 
     # Resolves the source names into full file paths (with extensions).

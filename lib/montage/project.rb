@@ -57,6 +57,17 @@ module Montage
       end
     end
 
+    # Returns a particular sprite identified by +name+.
+    #
+    # @param [String] name
+    #   The name of the sprite to be retrieved.
+    #
+    # @return [Montage::Sprite]
+    #
+    def sprite(name)
+      sprites.detect { |sprite| sprite.name == name }
+    end
+
     class << self
 
       # Given a path to a directory, or config file, attempts to find the

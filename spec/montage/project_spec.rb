@@ -8,9 +8,7 @@ describe Montage::Project do
   it { should respond_to(:find) }
   it { should respond_to(:init) }
 
-  #
-  # .find
-  #
+  # --- find--- --------------------------------------------------------------
 
   describe '.find' do
     describe 'when given a project root with montage.yml in the root' do
@@ -108,9 +106,9 @@ describe Montage::Project do
         running.should raise_exception(Montage::MissingProject)
       end
     end # when given an invalid path
-  end # .find
+  end
 
-  # .init
+  # --- init -----------------------------------------------------------------
 
   describe '.init' do
     describe 'with only a directory' do
@@ -177,5 +175,61 @@ describe Montage::Project do
   # Instance Methods =========================================================
 
   it { should have_public_method_defined(:paths) }
+
+  # --- sprites --------------------------------------------------------------
+
+  it { should have_public_method_defined(:sprites) }
+
+  describe '#sprites' do
+    context "when the project has one sprite with two sources" do
+      before(:each) do
+        @helper = FixtureHelper.new
+        @helper.replace_config <<-CONFIG
+        ---
+          sprite_one:
+            - one
+            - two
+        CONFIG
+        @helper.reload!
+      end
+
+      it 'should return an array with one element' do
+        @helper.project.sprites.should have(1).sprite
+      end
+
+      it 'should have two sources in the sprite' do
+        @helper.project.sprites.first.should have(2).sources
+      end
+    end # when the project has one sprite with two sources
+
+    context "when the project has two sprites with 2/1 sources" do
+      before(:each) do
+        @helper = FixtureHelper.new
+        @helper.replace_config <<-CONFIG
+        ---
+          sprite_one:
+            - one
+            - two
+
+          sprite_two:
+            - three
+        CONFIG
+        @helper.reload!
+      end
+
+      it 'should return an array with two elements' do
+        @helper.project.sprites.should have(2).sprite
+      end
+
+      it 'should have two sources in the first sprite' do
+        @helper.project.sprite('sprite_one').should have(2).sources
+      end
+
+      it 'should have one source in the second sprite' do
+        @helper.project.sprite('sprite_two').should have(1).sources
+      end
+    end # when the project has one sprite with two sources
+
+  end
 
 end

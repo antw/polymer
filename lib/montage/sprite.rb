@@ -1,6 +1,9 @@
 module Montage
   # Represents a collection of images which will be used to make a sprite.
   #
+  # This would ideally be separate Sprite and Source classes but it's not
+  # really important enough to warrant the effort.
+  #
   class Sprite
     attr_reader :name, :sources
 

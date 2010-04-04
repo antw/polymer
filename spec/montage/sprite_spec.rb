@@ -137,7 +137,7 @@ describe Montage::Sprite do
 
   it { should have_public_method_defined(:write) }
 
-  describe '#write_to' do
+  describe '#write' do
     before(:each) do
       @helper = FixtureHelper.new
       @sprite = @helper.project.sprite('sprite_one')

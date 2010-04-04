@@ -8,8 +8,8 @@ CLOBBER.include ['pkg', '*.gem', 'doc', 'coverage', 'measurements']
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name        = 'ward'
-    gem.summary     = 'Ward'
+    gem.name        = 'montage'
+    gem.summary     = 'Montage'
     gem.homepage    = 'http://github.com/antw/montage'
     gem.description = 'Even Rocky had a montage.'
 

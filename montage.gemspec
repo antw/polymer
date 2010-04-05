@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{montage}
-  s.version = "0.1.0"
+  s.version = "0.1.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Anthony Williams"]
@@ -36,6 +36,7 @@ Gem::Specification.new do |s|
      "lib/montage/sprite.rb",
      "lib/montage/templates/montage.yml",
      "lib/montage/version.rb",
+     "montage.gemspec",
      "spec/fixtures/custom_dirs/montage.yml",
      "spec/fixtures/default/montage.yml",
      "spec/fixtures/default/public/images/sprites/src/one.png",

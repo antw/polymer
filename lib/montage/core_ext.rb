@@ -41,7 +41,7 @@ class String
   # @return [Integer] The number of leading whitespace characters.
   #
   def minimum_leading_whitespace
-    whitespace = inject(0) do |indent, line|
+    whitespace = split("\n", -1).inject(0) do |indent, line|
       if line.strip.empty?
         indent # Ignore completely blank lines.
       elsif line =~ /^(\s+)/

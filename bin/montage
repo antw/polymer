@@ -1,19 +1,21 @@
 #!/usr/bin/env ruby
 
-require File.dirname(__FILE__) + '/../lib/montage/version'
+unless $:.include?(File.dirname(__FILE__) + '/../lib')
+  $:.unshift(File.dirname(__FILE__) + '/../lib')
+end
 
-puts <<-OUT
+require 'montage'
+require 'montage/commands'
 
-    \033[02;32mMontage v#{Montage::VERSION}
-    =========#{'=' * Montage::VERSION.length}\033[00m
+Montage::Commands.print_masthead
 
-    The montage script isn't done yet.
+case ARGV[0]
+  when 'init'
+    require 'montage/commands/init'
+    Montage::Commands::Init.run(ARGV)
+  else
+    require 'montage/commands/generate'
+    Montage::Commands::Generate.run(ARGV)
+end
 
-OUT
-
-exit(1)
-
-require File.dirname(__FILE__) + '/../lib/montage'
-require File.dirname(__FILE__) + '/../lib/montage/command'
-
-Montage::Command.run(*ARGV)
+$stdout.puts

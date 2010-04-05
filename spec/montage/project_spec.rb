@@ -183,14 +183,16 @@ describe Montage::Project do
   describe '#sprites' do
     context "when the project has one sprite with two sources" do
       before(:each) do
-        @helper = FixtureHelper.new
-        @helper.replace_config <<-CONFIG
+        @helper = Montage::Spec::ProjectHelper.new
+        @helper.write_config <<-CONFIG
         ---
           sprite_one:
             - one
             - two
         CONFIG
-        @helper.reload!
+
+        @helper.write_source('one', 100, 25)
+        @helper.write_source('two', 100, 25)
       end
 
       it 'should return an array with one element' do
@@ -204,8 +206,8 @@ describe Montage::Project do
 
     context "when the project has two sprites with 2/1 sources" do
       before(:each) do
-        @helper = FixtureHelper.new
-        @helper.replace_config <<-CONFIG
+        @helper = Montage::Spec::ProjectHelper.new
+        @helper.write_config <<-CONFIG
         ---
           sprite_one:
             - one
@@ -214,7 +216,10 @@ describe Montage::Project do
           sprite_two:
             - three
         CONFIG
-        @helper.reload!
+
+        @helper.write_source('one',   100, 25)
+        @helper.write_source('two',   100, 25)
+        @helper.write_source('three', 100, 25)
       end
 
       it 'should return an array with two elements' do

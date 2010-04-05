@@ -35,6 +35,15 @@ module Montage
         project_dir.mkpath
       end
 
+      # Returns a project instance representing the contents of the test
+      # directory.
+      #
+      # @return [Montage::Project]
+      #
+      def project
+        Project.find(project_dir)
+      end
+
       # --- Paths ------------------------------------------------------------
 
       # Returns the path to a file.

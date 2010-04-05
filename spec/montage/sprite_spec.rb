@@ -9,11 +9,19 @@ describe Montage::Sprite do
 
   describe '#images' do
     before(:each) do
-      @helper = FixtureHelper.new
+      @helper = Montage::Spec::ProjectHelper.new
+      @helper.write_config <<-CONFIG
+      ---
+        sprite_one:
+          - one
+          - two
+      CONFIG
+
+      @helper.write_source('one', 100, 25)
+      @helper.write_source('two', 100, 25)
+
       @sprite = @helper.project.sprite('sprite_one')
     end
-
-    after(:each) { @helper.cleanup! }
 
     describe 'when the sprite contains no sources' do
       before(:each) do
@@ -48,11 +56,19 @@ describe Montage::Sprite do
 
   describe '#position_of' do
     before(:each) do
-      @helper = FixtureHelper.new
+      @helper = Montage::Spec::ProjectHelper.new
+      @helper.write_config <<-CONFIG
+      ---
+        sprite_one:
+          - one
+          - two
+      CONFIG
+
+      @helper.write_source('one', 100, 25)
+      @helper.write_source('two', 100, 25)
+
       @sprite = @helper.project.sprite('sprite_one')
     end
-
-    after(:each) { @helper.cleanup! }
 
     it 'should raise a MissingSource when the given source is not present' do
       running = lambda { @sprite.position_of('__invalid__') }
@@ -65,8 +81,8 @@ describe Montage::Sprite do
     end
 
     it 'should account for the padding' do
-      # 20px source, plus 20px padding
-      @sprite.position_of('two').should == 40
+      # 25px source, plus 20px padding
+      @sprite.position_of('two').should == 45
     end
 
     it 'should accept a Source instance' do
@@ -79,8 +95,22 @@ describe Montage::Sprite do
   it { should have_public_method_defined(:digest) }
 
   describe '#digest' do
-    before(:each) { @helper = FixtureHelper.new }
-    after(:each)  { @helper.cleanup! }
+    before(:each) do
+      @helper = Montage::Spec::ProjectHelper.new
+      @helper.write_config <<-CONFIG
+      ---
+        sprite_one:
+          - one
+          - two
+
+        sprite_two:
+          - three
+      CONFIG
+
+      @helper.write_source('one',   100, 25)
+      @helper.write_source('two',   100, 25)
+      @helper.write_source('three', 100, 25)
+    end
 
     it 'should return a string' do
       @helper.project.sprites.first.digest.should be_a(String)
@@ -90,7 +120,7 @@ describe Montage::Sprite do
       before(:each) do
         @sprite_one_digest = @helper.project.sprite('sprite_one').digest
         @sprite_two_digest = @helper.project.sprite('sprite_two').digest
-        @helper.replace_config <<-CONFIG
+        @helper.write_config <<-CONFIG
         ---
           sprite_one:
             - two
@@ -99,7 +129,6 @@ describe Montage::Sprite do
           sprite_two:
             - three
         CONFIG
-        @helper.reload!
       end
 
       it 'should return something different when it is affected' do
@@ -117,8 +146,7 @@ describe Montage::Sprite do
       before(:each) do
         @sprite_one_digest = @helper.project.sprite('sprite_one').digest
         @sprite_two_digest = @helper.project.sprite('sprite_two').digest
-        @helper.replace_source('one', 'other')
-        @helper.reload!
+        @helper.write_source('one', 100, 30)
       end
 
       it 'should return something different when it is affected' do
@@ -139,34 +167,52 @@ describe Montage::Sprite do
 
   describe '#write' do
     before(:each) do
-      @helper = FixtureHelper.new
+      @helper = Montage::Spec::ProjectHelper.new
+      @helper.write_source('one', 100, 25)
+      @helper.write_source('two', 100, 25)
+      @helper.write_config <<-CONFIG
+        ---
+          sprite_one:
+            - one
+            - two
+      CONFIG
+
       @sprite = @helper.project.sprite('sprite_one')
       @dir    = @helper.project.paths.sprites
       @output = @dir + "#{@sprite.name}.png"
     end
 
     it 'should raise an error if the target is not writeable' do
+      old_mode = @dir.stat.mode
       @dir.chmod(555)
-      running = lambda { @sprite.write }
-      running.should raise_error(Montage::TargetNotWritable)
+
+      begin
+        running = lambda { @sprite.write }
+        running.should raise_error(Montage::TargetNotWritable)
+      ensure
+        @dir.chmod(old_mode)
+      end
     end
 
-    context 'when the sprite contains two sources, at 20x20px each' do
+    context 'when the sprite contains two sources, at 100x25px each' do
       it_should_behave_like 'saving a sprite'
 
-      it 'should be 20 pixels wide' do
+      it 'should be 100 pixels wide' do
         @sprite.write
-        Magick::Image.ping(@output).first.columns.should == 20
+        Magick::Image.ping(@output).first.columns.should == 100
       end
 
-      it 'should be 60 pixels tall' do
+      it 'should be 70 pixels tall' do
         @sprite.write
-        Magick::Image.ping(@output).first.rows.should == 60
+        Magick::Image.ping(@output).first.rows.should == 70
       end
     end
 
     context 'when the sprite contains two sources, at 20x20px and 100x100' do
-      before(:each) { @helper.replace_source('one', 'hundred') }
+      before(:each) do
+        @helper.write_source('one',  20,  20)
+        @helper.write_source('two', 100, 100)
+      end
 
       it_should_behave_like 'saving a sprite'
 
@@ -181,10 +227,10 @@ describe Montage::Sprite do
       end
     end
 
-    context 'when the sprite contains two sources, at 20x20px each, and ' \
+    context 'when the sprite contains two sources, at 100x25px each, and ' \
             'the project uses 50px padding' do
       before(:each) do
-        @helper.replace_config <<-CONFIG
+        @helper.write_config <<-CONFIG
           ---
             config.padding: 50
 
@@ -195,20 +241,19 @@ describe Montage::Sprite do
             sprite_two:
               - three
         CONFIG
-        @helper.reload!
         @sprite = @helper.project.sprite('sprite_one')
       end
 
       it_should_behave_like 'saving a sprite'
 
-      it 'should be 20 pixels wide' do
+      it 'should be 100 pixels wide' do
         @sprite.write
-        Magick::Image.ping(@output).first.columns.should == 20
+        Magick::Image.ping(@output).first.columns.should == 100
       end
 
-      it 'should be 90 pixels tall' do
+      it 'should be 100 pixels tall' do
         @sprite.write
-        Magick::Image.ping(@output).first.rows.should == 90
+        Magick::Image.ping(@output).first.rows.should == 100
       end
     end
   end

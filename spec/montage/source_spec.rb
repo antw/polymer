@@ -8,8 +8,18 @@ describe Montage::Source do
   it { should have_public_method_defined(:path) }
 
   describe '#path' do
-    before(:each) { @helper = FixtureHelper.new }
-    after(:each)  { @helper.cleanup! }
+    before(:each) do
+      @helper = Montage::Spec::ProjectHelper.new
+      @helper.write_config <<-CONFIG
+      ---
+        sprite_one:
+          - one
+          - two
+      CONFIG
+
+      @helper.write_source('one', 100, 25)
+      @helper.write_source('two', 100, 25)
+    end
 
     it 'should return the path when the source file exists' do
       name = @helper.project.sprites.first.sources.first.name

@@ -3,16 +3,16 @@ Montage
 
 _"[Even Rocky had a montage](http://www.youtube.com/watch?v=FIi0vFyqWAc)."_
 
-Source
+**Source**
 :  [http://github.com/antw/montage](http://github.com/antw/montage)
 
-Author
+**Author**
 :  Anthony Williams
 
-Copyright
+**Copyright**
 :  2009-2010
 
-License
+**License**
 :  MIT License
 
 SYNOPSIS
@@ -60,7 +60,7 @@ Ward specs are run against:
 * Ruby (MRI) 1.8.7 p249,
 * Ruby (YARV) 1.9.1 p378,
 
-Montage requires RMagick which presently rules out support for JRuby and Rubinius. Ruby 1.8.6 users will require the 'backports' gem installed.
+Montage requires RMagick which presently rules out support for JRuby and Rubinius.
 
 CONTRIBUTING
 ------------

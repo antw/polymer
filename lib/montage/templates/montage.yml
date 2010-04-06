@@ -18,11 +18,11 @@
   # file extensions.
 
   sprite_one:
-    - source_one
-    - source_two
-    - source_three
+    - book
+    - box-label
+    - calculator
 
   sprite_two:
-    - source_four
-    - source_five
-    - source_six
+    - calendar-month
+    - camera
+    - eraser

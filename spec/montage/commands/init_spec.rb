@@ -8,6 +8,15 @@ context 'Generating a new project in the current directory' do
   it { @runner.should be_success }
   it { @runner.stdout.should =~ /Your project was created/ }
   it { @runner.path_to_file('montage.yml').should be_file }
+
+  # Example sources?
+
+  it 'should copy the sample source images' do
+    %w( book box-label calculator calendar-month camera eraser ).each do |source|
+      (@runner.project.paths.sources + "#{source}.png").should be_file
+    end
+  end
+
 end
 
 context 'Generating a new project in a path which has a ./config directory' do

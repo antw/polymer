@@ -154,8 +154,15 @@ module Montage
             config_path = dir + 'montage.yml'
           end
 
-          template = (Pathname.new(__FILE__).dirname + 'templates/montage.yml')
-          FileUtils.cp(template, config_path)
+          templates_dir = Pathname.new(__FILE__).dirname + 'templates'
+
+          # Copy the example montage.yml
+          FileUtils.cp(templates_dir + 'montage.yml', config_path)
+
+          # Copy the sample sources.
+          project_sources = dir + 'public/images/sprites/src'
+          project_sources.mkpath
+          FileUtils.cp_r(templates_dir + 'sources/.', project_sources)
 
           new(dir, config_path)
         else

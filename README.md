@@ -85,3 +85,5 @@ COPYRIGHT
 ---------
 
 Montage &copy; 2009-2010 by [Anthony Williams](mailto:hi@antw.me). Licensed under the MIT license. Please see the {file:LICENSE} for more information.
+
+The sample sources in lib/montage/templates/sources are courtesy of Yusuke Kamiyamane: http://p.yusukekamiyamane.com

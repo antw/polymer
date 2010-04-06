@@ -2,9 +2,7 @@ module Montage
   module Commands
     # Generates sprites for a project.
     class Generate
-      extend  Commands
-      extend  Term::ANSIColor
-      include Term::ANSIColor
+      extend Commands
 
       # Given a project, generates sprites.
       #
@@ -15,7 +13,7 @@ module Montage
         new(Montage::Project.find(Dir.pwd)).run!
 
       rescue Montage::MissingProject
-        $stdout.puts red(<<-ERROR.unindent)
+        say color(<<-ERROR.compress_lines, :red)
           Couldn't find a Montage project in the current directory. If
           you want to create a new project here, run `montage init'.
         ERROR
@@ -23,9 +21,8 @@ module Montage
         exit(1)
 
       rescue Montage::MissingSource, Montage::TargetNotWritable => e
-        $stdout.puts
-        $stdout.puts
-        $stdout.puts red(e.message.unindent)
+        say Montage::Commands::BLANK
+        say color(e.message.compress_lines, :red)
 
         exit(1)
       end
@@ -70,14 +67,14 @@ module Montage
       def generate_sprites!
         @project.sprites.each do |sprite|
           digest = sprite.digest
-          $stdout.print "#{sprite.name}: "
+          say "#{sprite.name}: "
 
           if cache[sprite.name] == digest
-            $stdout.puts yellow("Unchanged: ignoring")
+            say color("Unchanged: ignoring", :yellow)
           else
             sprite.write
             cache[sprite.name] = digest
-            $stdout.puts green("Generated")
+            say color("Generated", :green)
           end
         end
       end

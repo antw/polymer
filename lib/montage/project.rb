@@ -134,43 +134,6 @@ module Montage
         new(root_path, config_path)
       end
 
-      # Sets up a new project file structure.
-      #
-      # @param [String, Pathname] dir
-      #   Path to the project root.
-      #
-      # @return [Montage::Project]
-      #   Returns the Project instance representing the created project.
-      #
-      def init(dir)
-        dir = Pathname.new(dir)
-
-        begin
-          found = find(dir)
-        rescue MissingProject
-          if (dir + 'config').directory?
-            config_path = dir + 'config/montage.yml'
-          else
-            config_path = dir + 'montage.yml'
-          end
-
-          templates_dir = Pathname.new(__FILE__).dirname + 'templates'
-
-          # Copy the example montage.yml
-          FileUtils.cp(templates_dir + 'montage.yml', config_path)
-
-          # Copy the sample sources.
-          project_sources = dir + 'public/images/sprites/src'
-          project_sources.mkpath
-          FileUtils.cp_r(templates_dir + 'sources/.', project_sources)
-
-          new(dir, config_path)
-        else
-          raise ProjectExists, "A Montage project exists in a " \
-            "parent directory at `#{found.paths.root}'"
-        end
-      end
-
       private
 
       # Attempt to find the configuration file, first by looking in

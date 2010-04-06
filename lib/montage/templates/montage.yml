@@ -2,14 +2,14 @@
 
   # If you need to specify non-standard locations for the source
   # files, or the output locations for the sprites, CSS, or SASS,
-  # uncomment the relevant option below. Directories are relative
-  # to the project root unless they have a leading slash.
-  #
-  # config.sources:    "public/images/sprites/src"
-  # config.sprites:    "public/images/sprites"
-  # config.css:        "public/stylesheets"
-  # config.sass:       "public/stylesheets/sass"
-  # config.sprite_url: "/images/sprites"
+  # change the relevant option below. Directories are relative to
+  # the project root unless they have a leading slash.
+
+  config.sources:    <sources>
+  config.sprites:    <sprites>
+  config.css:        "public/stylesheets"
+  config.sass:       "public/stylesheets/sass"
+  config.sprite_url: "/images/sprites"
 
   # --------------------------------------------------------------------------
 

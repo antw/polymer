@@ -45,11 +45,13 @@ module Montage
       # @return [CommandRunner]
       #   Returns self.
       #
-      def run!
+      def run!(&block)
         @status, @stderr, @stdout = nil, nil, nil
 
         in_project_dir do
-          @status = Open4.popen4(@command.to_s) do |_, _, stdout, stderr|
+          @status = Open4.popen4(@command.to_s) do |_, stdin, stdout, stderr|
+            yield stdin if block_given?
+
             @stdout = stdout.read
             @stderr = stderr.read
           end.exitstatus
@@ -94,5 +96,34 @@ module Montage
       end
 
     end # CommandRunner
+
+    # Runs the montage init command, providing the command with the various
+    # inputs it wants.
+    #
+    class InitCommandRunner < CommandRunner
+      # Creates a new InitCommandRunner instance.
+      #
+      # @param [Hash] responses
+      #   Takes inputs to be given to the highline GUI. Accepts :sources and
+      #   :sprites
+      #
+      def initialize(responses = {})
+        super 'montage init'
+        @responses = responses
+      end
+
+      # Runs the command in the test directory.
+      #
+      # @return [InitCommandRunner]
+      #   Returns self.
+      #
+      def run!
+        super do |stdin|
+          stdin.puts @responses.fetch(:sprites, "\n")
+          stdin.puts @responses.fetch(:sources, "\n")
+        end
+      end
+    end
+
   end # Spec
 end # Montage

@@ -125,6 +125,32 @@ end
 
 # ----------------------------------------------------------------------------
 
+context 'Trying to generate sprites when the sprite directory is not writable' do
+  before(:all) do
+    @runner = Montage::Spec::CommandRunner.new('montage')
+    @runner.write_config <<-CONFIG
+      ---
+        sprite_one:
+          - one
+    CONFIG
+    @runner.write_source('one')
+
+    old_mode = @runner.project.paths.sprites.stat.mode
+    @runner.project.paths.sprites.chmod(040555)
+
+    begin
+      @runner.run!
+    ensure
+      @runner.project.paths.sprites.chmod(old_mode)
+    end
+  end
+
+  it { @runner.should be_failure }
+  it { @runner.stdout.should =~ /can't save the sprite in .* isn't writable/m }
+end
+
+# ----------------------------------------------------------------------------
+
 context 'Generating two sprites, one of which is unchanged' do
   before(:all) do
     @runner = Montage::Spec::CommandRunner.new('montage')

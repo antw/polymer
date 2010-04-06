@@ -1,5 +1,6 @@
 require 'rbconfig'
 require 'tempfile'
+require 'open4'
 
 require Pathname(__FILE__).dirname + 'project_helper'
 
@@ -47,23 +48,12 @@ module Montage
       def run!
         @status, @stderr, @stdout = nil, nil, nil
 
-        stderr_file = Tempfile.new('montage_stderr')
-        stderr_file.close
-
         in_project_dir do
-          mode = if RUBY_VERSION < '1.9.1' then 'r' else
-            { :external_encoding => 'UTF-8' }
-          end
-
-          IO.popen("#{@command} 2> #{stderr_file.path}", mode) do |io|
-            @stdout = io.read
-          end
-
-          @status = $?.exitstatus
+          @status = Open4.popen4(@command.to_s) do |_, _, stdout, stderr|
+            @stdout = stdout.read
+            @stderr = stderr.read
+          end.exitstatus
         end
-
-        @stderr = IO.read(stderr_file.path)
-        stderr_file.unlink
 
         self
       end

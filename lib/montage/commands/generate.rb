@@ -65,6 +65,10 @@ module Montage
       #   The cached digests for the project.
       #
       def generate_sprites!
+        unless @project.paths.sprites.directory?
+          @project.paths.sprites.mkpath
+        end
+
         @project.sprites.each do |sprite|
           digest = sprite.digest
           say "#{sprite.name}: "

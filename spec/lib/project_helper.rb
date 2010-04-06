@@ -33,6 +33,17 @@ module Montage
         # we have a clean state before each run.
         self.class.cleanup!
         project_dir.mkpath
+
+        self.sources_path = "public/images/sprites/src"
+        self.sprites_path = "public/images/sprites"
+      end
+
+      def sources_path=(path)
+        @sources_path = Pathname.new(path)
+      end
+
+      def sprites_path=(path)
+        @sprites_path = Pathname.new(path)
       end
 
       # Returns a project instance representing the contents of the test
@@ -52,7 +63,7 @@ module Montage
       #   The name of the source file.
       #
       def path_to_file(name)
-        project_dir + name
+        (project_dir + name).expand_path
       end
 
       # Returns the path to a source file (sans extension).
@@ -61,7 +72,7 @@ module Montage
       #   The name of the source file.
       #
       def path_to_source(name)
-        path_to_file "public/images/sprites/src/#{name}.png"
+        path_to_file @sources_path + "#{name}.png"
       end
 
       # Returns the path to a sprite file (sans extension).
@@ -70,7 +81,7 @@ module Montage
       #   The name of the sprite file.
       #
       def path_to_sprite(name)
-        path_to_file "public/images/sprites/#{name}.png"
+        path_to_file @sprites_path + "#{name}.png"
       end
 
       # --- File Writers -----------------------------------------------------

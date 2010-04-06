@@ -79,6 +79,34 @@ end
 
 # ----------------------------------------------------------------------------
 
+context 'Generating a single sprite using custom directories' do
+  before(:all) do
+    @runner = Montage::Spec::CommandRunner.new('montage')
+    @runner.sources_path = 'img/sources'
+    @runner.sprites_path = 'img/sprites'
+
+    @runner.write_config <<-CONFIG
+      ---
+        config.sources: img/sources
+        config.sprites: img/sprites
+
+        sprite_one:
+          - one
+          - two
+    CONFIG
+
+    @runner.write_source('one')
+    @runner.write_source('two')
+    @runner.run!
+  end
+
+  it { @runner.should be_success }
+  it { @runner.stdout.should =~ /sprite_one: Generated/ }
+  it { @runner.path_to_sprite('sprite_one').should be_file }
+end
+
+# ----------------------------------------------------------------------------
+
 context 'Trying to generate sprites in a non-project directory' do
   before(:all) do
     @runner = Montage::Spec::CommandRunner.new('montage').run!

@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{montage}
-  s.version = "0.1.1"
+  s.version = "0.1.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Anthony Williams"]
-  s.date = %q{2010-04-05}
+  s.date = %q{2010-04-06}
   s.default_executable = %q{montage}
   s.description = %q{Even Rocky had a montage.}
   s.email = %q{hi@antw.me}
@@ -35,6 +35,12 @@ Gem::Specification.new do |s|
      "lib/montage/source.rb",
      "lib/montage/sprite.rb",
      "lib/montage/templates/montage.yml",
+     "lib/montage/templates/sources/book.png",
+     "lib/montage/templates/sources/box-label.png",
+     "lib/montage/templates/sources/calculator.png",
+     "lib/montage/templates/sources/calendar-month.png",
+     "lib/montage/templates/sources/camera.png",
+     "lib/montage/templates/sources/eraser.png",
      "lib/montage/version.rb",
      "montage.gemspec",
      "spec/fixtures/custom_dirs/montage.yml",
@@ -103,24 +109,27 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<activesupport>, [">= 3.0.0.beta"])
       s.add_runtime_dependency(%q<rmagick>, [">= 2.12"])
-      s.add_runtime_dependency(%q<term-ansicolor>, [">= 0"])
+      s.add_runtime_dependency(%q<highline>, [">= 1.5"])
       s.add_development_dependency(%q<rspec>, [">= 1.3.0"])
       s.add_development_dependency(%q<cucumber>, [">= 0.6"])
+      s.add_development_dependency(%q<open4>, [">= 1.0"])
       s.add_development_dependency(%q<yard>, [">= 0.5"])
     else
       s.add_dependency(%q<activesupport>, [">= 3.0.0.beta"])
       s.add_dependency(%q<rmagick>, [">= 2.12"])
-      s.add_dependency(%q<term-ansicolor>, [">= 0"])
+      s.add_dependency(%q<highline>, [">= 1.5"])
       s.add_dependency(%q<rspec>, [">= 1.3.0"])
       s.add_dependency(%q<cucumber>, [">= 0.6"])
+      s.add_dependency(%q<open4>, [">= 1.0"])
       s.add_dependency(%q<yard>, [">= 0.5"])
     end
   else
     s.add_dependency(%q<activesupport>, [">= 3.0.0.beta"])
     s.add_dependency(%q<rmagick>, [">= 2.12"])
-    s.add_dependency(%q<term-ansicolor>, [">= 0"])
+    s.add_dependency(%q<highline>, [">= 1.5"])
     s.add_dependency(%q<rspec>, [">= 1.3.0"])
     s.add_dependency(%q<cucumber>, [">= 0.6"])
+    s.add_dependency(%q<open4>, [">= 1.0"])
     s.add_dependency(%q<yard>, [">= 0.5"])
   end
 end

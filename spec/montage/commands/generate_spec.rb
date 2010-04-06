@@ -211,3 +211,29 @@ context 'Generating two sprites, one of which is unchanged' do
   it { @runner.path_to_sprite('sprite_two').should be_file }
   it { @runner.dimensions_of('sprite_two').should == [50, 20] }
 end
+
+# ----------------------------------------------------------------------------
+
+context 'Generating an unchanged sprite which has been deleted' do
+  before(:all) do
+    @runner = Montage::Spec::CommandRunner.new('montage')
+    @runner.write_config <<-CONFIG
+      ---
+        sprite_one:
+          - one
+
+    CONFIG
+    @runner.write_source('one')
+    @runner.run!
+
+    # Remove the generated sprite.
+    @runner.path_to_sprite('sprite_one').unlink
+    @runner.run!
+  end
+
+  it { @runner.should be_success }
+
+  it { @runner.stdout.should =~ /sprite_one: Generated/ }
+  it { @runner.path_to_sprite('sprite_one').should be_file }
+end
+

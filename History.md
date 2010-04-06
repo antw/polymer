@@ -1,3 +1,8 @@
+Git Head
+--------
+
+* Sprites will be regenerated if the file has been deleted.
+
 v0.1.2 - 2010-04-06
 -------------------
 

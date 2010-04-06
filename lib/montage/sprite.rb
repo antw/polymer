@@ -41,6 +41,14 @@ module Montage
       sources.map { |source| source.image }
     end
 
+    # Returns the path to the sprite on disk.
+    #
+    # @return [Pathname]
+    #
+    def path
+      @project.paths.sprites + "#{@name}.png"
+    end
+
     # Returns the y-position of a given source.
     #
     # @return [Integer, Source]
@@ -117,7 +125,7 @@ module Montage
 
       # Remove the blank space from the bottom of the image.
       montage.crop!(0, 0, 0, (montage.first.rows) - @project.padding)
-      montage.write("PNG32:#{@project.paths.sprites + @name}.png")
+      montage.write("PNG32:#{path}")
     end
 
   end # Set

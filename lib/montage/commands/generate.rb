@@ -73,12 +73,12 @@ module Montage
           digest = sprite.digest
           say "#{sprite.name}: "
 
-          if cache[sprite.name] == digest
-            say color("Unchanged: ignoring", :yellow)
-          else
+          if cache[sprite.name] != digest or not sprite.path.file?
             sprite.write
             cache[sprite.name] = digest
             say color("Generated", :green)
+          else
+            say color("Unchanged: ignoring", :yellow)
           end
         end
       end

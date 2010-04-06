@@ -1,7 +1,6 @@
 require 'yaml'
 require 'pathname'
-require 'fileutils'
-require 'digest'
+require 'digest/sha2'
 
 # Gems.
 require 'active_support/ordered_hash'

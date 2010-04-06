@@ -18,7 +18,7 @@ module Montage
           $stdout.puts red(
             "A Montage project already exists in the current directory")
         else
-          $stdout.puts red(e.message)
+          $stdout.puts red(e.message.unindent)
         end
 
         exit(1)

@@ -15,7 +15,7 @@ module Montage
         new(Montage::Project.find(Dir.pwd)).run!
 
       rescue Montage::MissingProject
-        $stdout.puts red(<<-ERROR)
+        $stdout.puts red(<<-ERROR.unindent)
           Couldn't find a Montage project in the current directory. If
           you want to create a new project here, run `montage init'.
         ERROR
@@ -25,7 +25,7 @@ module Montage
       rescue Montage::MissingSource, Montage::TargetNotWritable => e
         $stdout.puts
         $stdout.puts
-        $stdout.puts red(e.message)
+        $stdout.puts red(e.message.unindent)
 
         exit(1)
       end

@@ -4,6 +4,8 @@ unless $:.include?(File.dirname(__FILE__) + '/../lib')
   $:.unshift(File.dirname(__FILE__) + '/../lib')
 end
 
+require 'rubygems' unless ENV['NORUBYGEMS']
+
 require 'montage'
 require 'montage/commands'
 

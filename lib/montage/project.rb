@@ -51,11 +51,11 @@ module Montage
 
       @paths = Paths.new(
         root_path, config_path,
-        root_path + (config.delete('config.sources')    || DEFAULTS[:sources]),
-        root_path + (config.delete('config.sprites')    || DEFAULTS[:sprites]),
-        root_path + (config.delete('config.css')        || DEFAULTS[:css]),
-        root_path + (config.delete('config.sass')       || DEFAULTS[:sass]),
-                    (config.delete('config.sprite_url') || DEFAULTS[:sprite_url])
+        extract_path_from_config(config, :sources, root_path),
+        extract_path_from_config(config, :sprites, root_path),
+        extract_path_from_config(config, :css,     root_path),
+        extract_path_from_config(config, :sass,    root_path),
+        config.delete('config.sprite_url') { DEFAULTS[:sprite_url] }
       )
 
       @padding = (config.delete('config.padding') || 20).to_i
@@ -76,6 +76,26 @@ module Montage
     def sprite(name)
       sprites.detect { |sprite| sprite.name == name }
     end
+
+    private # ================================================================
+
+    # Extracts a configuration value from a configuration hash. If the value
+    # exists, and is a string, it will be appended to the +root+ path.
+    #
+    # The configuration item will be _removed_ from the hash.
+    #
+    # @param [Hash] config    The configuration Hash.
+    # @param [Symbol] key     The configuration key.
+    # @param [Pathname] root  The project root path.
+    #
+    # @return [Pathname, false]
+    #
+    def extract_path_from_config(config, key, root)
+      value = config.delete("config.#{key}") { DEFAULTS[key] }
+      value.is_a?(String) ? root + value : value
+    end
+
+    # === Class Methods ======================================================
 
     class << self
 

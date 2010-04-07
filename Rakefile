@@ -28,6 +28,7 @@ begin
     gem.add_development_dependency 'rspec',    '>= 1.3.0'
     gem.add_development_dependency 'cucumber', '>= 0.6'
     gem.add_development_dependency 'open4',    '>= 1.0'
+    gem.add_development_dependency 'haml',     '>= 3.0.0.beta.1'
     gem.add_development_dependency 'yard',     '>= 0.5'
   end
 

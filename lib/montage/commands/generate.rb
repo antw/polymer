@@ -39,8 +39,10 @@ module Montage
       # Runs the generator, saving the sprites and cache.
       #
       def run!
-        generate_sprites!
-        write_cache!
+        if generate_sprites!
+          write_cache!
+          write_sass!
+        end
       end
 
       private # ==============================================================
@@ -56,18 +58,18 @@ module Montage
         end
       end
 
-      # Generates the sprites for the given project. Skips those which have
-      # not changed since they were last generated.
+      # Step 1: Generates the sprites for the given project. Skips those which
+      # have not changed since they were last generated.
       #
-      # @param [Montage::Project] project
-      #   The project whose sprites are to be generated.
-      # @param [Hash] cache
-      #   The cached digests for the project.
+      # @return [Boolean]
+      #   Returns true if at least one sprite has been updated.
       #
       def generate_sprites!
         unless @project.paths.sprites.directory?
           @project.paths.sprites.mkpath
         end
+
+        updated = false
 
         @project.sprites.each do |sprite|
           digest = sprite.digest
@@ -76,25 +78,33 @@ module Montage
           if cache[sprite.name] != digest or not sprite.path.file?
             sprite.write
             cache[sprite.name] = digest
+            updated = true
             say color("Generated", :green)
           else
             say color("Unchanged: ignoring", :yellow)
           end
         end
+
+        say Montage::Commands::BLANK
+        updated
       end
 
-      # Writes the cached digests to the cache file.
-      #
-      # @param [Pathname] montage_cache
-      #   Path to the cache file.
-      # @param [Hash] cache
-      #   A hash of sprite names and their calculated digests.
+      # Step 2: Writes the cached digests to the cache file.
       #
       def write_cache!
         cache_path = @project.paths.sprites + '.montage_cache'
 
         File.open(cache_path, 'w') do |cache_writer|
           cache_writer.puts YAML.dump(cache)
+        end
+      end
+
+      # Step 3: Writes the Sass file to disk.
+      #
+      def write_sass!
+        unless @project.paths.sass == false
+          Montage::SassBuilder.new(@project).write
+          say color("Generated Sass", :green)
         end
       end
 

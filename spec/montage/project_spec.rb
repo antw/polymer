@@ -92,6 +92,20 @@ describe Montage::Project do
       end
     end
 
+    describe 'when the config file specifies not to generate Sass' do
+      before(:all) do
+        @helper = Montage::Spec::ProjectHelper.new
+        @helper.write_config <<-CONFIG
+        ---
+          config.sass: false
+        CONFIG
+      end
+
+      it 'should set the SASS output path to false' do
+        @helper.project.paths.sass.should be_false
+      end
+    end
+
     describe 'when given an empty directory' do
       it 'should raise an error' do
         running = lambda { Montage::Project.find(fixture_path(:empty)) }

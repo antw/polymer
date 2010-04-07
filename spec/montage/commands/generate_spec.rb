@@ -20,6 +20,9 @@ context 'Generating a single sprite with two sources' do
   it { @runner.stdout.should =~ /sprite_one: Generated/ }
   it { @runner.path_to_sprite('sprite_one').should be_file }
   it { @runner.dimensions_of('sprite_one').should == [50, 60] }
+
+  # Sass.
+  it { @runner.path_to_file('public/stylesheets/sass/_montage.sass').should be_file }
 end
 
 # ----------------------------------------------------------------------------
@@ -237,3 +240,22 @@ context 'Generating an unchanged sprite which has been deleted' do
   it { @runner.path_to_sprite('sprite_one').should be_file }
 end
 
+# ----------------------------------------------------------------------------
+
+context 'Generating sprites with a project which disables Sass' do
+  before(:all) do
+    @runner = Montage::Spec::CommandRunner.new('montage')
+    @runner.write_config <<-CONFIG
+      ---
+        config.sass: false
+
+        sprite_one:
+          - one
+
+    CONFIG
+    @runner.write_source('one')
+    @runner.run!
+  end
+
+  it { @runner.path_to_file('public/stylesheets/sass/_montage.sass').should_not be_file }
+end

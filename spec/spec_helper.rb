@@ -8,6 +8,7 @@ require 'spec'
 require 'spec/autorun'
 
 require 'montage'
+require 'sass'
 
 # Spec libraries.
 spec_libs = Dir.glob(File.expand_path(File.dirname(__FILE__)) + '/lib/**/*.rb')

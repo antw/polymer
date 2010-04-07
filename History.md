@@ -1,6 +1,12 @@
 Git Head
 --------
 
+* Running `montage` will now generate `_montage.sass` in the specified
+  config.sass directory. A separate mixin will be generated for each sprite,
+  with the mixin accepting three arguments: the name of the source image, an
+  optional horizontal offset, and an optional vertical offset. Disable the
+  Sass generation by setting config.sass to false.
+
 * Sprites will be regenerated if the file has been deleted.
 
 v0.1.2 - 2010-04-06

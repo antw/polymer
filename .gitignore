@@ -28,3 +28,4 @@ rdoc
 tmp
 
 ## PROJECT::SPECIFIC
+.sass-cache

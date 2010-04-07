@@ -50,6 +50,7 @@ module Montage
           create_config!
           copy_sources!
           say color("Your project was created", :green)
+          say Montage::Commands::BLANK
         else
           raise Montage::ProjectExists, <<-ERROR.compress_lines
             A Montage project exists in a parent directory at

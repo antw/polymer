@@ -20,4 +20,3 @@ case ARGV[0]
     Montage::Commands::Generate.run(ARGV)
 end
 
-$stdout.puts

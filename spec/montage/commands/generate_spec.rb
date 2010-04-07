@@ -23,6 +23,9 @@ context 'Generating a single sprite with two sources' do
 
   # Sass.
   it { @runner.path_to_file('public/stylesheets/sass/_montage.sass').should be_file }
+
+  # PNGOut.
+  it { @runner.stdout.should =~ /Optimising "sprite_one"/ }
 end
 
 # ----------------------------------------------------------------------------
@@ -54,6 +57,10 @@ context 'Generating multiple sprites' do
   it { @runner.stdout.should =~ /sprite_two: Generated/ }
   it { @runner.path_to_sprite('sprite_two').should be_file }
   it { @runner.dimensions_of('sprite_two').should == [200, 240] }
+
+  # PNGOut.
+  it { @runner.stdout.should =~ /Optimising "sprite_one"/ }
+  it { @runner.stdout.should =~ /Optimising "sprite_two"/ }
 end
 
 # ----------------------------------------------------------------------------
@@ -213,6 +220,10 @@ context 'Generating two sprites, one of which is unchanged' do
   it { @runner.stdout.should =~ /sprite_two: Unchanged/ }
   it { @runner.path_to_sprite('sprite_two').should be_file }
   it { @runner.dimensions_of('sprite_two').should == [50, 20] }
+
+  # PNGOut.
+  it { @runner.stdout.should =~ /Optimising "sprite_one"/ }
+  it { @runner.stdout.should_not =~ /Optimising "sprite_two"/ }
 end
 
 # ----------------------------------------------------------------------------
@@ -242,6 +253,10 @@ context 'Generating two sprites, one of which is unchanged when using the --forc
   it { @runner.should be_success }
   it { @runner.stdout.should =~ /sprite_one: Generated/ }
   it { @runner.stdout.should =~ /sprite_two: Generated/ }
+
+  # PNGOut.
+  it { @runner.stdout.should =~ /Optimising "sprite_one"/ }
+  it { @runner.stdout.should =~ /Optimising "sprite_two"/ }
 end
 
 # ----------------------------------------------------------------------------
@@ -267,6 +282,9 @@ context 'Generating an unchanged sprite which has been deleted' do
 
   it { @runner.stdout.should =~ /sprite_one: Generated/ }
   it { @runner.path_to_sprite('sprite_one').should be_file }
+
+  # PNGOut.
+  it { @runner.stdout.should =~ /Optimising "sprite_one"/ }
 end
 
 # ----------------------------------------------------------------------------

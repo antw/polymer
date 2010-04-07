@@ -7,6 +7,10 @@ Git Head
   optional horizontal offset, and an optional vertical offset. Disable the
   Sass generation by setting config.sass to false.
 
+* If pngout or pngout-darwin is available (run `which pngout pngout-darwin` to
+  find out), Montage will compress the generated sprites. Installing pngout
+  is strongly recommended; significant savings can be made on larger PNGs.
+
 * The `montage` command accepts a '--force' option which will regenerate all
   sprites even if they haven't been changed since the last run.
 

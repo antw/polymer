@@ -217,6 +217,35 @@ end
 
 # ----------------------------------------------------------------------------
 
+context 'Generating two sprites, one of which is unchanged when using the --force option' do
+  before(:all) do
+    @runner = Montage::Spec::CommandRunner.new('montage')
+    @runner.write_config <<-CONFIG
+      ---
+        sprite_one:
+          - one
+          - two
+
+        sprite_two:
+          - three
+    CONFIG
+    @runner.write_source('one')
+    @runner.write_source('two')
+    @runner.write_source('three')
+    @runner.run!
+
+    # Change the 'one' source.
+    @runner.write_source('one', 100, 25)
+    @runner.run('montage --force')
+  end
+
+  it { @runner.should be_success }
+  it { @runner.stdout.should =~ /sprite_one: Generated/ }
+  it { @runner.stdout.should =~ /sprite_two: Generated/ }
+end
+
+# ----------------------------------------------------------------------------
+
 context 'Generating an unchanged sprite which has been deleted' do
   before(:all) do
     @runner = Montage::Spec::CommandRunner.new('montage')

@@ -9,8 +9,8 @@ module Montage
       # @param [Array] argv
       #   The arguments given on the command line.
       #
-      def self.run(*)
-        new(Montage::Project.find(Dir.pwd)).run!
+      def self.run(argv)
+        new(Montage::Project.find(Dir.pwd), argv.include?('--force')).run!
 
       rescue Montage::MissingProject
         say color(<<-ERROR.compress_lines, :red)
@@ -29,11 +29,13 @@ module Montage
 
       # Creates a new Generate instance.
       #
-      # @param [Montage::Project]
+      # @param [Montage::Project] project
       #   The project whose sprites are to be generated.
+      # @param [Boolean] force
+      #   Rengerate sprites, even if they haven't been changed.
       #
-      def initialize(project)
-        @project = project
+      def initialize(project, force)
+        @project, @force = project, force
       end
 
       # Runs the generator, saving the sprites and cache.
@@ -75,7 +77,7 @@ module Montage
           digest = sprite.digest
           say "#{sprite.name}: "
 
-          if cache[sprite.name] != digest or not sprite.path.file?
+          if @force or cache[sprite.name] != digest or not sprite.path.file?
             sprite.write
             cache[sprite.name] = digest
             updated = true

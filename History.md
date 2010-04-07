@@ -7,6 +7,9 @@ Git Head
   optional horizontal offset, and an optional vertical offset. Disable the
   Sass generation by setting config.sass to false.
 
+* The `montage` command accepts a '--force' option which will regenerate all
+  sprites even if they haven't been changed since the last run.
+
 * Sprites will be regenerated if the file has been deleted.
 
 v0.1.2 - 2010-04-06

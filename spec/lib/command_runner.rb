@@ -32,11 +32,6 @@ module Montage
       #
       def initialize(command)
         super()
-
-        if command =~ /^montage(.*)$/
-          command = "#{RUBY} -rubygems #{EXECUTABLE}#{$1} --no-color"
-        end
-
         @command = command
       end
 
@@ -46,10 +41,26 @@ module Montage
       #   Returns self.
       #
       def run!(&block)
+        run(@command, &block)
+      end
+
+      # Runs the given command in the test directory.
+      #
+      # @param [String] command
+      #   The command to be run.
+      #
+      # @return [CommandRunner]
+      #   Returns self.
+      #
+      def run(command, &block)
+        if command =~ /^montage(.*)$/
+          command = "#{RUBY} -rubygems #{EXECUTABLE}#{$1} --no-color"
+        end
+
         @status, @stderr, @stdout = nil, nil, nil
 
         in_project_dir do
-          @status = Open4.popen4(@command.to_s) do |_, stdin, stdout, stderr|
+          @status = Open4.popen4(command.to_s) do |_, stdin, stdout, stderr|
             yield stdin if block_given?
 
             @stdout = stdout.read

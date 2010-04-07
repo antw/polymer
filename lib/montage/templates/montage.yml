@@ -13,16 +13,15 @@
 
   # --------------------------------------------------------------------------
 
-  # The sample below will produce two sprites (sprite_one.png and
-  # sprite_two.png) with the specified source images. You can omit
-  # file extensions.
+  # The sample below will produce two sprites (one.png and two.png) with the
+  # specified source images. You can omit file extensions.
 
-  sprite_one:
+  one:
     - book
     - box-label
     - calculator
 
-  sprite_two:
+  two:
     - calendar-month
     - camera
     - eraser

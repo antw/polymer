@@ -74,15 +74,15 @@ module Montage
 
         @project.sprites.each do |sprite|
           digest = sprite.digest
-          say "- #{sprite.name}: "
+          say %(- Generating "#{sprite.name}": )
 
           if @force or cache[sprite.name] != digest or not sprite.path.file?
             sprite.write
             cache[sprite.name] = digest
             @generated << sprite
-            say color("Generated ", :green)
+            say color("Done", :green)
           else
-            say color("Unchanged: ignoring", :yellow)
+            say color("Unchanged; ignoring", :yellow)
           end
         end
 
@@ -152,8 +152,9 @@ module Montage
       #
       def write_sass!
         unless @project.paths.sass == false
+          say "- Generating Sass: "
           Montage::SassBuilder.new(@project).write
-          say color("- Generated Sass", :green)
+          say color("Done", :green)
           say Montage::Commands::BLANK
         end
       end

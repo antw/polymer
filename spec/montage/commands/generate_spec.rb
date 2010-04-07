@@ -17,7 +17,7 @@ context 'Generating a single sprite with two sources' do
   end
 
   it { @runner.should be_success }
-  it { @runner.stdout.should =~ /sprite_one: Generated/ }
+  it { @runner.stdout.should =~ /Generating "sprite_one": Done/ }
   it { @runner.path_to_sprite('sprite_one').should be_file }
   it { @runner.dimensions_of('sprite_one').should == [50, 60] }
 
@@ -25,7 +25,7 @@ context 'Generating a single sprite with two sources' do
   it { @runner.path_to_file('public/stylesheets/sass/_montage.sass').should be_file }
 
   # PNGOut.
-  it { @runner.stdout.should =~ /Optimising "sprite_one"/ }
+  it { @runner.stdout.should =~ /Optimising "sprite_one": Done/ }
 end
 
 # ----------------------------------------------------------------------------
@@ -50,17 +50,17 @@ context 'Generating multiple sprites' do
 
   it { @runner.should be_success }
 
-  it { @runner.stdout.should =~ /sprite_one: Generated/ }
+  it { @runner.stdout.should =~ /Generating "sprite_one": Done/ }
   it { @runner.path_to_sprite('sprite_one').should be_file }
   it { @runner.dimensions_of('sprite_one').should == [50, 20] }
 
-  it { @runner.stdout.should =~ /sprite_two: Generated/ }
+  it { @runner.stdout.should =~ /Generating "sprite_two": Done/ }
   it { @runner.path_to_sprite('sprite_two').should be_file }
   it { @runner.dimensions_of('sprite_two').should == [200, 240] }
 
   # PNGOut.
-  it { @runner.stdout.should =~ /Optimising "sprite_one"/ }
-  it { @runner.stdout.should =~ /Optimising "sprite_two"/ }
+  it { @runner.stdout.should =~ /Optimising "sprite_one": Done/ }
+  it { @runner.stdout.should =~ /Optimising "sprite_two": Done/ }
 end
 
 # ----------------------------------------------------------------------------
@@ -82,7 +82,7 @@ context 'Generating a single sprite with custom padding' do
   end
 
   it { @runner.should be_success }
-  it { @runner.stdout.should =~ /sprite_one: Generated/ }
+  it { @runner.stdout.should =~ /Generating "sprite_one": Done/ }
   it { @runner.path_to_sprite('sprite_one').should be_file }
   it { @runner.dimensions_of('sprite_one').should == [50, 90] }
 end
@@ -111,7 +111,7 @@ context 'Generating a single sprite using custom directories' do
   end
 
   it { @runner.should be_success }
-  it { @runner.stdout.should =~ /sprite_one: Generated/ }
+  it { @runner.stdout.should =~ /Generating "sprite_one": Done/ }
   it { @runner.path_to_sprite('sprite_one').should be_file }
 end
 
@@ -213,17 +213,17 @@ context 'Generating two sprites, one of which is unchanged' do
 
   it { @runner.should be_success }
 
-  it { @runner.stdout.should =~ /sprite_one: Generated/ }
+  it { @runner.stdout.should =~ /Generating "sprite_one": Done/ }
   it { @runner.path_to_sprite('sprite_one').should be_file }
   it { @runner.dimensions_of('sprite_one').should == [100, 65] }
 
-  it { @runner.stdout.should =~ /sprite_two: Unchanged/ }
+  it { @runner.stdout.should =~ /Generating "sprite_two": Unchanged; ignoring/ }
   it { @runner.path_to_sprite('sprite_two').should be_file }
   it { @runner.dimensions_of('sprite_two').should == [50, 20] }
 
   # PNGOut.
-  it { @runner.stdout.should =~ /Optimising "sprite_one"/ }
-  it { @runner.stdout.should_not =~ /Optimising "sprite_two"/ }
+  it { @runner.stdout.should =~ /Optimising "sprite_one": Done/ }
+  it { @runner.stdout.should_not =~ /Optimising "sprite_two": Done/ }
 end
 
 # ----------------------------------------------------------------------------
@@ -251,12 +251,12 @@ context 'Generating two sprites, one of which is unchanged when using the --forc
   end
 
   it { @runner.should be_success }
-  it { @runner.stdout.should =~ /sprite_one: Generated/ }
-  it { @runner.stdout.should =~ /sprite_two: Generated/ }
+  it { @runner.stdout.should =~ /Generating "sprite_one": Done/ }
+  it { @runner.stdout.should =~ /Generating "sprite_two": Done/ }
 
   # PNGOut.
-  it { @runner.stdout.should =~ /Optimising "sprite_one"/ }
-  it { @runner.stdout.should =~ /Optimising "sprite_two"/ }
+  it { @runner.stdout.should =~ /Optimising "sprite_one": Done/ }
+  it { @runner.stdout.should =~ /Optimising "sprite_two": Done/ }
 end
 
 # ----------------------------------------------------------------------------
@@ -280,11 +280,11 @@ context 'Generating an unchanged sprite which has been deleted' do
 
   it { @runner.should be_success }
 
-  it { @runner.stdout.should =~ /sprite_one: Generated/ }
+  it { @runner.stdout.should =~ /Generating "sprite_one": Done/ }
   it { @runner.path_to_sprite('sprite_one').should be_file }
 
   # PNGOut.
-  it { @runner.stdout.should =~ /Optimising "sprite_one"/ }
+  it { @runner.stdout.should =~ /Optimising "sprite_one": Done/ }
 end
 
 # ----------------------------------------------------------------------------

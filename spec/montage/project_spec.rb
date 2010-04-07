@@ -79,16 +79,8 @@ describe Montage::Project do
         @project.paths.sprites.should == @base + 'output'
       end
 
-      it 'should set the CSS output path' do
-        @project.paths.css.should == @base + 'css'
-      end
-
       it 'should set the SASS output path' do
         @project.paths.sass.should == @base + 'sass'
-      end
-
-      it 'should set the CSS sprite URL' do
-        @project.paths.url.should == 'custom/images'
       end
     end
 

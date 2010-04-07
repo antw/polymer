@@ -22,7 +22,7 @@ Popularised by Dave Shea in an [A List Apart](http://www.alistapart.com/articles
 
 However, creating sprites burdens you with having to manually update them every time a minor change is required. Even more frustrating is the need to remember the precise background positions required when editing the CSS.
 
-Montage is a library which, provided a simple configuration file, will automate this process, and generate the CSS for you. If you're a SASS user, then you're in for a treat: Montage generates mixins which make working with your sprites incredibly simple:
+Montage is a library which, provided a simple configuration file, will automate this process, and if you're a SASS user, you're in for a treat: Montage generates mixins which make working with your sprites incredibly simple:
 
     SASS Usage:
 

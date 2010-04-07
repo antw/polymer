@@ -1,7 +1,6 @@
 ---
   config.sources:    "custom/sources"
   config.sprites:    "custom/output"
-  config.css:        "custom/css"
   config.sass:       "custom/sass"
   config.sprite_url: "custom/images"
 

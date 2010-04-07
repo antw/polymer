@@ -5,13 +5,12 @@ module Montage
     DEFAULTS = {
       :sources     => 'public/images/sprites/src',
       :sprites     => 'public/images/sprites',
-      :css         => 'public/stylesheets',
       :sass        => 'public/stylesheets/sass',
       :sprite_url  => '/images/sprites'
     }
 
     # Stores all the paths the project needs.
-    Paths = Struct.new(:root, :config, :sources, :sprites, :css, :sass, :url)
+    Paths = Struct.new(:root, :config, :sources, :sprites, :sass, :url)
 
     # Returns the Paths instance for the project.
     #
@@ -53,7 +52,6 @@ module Montage
         root_path, config_path,
         extract_path_from_config(config, :sources, root_path),
         extract_path_from_config(config, :sprites, root_path),
-        extract_path_from_config(config, :css,     root_path),
         extract_path_from_config(config, :sass,    root_path),
         config.delete('config.sprite_url') { DEFAULTS[:sprite_url] }
       )

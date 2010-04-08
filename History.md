@@ -1,4 +1,4 @@
-v0.2.0 - 2010-04-06
+v0.2.0 - 2010-04-08
 -------------------
 
 * Running `montage` will now generate `_montage.sass` in the specified

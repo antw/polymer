@@ -2,9 +2,13 @@ describe 'a project with correct paths', :shared => true do
   # Requires:
   #
   #   @project => Montage::Project
-  #   @root    => Pathname (path to project root)
+  #   @helper  => Montage::Spec::ProjectHelper
   #   @config  => Pathname (path to config file)
   #
+
+  before(:all) do
+    @root ||= @helper.project_dir
+  end
 
   it 'should set the project root path' do
     @project.paths.root.should == @root

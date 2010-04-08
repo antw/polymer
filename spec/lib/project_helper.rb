@@ -88,13 +88,36 @@ module Montage
 
       # Writes montage.yml file in the project root with the given contents.
       #
+      # @param [String] to
+      #   The path at which to save the config file. Or: The file contents if
+      #   you want to save at the default location.
       # @param [String] contents
       #   The contents to be saved as the config file.
       #
-      def write_config(contents)
-        File.open(project_dir + 'montage.yml', 'w') do |file|
+      def write_config(to, contents = nil)
+        if contents.nil?
+          # Sigh; if only 1.9 was more popular...
+          contents, to = to, 'montage.yml'
+        else
+          (project_dir + to).dirname.mkpath
+        end
+
+        File.open(project_dir + to, 'w') do |file|
           file.puts contents.unindent
         end
+      end
+
+      # Writes a simple config file.
+      #
+      # @param [String] to
+      #   The path at which to save the config file.
+      #
+      def write_simple_config(to = 'montage.yml')
+        write_config to, <<-CONFIG
+          ---
+            sprite_one:
+              - source_one
+        CONFIG
       end
 
       # Writes a source image file to the src directory.

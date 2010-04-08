@@ -12,9 +12,11 @@ describe Montage::Project do
   describe '.find' do
     describe 'when given a project root with montage.yml in the root' do
       before(:all) do
-        @project = Montage::Project.find(fixture_path(:root_config))
-        @root    = Pathname.new(fixture_path(:root_config))
-        @config  = Pathname.new(fixture_path(:root_config, 'montage.yml'))
+        @helper = Montage::Spec::ProjectHelper.new
+        @helper.write_simple_config
+
+        @project = Montage::Project.find(@helper.project_dir)
+        @config  = @helper.path_to_file('montage.yml')
       end
 
       it_should_behave_like 'a project with correct paths'
@@ -22,10 +24,11 @@ describe Montage::Project do
 
     describe 'when given a project root with montage.yml in ./config' do
       before(:all) do
-        @project = Montage::Project.find(fixture_path(:directory_config))
-        @root    = Pathname.new(fixture_path(:directory_config))
-        @config  = Pathname.new(
-          fixture_path(:directory_config, 'config/montage.yml'))
+        @helper = Montage::Spec::ProjectHelper.new
+        @helper.write_simple_config('config/montage.yml')
+
+        @project = Montage::Project.find(@helper.project_dir)
+        @config  = @helper.path_to_file('config/montage.yml')
       end
 
       it_should_behave_like 'a project with correct paths'
@@ -33,9 +36,12 @@ describe Montage::Project do
 
     describe 'when given a project subdirectory' do
       before(:all) do
-        @project = Montage::Project.find(fixture_path(:subdirs, 'sub/sub'))
-        @root    = Pathname.new(fixture_path(:subdirs))
-        @config  = Pathname.new(fixture_path(:subdirs, 'montage.yml'))
+        @helper = Montage::Spec::ProjectHelper.new
+        @helper.mkdir('sub/sub')
+        @helper.write_simple_config
+
+        @project = Montage::Project.find(@helper.project_dir + 'sub/sub')
+        @config  = @helper.path_to_file('montage.yml')
       end
 
       it_should_behave_like 'a project with correct paths'
@@ -43,11 +49,11 @@ describe Montage::Project do
 
     describe 'when given a configuration file in the root' do
       before(:all) do
-        @project = Montage::Project.find(
-          fixture_path(:root_config, 'montage.yml'))
+        @helper = Montage::Spec::ProjectHelper.new
+        @helper.write_simple_config
 
-        @root    = Pathname.new(fixture_path(:root_config))
-        @config  = Pathname.new(fixture_path(:root_config, 'montage.yml'))
+        @project = Montage::Project.find(@helper.path_to_file('montage.yml'))
+        @config  = @helper.path_to_file('montage.yml')
       end
 
       it_should_behave_like 'a project with correct paths'
@@ -55,11 +61,13 @@ describe Montage::Project do
 
     describe 'when given a configuration file in ./config' do
       before(:all) do
+        @helper = Montage::Spec::ProjectHelper.new
+        @helper.write_simple_config('config/montage.yml')
+
         @project = Montage::Project.find(
-          fixture_path(:directory_config, 'config/montage.yml'))
-        @root    = Pathname.new(fixture_path(:directory_config))
-        @config  = Pathname.new(
-          fixture_path(:directory_config, 'config/montage.yml'))
+          @helper.path_to_file('config/montage.yml'))
+
+        @config  = @helper.path_to_file('config/montage.yml')
       end
 
       it_should_behave_like 'a project with correct paths'
@@ -67,8 +75,21 @@ describe Montage::Project do
 
     describe 'when the config file specifies custom directories' do
       before(:all) do
-        @project = Montage::Project.find(fixture_path(:custom_dirs))
-        @base = Pathname.new(fixture_path(:custom_dirs)) + 'custom'
+        @helper = Montage::Spec::ProjectHelper.new
+        @helper.write_config <<-CONFIG
+        ---
+          config.sources:    "custom/sources"
+          config.sprites:    "custom/output"
+          config.sass:       "custom/sass"
+          config.sprite_url: "custom/images"
+
+          sprite_one:
+            - source_one
+        CONFIG
+
+        @project = Montage::Project.find(@helper.project_dir)
+        @config  = @helper.path_to_file('montage.yml')
+        @base    = @helper.path_to_file('custom')
       end
 
       it 'should set the sources path' do
@@ -99,8 +120,12 @@ describe Montage::Project do
     end
 
     describe 'when given an empty directory' do
+      before(:all) do
+        @helper = Montage::Spec::ProjectHelper.new
+      end
+
       it 'should raise an error' do
-        running = lambda { Montage::Project.find(fixture_path(:empty)) }
+        running = lambda { Montage::Project.find(@helper.project_dir) }
         running.should raise_exception(Montage::MissingProject)
       end
     end # when given an empty directory

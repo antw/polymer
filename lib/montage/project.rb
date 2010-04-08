@@ -37,16 +37,13 @@ module Montage
     # to be correct. If you're not sure of the exact paths, use +Project.find+
     # instead.
     #
-    # @param [String, Pathname] root_path
-    #   Path to the root of the Montage project.
     # @param [String, Pathname] config_path
     #   Path to the config file.
     #
-    def initialize(root_path, config_path)
-      root_path   = Pathname.new(root_path)
+    def initialize(config_path)
       config_path = Pathname.new(config_path)
-
-      config = YAML.load_file(config_path)
+      config      = YAML.load_file(config_path)
+      root_path   = determine_project_root(config_path, config)
 
       @paths = Paths.new(
         root_path, config_path,
@@ -82,15 +79,39 @@ module Montage
     #
     # The configuration item will be _removed_ from the hash.
     #
-    # @param [Hash] config    The configuration Hash.
-    # @param [Symbol] key     The configuration key.
-    # @param [Pathname] root  The project root path.
+    # @param [Hash]     config  The configuration Hash.
+    # @param [Symbol]   key     The configuration key.
+    # @param [Pathname] root    The project root path.
     #
     # @return [Pathname, false]
     #
     def extract_path_from_config(config, key, root)
       value = config.delete("config.#{key}") { DEFAULTS[key] }
       value.is_a?(String) ? root + value : value
+    end
+
+    # Attempts to find the project root for the configuration file. If the
+    # config file is in a directory called 'config' then the project root is
+    # assumed to be one level up.
+    #
+    # @param [Pathname] config_path  The path to the config file.
+    # @param [Hash]     config       The project configuration.
+    #
+    # @return [Pathname]
+    #
+    def determine_project_root(config_path, config)
+      config_dir = config_path.dirname
+
+      if config.has_key?('config.root')
+        root_dir = Pathname.new(config.delete('config.root'))
+        root_dir.absolute? ? root_dir : (config_dir + root_dir)
+      else
+        if config_dir.split.last.to_s == 'config'
+          config_dir + '..'
+        else
+          config_dir
+        end
+      end
     end
 
     # === Class Methods ======================================================
@@ -131,7 +152,6 @@ module Montage
         config_path, root_path = nil, nil
 
         if path.file?
-          root_path = find_root(path)
           config_path = path
         elsif path.directory?
           if config_path = find_config(path)
@@ -139,17 +159,15 @@ module Montage
           else
             # Assume we're in a subdirectory of the current project.
             path.split.first.ascend do |directory|
-              if config_path = find_config(directory)
-                break if root_path = find_root(config_path)
-              end
+              break if config_path = find_config(directory)
             end
           end
         end
 
         raise MissingProject, "Montage couldn't find a project to work " \
-          "on at `#{path}'" if root_path.nil?
+          "on at `#{path}'" if config_path.nil?
 
-        new(root_path, config_path)
+        new(config_path)
       end
 
       private

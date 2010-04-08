@@ -5,6 +5,9 @@ describe 'a project with correct paths', :shared => true do
   #   @helper  => Montage::Spec::ProjectHelper
   #   @config  => Pathname (path to config file)
   #
+  #   (optional)
+  #   @root    => Pathname (path to the root of the project)
+  #
 
   before(:all) do
     @root ||= @helper.project_dir

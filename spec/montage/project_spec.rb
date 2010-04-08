@@ -105,6 +105,48 @@ describe Montage::Project do
       end
     end
 
+    describe 'when the config file specifies a custom root' do
+      before(:all) do
+        @helper = Montage::Spec::ProjectHelper.new
+        @helper.write_config 'settings/sprites.yml', <<-CONFIG
+        ---
+          config.root: "../custom_root"
+
+          sprite_one:
+            - source_one
+        CONFIG
+
+        @project = Montage::Project.find(
+          @helper.path_to_file('settings/sprites.yml'))
+
+        @config  = @helper.path_to_file('settings/sprites.yml')
+        @root    = @helper.path_to_file('custom_root')
+      end
+
+      it_should_behave_like 'a project with correct paths'
+    end
+
+    describe 'when the config file specifies a custom absolute root' do
+      before(:all) do
+        @helper = Montage::Spec::ProjectHelper.new
+        @helper.write_config 'settings/sprites.yml', <<-CONFIG
+        ---
+          config.root: "#{@helper.path_to_file('custom_root')}"
+
+          sprite_one:
+            - source_one
+        CONFIG
+
+        @project = Montage::Project.find(
+          @helper.path_to_file('settings/sprites.yml'))
+
+        @config  = @helper.path_to_file('settings/sprites.yml')
+        @root    = @helper.path_to_file('custom_root')
+      end
+
+      it_should_behave_like 'a project with correct paths'
+    end
+
     describe 'when the config file specifies not to generate Sass' do
       before(:all) do
         @helper = Montage::Spec::ProjectHelper.new

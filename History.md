@@ -1,3 +1,11 @@
+Git HEAD
+--------
+
+* The `montage` command now allows you to specify a path to a Montage
+  configuration file; for example `montage path/to/montage.yml`. When using
+  a non-standard directory structure, you can specify a "config.root" option
+  in the configuration file, containing the path to the project root.
+
 v0.2.0 - 2010-04-08
 -------------------
 

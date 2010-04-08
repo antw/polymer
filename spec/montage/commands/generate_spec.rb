@@ -306,3 +306,38 @@ context 'Generating sprites with a project which disables Sass' do
 
   it { @runner.path_to_file('public/stylesheets/sass/_montage.sass').should_not be_file }
 end
+
+# ----------------------------------------------------------------------------
+
+context 'Generating sprites when specifying a custom config file' do
+  before(:all) do
+    @runner = Montage::Spec::CommandRunner.new('montage settings/sprites.yml')
+    @runner.write_config 'settings/sprites.yml', <<-CONFIG
+      ---
+        config.root: '..'
+
+        sprite_one:
+          - one
+
+    CONFIG
+    @runner.write_source('one')
+    @runner.run!
+  end
+
+  it { @runner.should be_success }
+  it { @runner.stdout.should =~ /Generating "sprite_one": Done/ }
+  it { @runner.path_to_sprite('sprite_one').should be_file }
+  it { @runner.path_to_file('public/stylesheets/sass/_montage.sass').should be_file }
+end
+
+# ----------------------------------------------------------------------------
+
+context 'Generating sprites when specifying an invalid custom config file' do
+  before(:all) do
+    @runner = Montage::Spec::CommandRunner.new('montage invalid.yml')
+    @runner.run!
+  end
+
+  it { @runner.should be_failure }
+  it { @runner.stdout.should =~ /Couldn't find `invalid.yml' configuration file/ }
+end

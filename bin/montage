@@ -16,15 +16,15 @@ module Kernel
   def_delegators :$terminal, :color
 end
 
-Montage::Commands.parse_options!(ARGV)
+args = Montage::Commands.parse_options!(ARGV.dup)
 Montage::Commands.print_masthead
 
 case ARGV[0]
   when 'init'
     require 'montage/commands/init'
-    Montage::Commands::Init.run(ARGV)
+    Montage::Commands::Init.run(args)
   else
     require 'montage/commands/generate'
-    Montage::Commands::Generate.run(ARGV)
+    Montage::Commands::Generate.run(args)
 end
 

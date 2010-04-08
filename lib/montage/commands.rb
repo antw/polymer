@@ -16,6 +16,8 @@ module Montage
 
     # Uses OptParse to parse command-line arguments.
     #
+    # Returns any unparsed command-line arguments.
+    #
     def parse_options!(argv)
       HighLine.use_color = false if !STDOUT.tty? && !ENV.has_key?("AUTOTEST")
 
@@ -50,7 +52,7 @@ module Montage
         end
       end.parse!(argv)
 
-      Montage::Commands.config
+      argv
     end
 
     # Prints the Montage masthead, introducing the programme, and including

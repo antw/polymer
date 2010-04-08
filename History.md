@@ -1,5 +1,5 @@
-Git Head
---------
+v0.2.0 - 2010-04-06
+-------------------
 
 * Running `montage` will now generate `_montage.sass` in the specified
   config.sass directory. A separate mixin will be generated for each sprite,

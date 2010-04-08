@@ -63,6 +63,7 @@ Gem::Specification.new do |s|
      "spec/fixtures/sources/other.png",
      "spec/fixtures/sources/twenty.png",
      "spec/fixtures/subdirs/montage.yml",
+     "spec/fixtures/subdirs/sub/sub/keep",
      "spec/lib/command_runner.rb",
      "spec/lib/fixtures.rb",
      "spec/lib/have_public_method_defined.rb",
@@ -87,7 +88,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/antw/montage}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{Montage}
   s.test_files = [
     "spec/lib/command_runner.rb",

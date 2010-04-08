@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{montage}
-  s.version = "0.1.2"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Anthony Williams"]
-  s.date = %q{2010-04-06}
+  s.date = %q{2010-04-08}
   s.default_executable = %q{montage}
   s.description = %q{Even Rocky had a montage.}
   s.email = %q{hi@antw.me}
@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.files = [
     ".document",
      ".gitignore",
+     "History.md",
      "LICENSE",
      "README.md",
      "Rakefile",
@@ -32,9 +33,11 @@ Gem::Specification.new do |s|
      "lib/montage/commands/init.rb",
      "lib/montage/core_ext.rb",
      "lib/montage/project.rb",
+     "lib/montage/sass_builder.rb",
      "lib/montage/source.rb",
      "lib/montage/sprite.rb",
      "lib/montage/templates/montage.yml",
+     "lib/montage/templates/sass_mixins.erb",
      "lib/montage/templates/sources/book.png",
      "lib/montage/templates/sources/box-label.png",
      "lib/montage/templates/sources/calculator.png",
@@ -70,6 +73,7 @@ Gem::Specification.new do |s|
      "spec/montage/commands/init_spec.rb",
      "spec/montage/core_ext_spec.rb",
      "spec/montage/project_spec.rb",
+     "spec/montage/sass_builder_spec.rb",
      "spec/montage/source_spec.rb",
      "spec/montage/spec/have_public_method_defined_spec.rb",
      "spec/montage/sprite_spec.rb",
@@ -83,7 +87,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/antw/montage}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.6}
+  s.rubygems_version = %q{1.3.5}
   s.summary = %q{Montage}
   s.test_files = [
     "spec/lib/command_runner.rb",
@@ -96,6 +100,7 @@ Gem::Specification.new do |s|
      "spec/montage/commands/init_spec.rb",
      "spec/montage/core_ext_spec.rb",
      "spec/montage/project_spec.rb",
+     "spec/montage/sass_builder_spec.rb",
      "spec/montage/source_spec.rb",
      "spec/montage/spec/have_public_method_defined_spec.rb",
      "spec/montage/sprite_spec.rb",
@@ -113,6 +118,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<rspec>, [">= 1.3.0"])
       s.add_development_dependency(%q<cucumber>, [">= 0.6"])
       s.add_development_dependency(%q<open4>, [">= 1.0"])
+      s.add_development_dependency(%q<haml>, [">= 3.0.0.beta.1"])
       s.add_development_dependency(%q<yard>, [">= 0.5"])
     else
       s.add_dependency(%q<activesupport>, [">= 3.0.0.beta"])
@@ -121,6 +127,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<rspec>, [">= 1.3.0"])
       s.add_dependency(%q<cucumber>, [">= 0.6"])
       s.add_dependency(%q<open4>, [">= 1.0"])
+      s.add_dependency(%q<haml>, [">= 3.0.0.beta.1"])
       s.add_dependency(%q<yard>, [">= 0.5"])
     end
   else
@@ -130,6 +137,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rspec>, [">= 1.3.0"])
     s.add_dependency(%q<cucumber>, [">= 0.6"])
     s.add_dependency(%q<open4>, [">= 1.0"])
+    s.add_dependency(%q<haml>, [">= 3.0.0.beta.1"])
     s.add_dependency(%q<yard>, [">= 0.5"])
   end
 end

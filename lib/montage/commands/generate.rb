@@ -4,6 +4,13 @@ module Montage
     class Generate
       extend Commands
 
+      # Terminal reset code; removes any content on the current line and moves
+      # the cursor back to the beginning.
+      RESET = "\r\e[0K"
+
+      # Glyphs used when doing long-running processes.
+      GLYPHS = %w( ~ \\ | / )
+
       # Given a project, generates sprites.
       #
       # @param [Array] argv
@@ -74,15 +81,19 @@ module Montage
 
         @project.sprites.each do |sprite|
           digest = sprite.digest
-          say %(- Generating "#{sprite.name}": )
+
 
           if @force or cache[sprite.name] != digest or not sprite.path.file?
-            sprite.write
-            cache[sprite.name] = digest
-            @generated << sprite
+            with_feedback %(Generating "#{sprite.name}"), 'Generating' do
+              sprite.write
+              cache[sprite.name] = digest
+              @generated << sprite
+            end
+
             say color("Done", :green)
           else
-            say color("Unchanged; ignoring", :yellow)
+            say %(- Generating "#{sprite.name}": ) +
+                color("Unchanged; ignoring", :yellow)
           end
         end
 
@@ -103,6 +114,9 @@ module Montage
             Skipping optimisation with PNGOut since Montage couldn't find
             "pngout" or "pngout-darwin" anywhere.
           MESSAGE
+          say Montage::Commands::BLANK
+
+          return
         end
 
         max_sprite_name_length = @generated.inject(0) do |max, sprite|
@@ -110,32 +124,35 @@ module Montage
         end
 
         @generated.each do |sprite|
-          notifier = Thread.new do
-            run_optimisation_notifier(sprite, max_sprite_name_length)
-          end
+          original_size = sprite.path.size
 
-          optimiser = Thread.new do
+          with_feedback %(Optimising "#{sprite.name}"), 'Optimising' do
             5.times do |i|
               # Optimise until pngout reports that it can't compress further,
               # or until we've tried five times.
               out = `#{pngout} #{sprite.path} #{sprite.path} -s0 -k0 -y`
               break if out =~ /Unable to compress further/
             end
-
-            notifier.kill
           end
 
-          notifier.join
-          optimiser.join
+          new_size  = sprite.path.size
+
+          reduction = ('%.1fkb (%d' % [
+            (original_size.to_f - new_size) / 1024,
+            100 - (new_size.to_f / original_size) * 100 ]) + '%)'
+
+          say color("Done; saved #{reduction}", :green)
         end
 
         say Montage::Commands::BLANK
 
       rescue Errno::ENOENT
-        say <<-MESSAGE.compress_lines
+        say ("#{RESET}" + <<-MESSAGE.compress_lines)
           Skipping optimisation with PNGOut since Montage is currently only in
           bed with Linux and OS X. Sorry!
         MESSAGE
+        say Montage::Commands::BLANK
+        exit(1)
       end
 
       # Step 3: Writes the cached digests to the cache file.
@@ -161,52 +178,55 @@ module Montage
 
       # --- Optimisation Output ----------------------------------------------
 
-      # Outputs nice messages to the user while a sprite is optimised.
+      # Executes a block while providing live feedback to the user.
       #
-      # optimise_with_pngout! runs this in a thread, killing it once the
-      # optimisation has been completed.
+      # @param [String] prefix
+      #   The "prefix" of each notification; this is always shown at the
+      #   beginning of each line.
+      # @param [String] verb
+      #   What's happening?
       #
-      # @param [Montage::Sprite] sprite
-      #   The sprite being optimised.
-      # @param [Integer] max_sprite_length
-      #   The length of the longest sprite name -- allows us to justify
-      #   messages.
+      # @example
+      #   with_notification('Generating image', 'Generating') { ... }
       #
-      def run_optimisation_notifier(sprite, max_sprite_length)
-        reset, iteration = "\r\e[0K", 0
+      #   # "- Generating image: Generating"       # initially
+      #   # "- Generating image: Still generating" # after 3 seconds
+      #   # "- Generating image: STILL generating" # after 6 seconds
+      #
+      def with_feedback(prefix, verb = 'Generating', &work)
+        notifier = Thread.new do
+          prefix = "- #{prefix}: "
+          iteration = 0
 
-        original_size = sprite.path.size
+          while true do
+            case iteration
+              when  0 then message = color(verb, :blue)
+              when 30 then message = color("Still #{verb.downcase}", :blue)
+              when 60 then message = color("STILL #{verb.downcase}", :blue)
+              when 90 then message =
+                             color("Gosh, this is taking a while...", :blue)
+            end
 
-        messages = {
-          0  => "Optimising",                       # initial message
-          30 => "Still optimising...",              # after 3 seconds
-          60 => "STILL optimising...",              # after 6 seconds
-          90 => "Gosh, this is taking a while..." } # after 9 seconds
+            say "#{RESET}#{prefix}#{message} [#{GLYPHS[iteration % 4]}] "
 
-        glyphs = %w( ~ \\ | / )
-        prefix = %(- Optimising "#{sprite.name}": )
-
-        while true do
-          message = color(messages[iteration], :blue) if messages[iteration]
-
-          say "#{reset}#{prefix}#{message} [#{glyphs[iteration % 4]}] "
-
-          iteration += 1
-          $stdout.flush
-          sleep(0.1)
+            iteration += 1
+            $stdout.flush
+            sleep(0.1)
+          end
         end
-      ensure
-        # This gets run when the thread is killed, meaining optimisation
-        # has finished.
 
-        new_size  = sprite.path.size
+        worker = Thread.new do
+          begin
+            work.call
+          ensure
+            notifier.kill
+          end
+        end
 
-        reduction = ('%.1fkb (%d' % [
-          (original_size.to_f - new_size) / 1024,
-          100 - (new_size.to_f / original_size) * 100 ]) + '%)'
+        notifier.join
+        worker.join
 
-        message = "Done; saved #{reduction}"
-        say "#{reset}#{prefix}#{color(message, :green)}"
+        say "#{RESET}#{prefix}"
       end
 
     end # Generate

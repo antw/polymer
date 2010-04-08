@@ -17,7 +17,8 @@ module Montage
       #   The arguments given on the command line.
       #
       def self.run(argv)
-        new(Montage::Project.find(Dir.pwd), argv.include?('--force')).run!
+        new(Montage::Project.find(Dir.pwd),
+            Montage::Commands.config[:force]).run!
 
       rescue Montage::MissingProject
         say color(<<-ERROR.compress_lines, :red)

@@ -4,11 +4,19 @@ unless $:.include?(File.dirname(__FILE__) + '/../lib')
   $:.unshift(File.dirname(__FILE__) + '/../lib')
 end
 
+require 'optparse'
 require 'rubygems' unless ENV['NORUBYGEMS']
 
 require 'montage'
 require 'montage/commands'
 
+require 'highline/import'
+
+module Kernel
+  def_delegators :$terminal, :color
+end
+
+Montage::Commands.parse_options!(ARGV)
 Montage::Commands.print_masthead
 
 case ARGV[0]

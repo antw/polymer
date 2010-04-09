@@ -86,7 +86,7 @@ module Montage
 
       # --- File Writers -----------------------------------------------------
 
-      # Writes montage.yml file in the project root with the given contents.
+      # Writes .montage file in the project root with the given contents.
       #
       # @param [String] to
       #   The path at which to save the config file. Or: The file contents if
@@ -97,7 +97,7 @@ module Montage
       def write_config(to, contents = nil)
         if contents.nil?
           # Sigh; if only 1.9 was more popular...
-          contents, to = to, 'montage.yml'
+          contents, to = to, '.montage'
         else
           (project_dir + to).dirname.mkpath
         end
@@ -112,7 +112,7 @@ module Montage
       # @param [String] to
       #   The path at which to save the config file.
       #
-      def write_simple_config(to = 'montage.yml')
+      def write_simple_config(to = '.montage')
         write_config to, <<-CONFIG
           ---
             sprite_one:

@@ -9,7 +9,7 @@ context 'Generating a new project in the current directory' do
 
   it { @runner.should be_success }
   it { @runner.stdout.should =~ /Your project was created/ }
-  it { @runner.path_to_file('montage.yml').should be_file }
+  it { @runner.path_to_file('.montage').should be_file }
 
   # Example sources?
 
@@ -21,7 +21,7 @@ context 'Generating a new project in the current directory' do
 
   # Config
 
-  describe 'the montage.yml file' do
+  describe 'the .montage file' do
     before(:all) do
       @config = File.read(@runner.project.paths.config)
     end
@@ -29,21 +29,6 @@ context 'Generating a new project in the current directory' do
     it { @config.should =~ %r{^  config.sprites:\s+"public/images/sprites"$} }
     it { @config.should =~ %r{^  config.sources:\s+"public/images/sprites/src"$} }
   end
-end
-
-# ----------------------------------------------------------------------------
-
-context 'Generating a new project in a path which has a ./config directory' do
-  before(:all) do
-    @runner = Montage::Spec::InitCommandRunner.new
-    @runner.mkdir('config')
-    @runner.run!
-  end
-
-  it { @runner.should be_success }
-  it { @runner.stdout.should =~ /Your project was created/ }
-  it { @runner.path_to_file('config/montage.yml').should be_file }
-  it { @runner.path_to_file('montage.yml').should_not be_file }
 end
 
 # ----------------------------------------------------------------------------
@@ -60,21 +45,8 @@ end
 
 # ----------------------------------------------------------------------------
 
-context 'Generating a new project in an existing project which has a ./config directory' do
-  before(:all) do
-    @runner = Montage::Spec::InitCommandRunner.new
-    @runner.mkdir('config')
-    2.times { @runner.run! }
-  end
-
-  it { @runner.should be_failure }
-  it { @runner.stdout.should =~ /A Montage project already exists in the current directory/ }
-end
-
-# ----------------------------------------------------------------------------
-
 context 'Generating a new project with a custom sprites directory' do
-  describe 'the montage.yml file' do
+  describe 'the .montage file' do
     before(:all) do
       @runner = Montage::Spec::InitCommandRunner.new(
         :sprites => 'public/other').run!
@@ -90,7 +62,7 @@ end
 # ----------------------------------------------------------------------------
 
 context 'Generating a new project with an absolute custom sprites directory' do
-  describe 'the montage.yml file' do
+  describe 'the .montage file' do
     before(:all) do
       @runner = Montage::Spec::InitCommandRunner.new(
         :sprites => '/tmp').run!
@@ -106,7 +78,7 @@ end
 # ----------------------------------------------------------------------------
 
 context 'Generating a new project with a custom sprites and sources directory' do
-  describe 'the montage.yml file' do
+  describe 'the .montage file' do
     before(:all) do
       @runner = Montage::Spec::InitCommandRunner.new(
         :sprites => 'public/other', :sources => 'src/sprites').run!

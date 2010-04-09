@@ -10,29 +10,17 @@ describe Montage::Project do
   it { should respond_to(:find) }
 
   describe '.find' do
-    describe 'when given a project root with montage.yml in the root' do
+    describe 'when given a project root with .montage in the root' do
       before(:all) do
         @helper = Montage::Spec::ProjectHelper.new
         @helper.write_simple_config
 
         @project = Montage::Project.find(@helper.project_dir)
-        @config  = @helper.path_to_file('montage.yml')
+        @config  = @helper.path_to_file('.montage')
       end
 
       it_should_behave_like 'a project with correct paths'
-    end # when given a project root with montage.yml in the root
-
-    describe 'when given a project root with montage.yml in ./config' do
-      before(:all) do
-        @helper = Montage::Spec::ProjectHelper.new
-        @helper.write_simple_config('config/montage.yml')
-
-        @project = Montage::Project.find(@helper.project_dir)
-        @config  = @helper.path_to_file('config/montage.yml')
-      end
-
-      it_should_behave_like 'a project with correct paths'
-    end # when given a project root with montage.yml in ./config
+    end # when given a project root with .montage in the root
 
     describe 'when given a project subdirectory' do
       before(:all) do
@@ -41,7 +29,7 @@ describe Montage::Project do
         @helper.write_simple_config
 
         @project = Montage::Project.find(@helper.project_dir + 'sub/sub')
-        @config  = @helper.path_to_file('montage.yml')
+        @config  = @helper.path_to_file('.montage')
       end
 
       it_should_behave_like 'a project with correct paths'
@@ -50,7 +38,7 @@ describe Montage::Project do
     describe 'when given a configuration file in the root' do
       before(:all) do
         @helper = Montage::Spec::ProjectHelper.new
-        @helper.write_simple_config
+        @helper.write_simple_config('montage.yml')
 
         @project = Montage::Project.find(@helper.path_to_file('montage.yml'))
         @config  = @helper.path_to_file('montage.yml')
@@ -58,20 +46,6 @@ describe Montage::Project do
 
       it_should_behave_like 'a project with correct paths'
     end # when given a configuration file in the root
-
-    describe 'when given a configuration file in ./config' do
-      before(:all) do
-        @helper = Montage::Spec::ProjectHelper.new
-        @helper.write_simple_config('config/montage.yml')
-
-        @project = Montage::Project.find(
-          @helper.path_to_file('config/montage.yml'))
-
-        @config  = @helper.path_to_file('config/montage.yml')
-      end
-
-      it_should_behave_like 'a project with correct paths'
-    end # when given a configuration file in ./config
 
     describe 'when the config file specifies custom directories' do
       before(:all) do
@@ -88,7 +62,7 @@ describe Montage::Project do
         CONFIG
 
         @project = Montage::Project.find(@helper.project_dir)
-        @config  = @helper.path_to_file('montage.yml')
+        @config  = @helper.path_to_file('.montage')
         @base    = @helper.path_to_file('custom')
       end
 

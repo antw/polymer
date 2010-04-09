@@ -97,13 +97,7 @@ module Montage
         template.gsub!(/<sprites>/, %("#{@sprites_path.to_s}"))
         template.gsub!(/<sources>/, %("#{@sources_path.to_s}"))
 
-        if (@dir + 'config').directory?
-          config_path = @dir + 'config/montage.yml'
-        else
-          config_path = @dir + 'montage.yml'
-        end
-
-        File.open(config_path, 'w') do |config|
+        File.open(@dir + '.montage', 'w') do |config|
           config.puts template
         end
       end

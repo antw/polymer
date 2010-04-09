@@ -132,7 +132,7 @@ module Montage
       #
       # If given a path to a directory:
       #
-      #   * Montage will look for montage.yml, or config/montage.yml.
+      #   * Montage will look for a .montage file.
       #
       #   * If a configuration couldn't be found, +find+ looks in the next
       #     directory up. It continues until it finds a valid project or runs
@@ -154,32 +154,26 @@ module Montage
         if path.file?
           config_path = path
         elsif path.directory?
-          if config_path = find_config(path)
-            root_path = path
-          else
-            # Assume we're in a subdirectory of the current project.
-            path.split.first.ascend do |directory|
-              break if config_path = find_config(directory)
-            end
+          path.ascend do |directory|
+            break if config_path = contains_config?(directory)
           end
         end
 
         raise MissingProject, "Montage couldn't find a project to work " \
-          "on at `#{path}'" if config_path.nil?
+          "on at `#{path}'" unless config_path
 
         new(config_path)
       end
 
       private
 
-      # Attempt to find the configuration file, first by looking in
-      # ./montage.yml, then ./config/montage.yml
+      # Looks for a .montage configuration file in the given directory.
       #
       # @return [String]
       #
-      def find_config(dir)
-        config_paths = [ dir + 'montage.yml', dir + 'config/montage.yml' ]
-        config_paths.detect { |config| config.file? }
+      def contains_config?(dir)
+        expected = (dir + '.montage')
+        expected.file? and expected
       end
 
       # Attempts to find the project root for the configuration file. If the

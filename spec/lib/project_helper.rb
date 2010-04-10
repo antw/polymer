@@ -146,11 +146,21 @@ module Montage
 
       # Creates a directory in the project.
       #
-      # @param [String] dir
+      # @param [String] path
       #   Path to the directory, relative to the project root.
       #
       def mkdir(path)
         (project_dir + path).mkpath
+      end
+
+      # Creates an empty file.
+      #
+      # @param [String] path
+      #   Path to the file to be touched.
+      #
+      def touch(path)
+        (project_dir + path).dirname.mkpath
+        FileUtils.touch(project_dir + path)
       end
 
     end # ProjectHelper

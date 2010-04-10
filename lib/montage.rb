@@ -12,6 +12,7 @@ require 'montage/core_ext'
 require 'montage/project'
 require 'montage/sass_builder'
 require 'montage/source'
+require 'montage/source_path'
 require 'montage/sprite'
 require 'montage/version'
 

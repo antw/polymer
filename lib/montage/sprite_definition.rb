@@ -20,8 +20,8 @@ module Montage
   # PNG files, with "one" and "two" being placed in the "big" sprite, "three"
   # and "four" in the "small" sprite.
   #
-  class SourcePath
-    # Creates a new SourcePath instance.
+  class SpriteDefinition
+    # Creates a new SpriteDefinition instance.
     #
     # @param [String, Pathname] path
     #
@@ -39,8 +39,8 @@ module Montage
 
     # Returns a Hash containing source files which can be used when creating
     # Sprites. Each key is sprite name with each value the path to a matching
-    # source file. When a SourcePath doesn't have a :name segment, the Hash
-    # will contain a single key: nil.
+    # source file. When a SpriteDefinition doesn't have a :name segment, the
+    # Hash will contain a single key: nil.
     #
     # @return[Hash{String => Array(Pathname)}]
     #
@@ -72,8 +72,8 @@ module Montage
       end # begin
     end # matching_sources
 
-    # Returns the name of each sprite which this SourcePath will match. In the
-    # event that the instance contains no :name segment, +sprite_names+
+    # Returns the name of each sprite which this SpriteDefinition will match.
+    # In the event that the instance contains no :name segment, +sprite_names+
     # returns nil.
     #
     # @return [Array(String), nil]
@@ -82,5 +82,5 @@ module Montage
       has_name_segment? and matching_sources.keys
     end
 
-  end # SourcePath
+  end # SpriteDefinition
 end # Montage

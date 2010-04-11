@@ -2,7 +2,7 @@ module Montage
   # Represents a collection of images which will be used to make a sprite.
   #
   class Sprite
-    attr_reader :name
+    attr_reader :name, :save_path, :url, :padding
 
     # Creates a new Sprite instance.
     #
@@ -11,15 +11,22 @@ module Montage
     #   extension added).
     # @param [Array<String>] sources
     #   The name of each source image.
-    # @param [Project] Project
+    # @param [Pathname] save_path
+    #   The location at which the sprite should be saved.
+    # @param [Montage::Project] project
     #   The project to which the sprite belongs.
+    # @param [Hash] options
+    #   Extra options where you wish to override project defaults.
     #
-    def initialize(name, sources, project)
-      @name = name
+    def initialize(name, sources, save_path, project, options = {})
+      @name       = name
+      @save_path  = save_path
 
       @source_dir = project.paths.sources
       @sprite_dir = project.paths.sprites
-      @padding    = project.padding
+
+      @padding    = options.fetch(:padding, project.padding)
+      @url        = options.fetch(:url, project.paths.url)
 
       @sources =
         sources.inject(ActiveSupport::OrderedHash.new) do |hash, source|

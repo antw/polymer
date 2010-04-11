@@ -3,6 +3,52 @@ require File.expand_path('../../spec_helper', __FILE__)
 describe Montage::Sprite do
   subject { Montage::Sprite }
 
+  # --- initialization -------------------------------------------------------
+
+  describe 'when initialized' do
+    before(:all) do
+      @helper = Montage::Spec::ProjectHelper.new
+      @helper.write_simple_config
+    end
+
+    it 'should set the name' do
+      sprite = Montage::Sprite.new('wheee', [], '_', @helper.project)
+      sprite.name.should == 'wheee'
+    end
+
+    it 'should set the padding' do
+      sprite = Montage::Sprite.new('_', [], '_', @helper.project)
+      sprite.padding.should == @helper.project.padding
+    end
+
+    it 'should set the save_path' do
+      sprite = Montage::Sprite.new('_', [],
+        @helper.path_to_file('bye'), @helper.project)
+
+      sprite.save_path.should == @helper.path_to_file('bye')
+    end
+
+    it 'should set the url' do
+      sprite = Montage::Sprite.new('_', [], '_', @helper.project)
+      sprite.url.should == @helper.project.paths.url
+    end
+
+    describe 'with custom options' do
+      before(:all) do
+        @sprite = Montage::Sprite.new('wheee', [], '_', @helper.project,
+          :padding => 50, :url => '/omicron_persei_8')
+      end
+
+      it 'should set the custom padding' do
+        @sprite.padding.should == 50
+      end
+
+      it 'should set the url' do
+        @sprite.url.should == '/omicron_persei_8'
+      end
+    end
+  end
+
   # --- images ---------------------------------------------------------------
 
   it { should have_public_method_defined(:images) }
@@ -25,7 +71,7 @@ describe Montage::Sprite do
 
     describe 'when the sprite contains no sources' do
       before(:each) do
-        @sprite = Montage::Sprite.new('sprite', [], @helper.project)
+        @sprite = Montage::Sprite.new('sprite', [], 'path', @helper.project)
       end
 
       it 'should return an array' do

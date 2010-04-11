@@ -72,13 +72,13 @@ module Montage
 
         @sprites_path =
           ask("Where do you want generated sprites to be stored?") do |query|
-            query.default     = 'public/images/sprites'
+            query.default     = File.join('public', 'images')
             query.answer_type = normalise_path
           end
 
         @sources_path =
           ask("Where are the source images stored?") do |query|
-            query.default     = "#{@sprites_path}/src"
+            query.default     = (@sprites_path + "sprites").to_s
             query.answer_type = normalise_path
           end
       end
@@ -94,8 +94,8 @@ module Montage
       #
       def create_config!
         template = File.read(TEMPLATES + 'montage.yml')
-        template.gsub!(/<sprites>/, %("#{@sprites_path.to_s}"))
-        template.gsub!(/<sources>/, %("#{@sources_path.to_s}"))
+        template.gsub!(/<sprites>/, @sprites_path.to_s)
+        template.gsub!(/<sources>/, @sources_path.to_s)
 
         File.open(@dir + '.montage', 'w') do |config|
           config.puts template

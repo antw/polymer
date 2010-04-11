@@ -1,26 +1,36 @@
 ---
 
-  # If you need to specify non-standard locations for the source
-  # files, or the output locations for the sprites or SASS, change
-  # the relevant option below. Directories are relative to the
-  # project root unless they have a leading slash.
+  config.root: "."
+  config.sass: "public/stylesheets/sass"
+  config.url:  "/images/:filename"
 
-  config.sources:    <sources>
-  config.sprites:    <sprites>
-  config.sass:       "public/stylesheets/sass"
-  config.sprite_url: "/images/sprites"
+  # --------------------------------------------------------------
 
-  # --------------------------------------------------------------------------
+  # The sample definition below will search each sub-directory in
+  # the sources directory; a sprite will be created for each sub-
+  # directory containing the png, jpg, and gif files.
+  #
+  # All paths are relative to the project root file, unless they
+  # begin with a / in which case they are absolute. Add as many
+  # sprite definitions as you need.
 
-  # The sample below will produce two sprites (one.png and two.png) with the
-  # specified source images. You can omit file extensions.
+  "<sources>/:name/*.{png,jpg,jpeg,gif}":
+    to: "<sprites>/:name.png"
 
-  one:
-    - book.png
-    - box-label.png
-    - calculator.png
+  # You can override any of the default settings on a per-sprite
+  # basis. For example... (these are the defaults)
 
-  two:
-    - calendar-month.png
-    - camera.png
-    - eraser.png
+  # "public/images/sprites/src/:name/*.{png,jpg,jpeg,gif}":
+  #   to: "public/images/:name.png"
+  #
+  #   # The directory in which the sprite(s) are saved relative to
+  #   # the web-root (used in Sass files to locate the image).
+  #   url: "/images/:filename"
+  #
+  #   # Puts 20 pixels of space between each source image.
+  #   padding: 20
+
+  # # Alternatively, change the default settings for all sprites:
+  #
+  # config.url: "/omicron_persei_8/sprites"
+  # config.sass: false

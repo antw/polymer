@@ -8,7 +8,7 @@
   @<%= index == 0 ? '' : 'else ' %>if $icon == "<%= source.name %>"
     $y_offset: $y_offset - <%= sprite.position_of(source) %>px
 <% end %>
-  background: url(<%= @project.paths.url + "/#{sprite.name}.png" %>) $x_offset $y_offset no-repeat
+  background: url(<%= sprite.url %>) $x_offset $y_offset no-repeat
 
 =<%= sprite.name %>-sprite-pos($icon, $x_offset: 0px, $y_offset: 0px)
 <% sprite.sources.each_with_index do |source, index| %>

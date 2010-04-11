@@ -52,13 +52,9 @@ describe Montage::Project do
         @helper = Montage::Spec::ProjectHelper.new
         @helper.write_config <<-CONFIG
         ---
-          config.sources:    "custom/sources"
-          config.sprites:    "custom/output"
-          config.sass:       "custom/sass"
-          config.sprite_url: "custom/images"
+          config.sass: "custom/sass"
+          config.url:  "custom/images/:name"
 
-          sprite_one:
-            - source_one.png
         CONFIG
 
         @project = Montage::Project.find(@helper.project_dir)
@@ -66,16 +62,12 @@ describe Montage::Project do
         @base    = @helper.path_to_file('custom')
       end
 
-      it 'should set the sources path' do
-        @project.paths.sources.should == @base + 'sources'
-      end
-
-      it 'should set the sprites path' do
-        @project.paths.sprites.should == @base + 'output'
-      end
-
       it 'should set the SASS output path' do
         @project.paths.sass.should == @base + 'sass'
+      end
+
+      it 'should set the URL' do
+        @project.paths.url.should == 'custom/images/:name'
       end
     end
 
@@ -86,8 +78,6 @@ describe Montage::Project do
         ---
           config.root: "../custom_root"
 
-          sprite_one:
-            - source_one
         CONFIG
 
         @project = Montage::Project.find(
@@ -107,8 +97,6 @@ describe Montage::Project do
         ---
           config.root: "#{@helper.path_to_file('custom_root')}"
 
-          sprite_one:
-            - source_one.png
         CONFIG
 
         @project = Montage::Project.find(
@@ -166,15 +154,9 @@ describe Montage::Project do
     context "when the project has one sprite with two sources" do
       before(:each) do
         @helper = Montage::Spec::ProjectHelper.new
-        @helper.write_config <<-CONFIG
-        ---
-          sprite_one:
-            - one.png
-            - two.png
-        CONFIG
-
-        @helper.write_source('one', 100, 25)
-        @helper.write_source('two', 100, 25)
+        @helper.write_simple_config
+        @helper.write_source('sprite_one/one', 100, 25)
+        @helper.write_source('sprite_one/two', 100, 25)
       end
 
       it 'should return an array with one element' do
@@ -189,19 +171,10 @@ describe Montage::Project do
     context "when the project has two sprites with 2/1 sources" do
       before(:each) do
         @helper = Montage::Spec::ProjectHelper.new
-        @helper.write_config <<-CONFIG
-        ---
-          sprite_one:
-            - one.png
-            - two.png
-
-          sprite_two:
-            - three
-        CONFIG
-
-        @helper.write_source('one',   100, 25)
-        @helper.write_source('two',   100, 25)
-        @helper.write_source('three', 100, 25)
+        @helper.write_simple_config
+        @helper.write_source('sprite_one/one',   100, 25)
+        @helper.write_source('sprite_one/two',   100, 25)
+        @helper.write_source('sprite_two/three', 100, 25)
       end
 
       it 'should return an array with two elements' do

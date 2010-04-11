@@ -76,7 +76,7 @@ module Montage
       #
       def cache
         @_sprite_caches ||= begin
-          cache_path = @project.paths.sprites + '.montage_cache'
+          cache_path = @project.paths.root + '.montage_cache'
           cache_path.file? ? YAML.load_file(cache_path) || {} : {}
         end
       end
@@ -88,13 +88,13 @@ module Montage
       #   Returns true if at least one sprite has been updated.
       #
       def generate_sprites!
-        unless @project.paths.sprites.directory?
-          @project.paths.sprites.mkpath
-        end
-
         @project.sprites.each do |sprite|
           digest = sprite.digest
 
+          # Ensure that we can write to the output directory.
+          unless sprite.save_path.dirname.directory?
+            sprite.save_path.dirname.mkpath
+          end
 
           if @force or cache[sprite.name] != digest or
               not sprite.save_path.file?
@@ -173,7 +173,7 @@ module Montage
       # Step 3: Writes the cached digests to the cache file.
       #
       def write_cache!
-        cache_path = @project.paths.sprites + '.montage_cache'
+        cache_path = @project.paths.root + '.montage_cache'
 
         File.open(cache_path, 'w') do |cache_writer|
           cache_writer.puts YAML.dump(cache)

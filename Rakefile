@@ -20,9 +20,8 @@ begin
     gem.has_rdoc    = false
 
     # Dependencies.
-    gem.add_dependency 'activesupport', '>= 3.0.0.beta'
-    gem.add_dependency 'rmagick',       '>= 2.12'
-    gem.add_dependency 'highline',      '>= 1.5'
+    gem.add_dependency 'rmagick',  '>= 2.12'
+    gem.add_dependency 'highline', '>= 1.5'
 
     # Development dependencies.
     gem.add_development_dependency 'rspec',    '>= 1.3.0'

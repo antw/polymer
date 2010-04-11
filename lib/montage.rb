@@ -4,7 +4,6 @@ require 'pathname'
 require 'yaml'
 
 # Gems.
-require 'active_support/ordered_hash'
 require 'rmagick'
 
 # On with the library...
@@ -12,8 +11,8 @@ require 'montage/core_ext'
 require 'montage/project'
 require 'montage/sass_builder'
 require 'montage/source'
-require 'montage/source_path'
 require 'montage/sprite'
+require 'montage/sprite_definition'
 require 'montage/version'
 
 module Montage
@@ -31,4 +30,13 @@ module Montage
 
   # Raised when a sprite can't be saved due to incorrect permissions.
   TargetNotWritable = Class.new(MontageError)
+
+  # Raised when a sprite defintion doesn't include a name.
+  MissingName = Class.new(MontageError)
+
+  # Raised when a sprite defines a :name path segment, and a name option.
+  DuplicateName = Class.new(MontageError)
+
+  # Raised when a sprite definition doesn't have a to option.
+  MissingTo = Class.new(MontageError)
 end

@@ -56,15 +56,10 @@ describe Montage::Sprite do
   describe '#images' do
     before(:each) do
       @helper = Montage::Spec::ProjectHelper.new
-      @helper.write_config <<-CONFIG
-      ---
-        sprite_one:
-          - one.png
-          - two.png
-      CONFIG
+      @helper.write_simple_config
 
-      @helper.write_source('one', 100, 25)
-      @helper.write_source('two', 100, 25)
+      @helper.write_source('sprite_one/one', 100, 25)
+      @helper.write_source('sprite_one/two', 100, 25)
 
       @sprite = @helper.project.sprite('sprite_one')
     end
@@ -102,15 +97,10 @@ describe Montage::Sprite do
   describe '#position_of' do
     before(:each) do
       @helper = Montage::Spec::ProjectHelper.new
-      @helper.write_config <<-CONFIG
-      ---
-        sprite_one:
-          - one.png
-          - two.png
-      CONFIG
+      @helper.write_simple_config
 
-      @helper.write_source('one', 100, 25)
-      @helper.write_source('two', 100, 25)
+      @helper.write_source('sprite_one/one', 100, 25)
+      @helper.write_source('sprite_one/two', 100, 25)
 
       @sprite = @helper.project.sprite('sprite_one')
     end
@@ -142,56 +132,22 @@ describe Montage::Sprite do
   describe '#digest' do
     before(:each) do
       @helper = Montage::Spec::ProjectHelper.new
-      @helper.write_config <<-CONFIG
-      ---
-        sprite_one:
-          - one.png
-          - two.png
+      @helper.write_simple_config
 
-        sprite_two:
-          - three.png
-      CONFIG
-
-      @helper.write_source('one',   100, 25)
-      @helper.write_source('two',   100, 25)
-      @helper.write_source('three', 100, 25)
+      @helper.write_source('sprite_one/one',   100, 25)
+      @helper.write_source('sprite_one/two',   100, 25)
+      @helper.write_source('sprite_two/three', 100, 25)
     end
 
     it 'should return a string' do
       @helper.project.sprites.first.digest.should be_a(String)
     end
 
-    context 'when changing the source order for a sprite' do
-      before(:each) do
-        @sprite_one_digest = @helper.project.sprite('sprite_one').digest
-        @sprite_two_digest = @helper.project.sprite('sprite_two').digest
-        @helper.write_config <<-CONFIG
-        ---
-          sprite_one:
-            - two.png
-            - one.png
-
-          sprite_two:
-            - three.png
-        CONFIG
-      end
-
-      it 'should return something different when it is affected' do
-        @helper.project.sprite('sprite_one').digest.should_not ==
-          @sprite_one_digest
-      end
-
-      it 'should return the same value when unaffected' do
-        @helper.project.sprite('sprite_two').digest.should ==
-          @sprite_two_digest
-      end
-    end # when changing the source order for a sprite
-
     context 'when changing the image for a source' do
       before(:each) do
         @sprite_one_digest = @helper.project.sprite('sprite_one').digest
         @sprite_two_digest = @helper.project.sprite('sprite_two').digest
-        @helper.write_source('one', 100, 30)
+        @helper.write_source('sprite_one/one', 100, 30)
       end
 
       it 'should return something different when it is affected' do

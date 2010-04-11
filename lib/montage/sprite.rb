@@ -19,16 +19,13 @@ module Montage
     #   Extra options where you wish to override project defaults.
     #
     def initialize(name, sources, save_path, project, options = {})
-      @name       = name
-      @save_path  = save_path
+      @name      = name
+      @save_path = save_path
 
-      @source_dir = project.paths.sources
-      @sprite_dir = project.paths.sprites
+      @padding   = options.fetch(:padding, project.padding)
+      @url       = options.fetch(:url, project.paths.url)
 
-      @padding    = options.fetch(:padding, project.padding)
-      @url        = options.fetch(:url, project.paths.url)
-
-      @sources    = sources.map { |path| Source.new(@source_dir + path) }
+      @sources   = sources.map { |path| Source.new(path) }
     end
 
     # Returns an array of RMagick image instances; one for each source.
@@ -87,9 +84,9 @@ module Montage
     #   Raised when the output directory can not be written to.
     #
     def write
-      unless @sprite_dir.writable?
+      unless @save_path.dirname.writable?
         raise TargetNotWritable, <<-MESSAGE
-          Montage can't save the sprite in `#{@sprite_dir.to_s}'
+          Montage can't save the sprite in `#{@save_path.dirname.to_s}'
           as it isn't writable.
         MESSAGE
       end

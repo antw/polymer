@@ -3,14 +3,16 @@ module Montage
   # configuration file, and source images.
   class Project
     DEFAULTS = {
-      :sources     => 'public/images/sprites/src',
-      :sprites     => 'public/images/sprites',
-      :sass        => 'public/stylesheets/sass',
-      :sprite_url  => '/images/sprites'
+      :sources => 'public/images/sprites/src',
+      :sprites => 'public/images/sprites',
+      :sass    => 'public/stylesheets/sass',
+      :to      => "public/images/:name.png",
+      :url     => "/images/:name.png",
+      :padding => 20
     }
 
     # Stores all the paths the project needs.
-    Paths = Struct.new(:root, :config, :sources, :sprites, :sass, :url)
+    Paths = Struct.new(:root, :config, :sass, :url)
 
     # Returns the Paths instance for the project.
     #
@@ -45,20 +47,21 @@ module Montage
       config      = YAML.load_file(config_path)
       root_path   = determine_project_root(config_path, config)
 
+      # Sass path may be a string representing a path, or `false`.
+      sass_path = config.delete("config.sass") { DEFAULTS[:sass] }
+      sass_path = sass_path.is_a?(String) ? root_path + sass_path : sass_path
+
       @paths = Paths.new(
-        root_path, config_path,
-        extract_path_from_config(config, :sources, root_path),
-        extract_path_from_config(config, :sprites, root_path),
-        extract_path_from_config(config, :sass,    root_path),
-        config.delete('config.sprite_url') { DEFAULTS[:sprite_url] }
+        root_path, config_path, sass_path,
+        config.delete('config.url') { DEFAULTS[:url] }
       )
 
       @padding = (config.delete('config.padding') || 20).to_i
 
       # All remaining config keys are sprite defintions.
-      @sprites = config.inject([]) do |sprites, (name, sources)|
-        sprites << Sprite.new(name, sources, @paths.sprites + "#{name}.png", self)
-      end
+      @sprites = config.map do |path, opts|
+        Montage::SpriteDefinition.new(self, path, opts).to_sprites
+      end.flatten
     end
 
     # Returns a particular sprite identified by +name+.

@@ -1,6 +1,21 @@
 Git HEAD
 --------
 
+* The "montage.yml" file has been replaced with ".montage" which should be
+  located in your project root. In addition, the file is now rather different,
+  and in most cases will never need to be edited when you want to add new
+  sources to the sprite.
+
+* By default Montage will now save sprites to public/images, expected source
+  images to be in public/images/subdir -- where "subdir" will become the name
+  of the sprite. All sources in a subdirectory will be added to the same
+  sprite.
+
+  This behavior is entirely customisable in the .montage file.
+
+* The ".montage_cache" file which was previously saved in the same directory
+  as sprites is now saved in the project root.
+
 * The `montage` command now allows you to specify a path to a Montage
   configuration file; for example `montage path/to/montage.yml`. When using
   a non-standard directory structure, you can specify a "config.root" option

@@ -14,15 +14,9 @@ describe Montage::SassBuilder do
 
     context 'with a project containing a single sprite and two sources' do
       before(:each) do
-        @helper.write_config <<-CONFIG
-        ---
-          only:
-            - one.png
-            - two.png
-        CONFIG
-
-        @helper.write_source('one')
-        @helper.write_source('two')
+        @helper.write_simple_config
+        @helper.write_source('only/one')
+        @helper.write_source('only/two')
 
         Montage::SassBuilder.new(@helper.project).write
 
@@ -63,7 +57,7 @@ describe Montage::SassBuilder do
 
       it 'should include the background statement' do
         @sass.should include(
-          "  background: url(/images/sprites/only.png)")
+          "  background: url(/images/only.png)")
       end
 
       describe 'the generated mixins' do
@@ -76,7 +70,7 @@ describe Montage::SassBuilder do
           SASS
 
           sass.should include(
-            'background: url(/images/sprites/only.png) 0px 0px no-repeat')
+            'background: url(/images/only.png) 0px 0px no-repeat')
         end
 
         it 'should correctly position the second source' do
@@ -88,7 +82,7 @@ describe Montage::SassBuilder do
           SASS
 
           sass.should include(
-            'background: url(/images/sprites/only.png) 0px -40px no-repeat')
+            'background: url(/images/only.png) 0px -40px no-repeat')
         end
 
         it 'should apply x-offsets' do
@@ -100,7 +94,7 @@ describe Montage::SassBuilder do
           SASS
 
           sass.should include(
-            'background: url(/images/sprites/only.png) 5px 0px no-repeat')
+            'background: url(/images/only.png) 5px 0px no-repeat')
         end
 
         it 'should apply y-offsets' do
@@ -113,25 +107,16 @@ describe Montage::SassBuilder do
 
           # -20px (source one) - 20px (padding) - 10px (third arg) = -50px
           sass.should include(
-            'background: url(/images/sprites/only.png) 0px -50px no-repeat')
+            'background: url(/images/only.png) 0px -50px no-repeat')
         end
       end
     end # with a project containing a single sprite and two sources
 
     context 'with a project containing two sprites, each with two sources' do
       before(:each) do
-        @helper.write_config <<-CONFIG
-        ---
-          first:
-            - one.png
-            - two.png
+        @helper.write_simple_config
 
-          second:
-            - three.png
-            - four.png
-        CONFIG
-
-        %w( one two three four ).each do |source|
+        %w( first/one first/two second/three second/four ).each do |source|
           @helper.write_source(source)
         end
 
@@ -157,33 +142,21 @@ describe Montage::SassBuilder do
         @sass.should =~ /^=second-sprite/
       end
 
-      it 'should include a condition for the "one" source' do
+      it 'should include a condition for the first sprite sources' do
         expected = Regexp.escape(
           %[  @if $icon == "one"\n] +
-          %[    $y_offset: $y_offset - 0px])
-
-        @sass.should =~ /^#{expected}/
-      end
-
-      it 'should include a condition for the "two" source' do
-        expected = Regexp.escape(
+          %[    $y_offset: $y_offset - 0px\n] +
           %[  @else if $icon == "two"\n] +
           %[    $y_offset: $y_offset - #{20 + @helper.project.padding}px])
 
         @sass.should =~ /^#{expected}/
       end
 
-      it 'should include a condition for the "three" source' do
+      it 'should include a condition for the second sprite sources' do
         expected = Regexp.escape(
-          %[  @if $icon == "three"\n] +
-          %[    $y_offset: $y_offset - 0px])
-
-        @sass.should =~ /^#{expected}/
-      end
-
-      it 'should include a condition for the "four" source' do
-        expected = Regexp.escape(
-          %[  @else if $icon == "four"\n] +
+          %[  @if $icon == "four"\n] +
+          %[    $y_offset: $y_offset - 0px\n] +
+          %[  @else if $icon == "three"\n] +
           %[    $y_offset: $y_offset - #{20 + @helper.project.padding}px])
 
         @sass.should =~ /^#{expected}/
@@ -191,12 +164,12 @@ describe Montage::SassBuilder do
 
       it 'should include the background statement for the first sprite' do
         @sass.should include(
-          "  background: url(/images/sprites/first.png)")
+          "  background: url(/images/first.png)")
       end
 
       it 'should include the background statement for the second sprite' do
         @sass.should include(
-          "  background: url(/images/sprites/second.png)")
+          "  background: url(/images/second.png)")
       end
     end # with a project containing two sprites, each with two sources
 
@@ -206,11 +179,12 @@ describe Montage::SassBuilder do
         ---
           config.sass: "public/sass"
 
-          only:
-            - one.png
+          "public/images/sprites/:name/*.{png,jpg,jpeg,gif}":
+            to: "public/images/:name.png"
+
         CONFIG
 
-        @helper.write_source('one')
+        @helper.write_source('only/one')
         Montage::SassBuilder.new(@helper.project).write
       end
 
@@ -226,11 +200,12 @@ describe Montage::SassBuilder do
         ---
           config.sass: "public/sass/_here.sass"
 
-          only:
-            - one.png
+          "public/images/sprites/:name/*.{png,jpg,jpeg,gif}":
+            to: "public/images/:name.png"
+
         CONFIG
 
-        @helper.write_source('one')
+        @helper.write_source('only/one')
         Montage::SassBuilder.new(@helper.project).write
       end
 
@@ -240,17 +215,18 @@ describe Montage::SassBuilder do
       end
     end # with a project using a custom SASS location with a file name
 
-    context 'with a project using a custom sprite_url setting' do
+    context 'with a project using a custom url setting' do
       before(:each) do
         @helper.write_config <<-CONFIG
         ---
-          config.sprite_url: "/right/about/here"
+          config.url: "/right/about/here/:name.png"
 
-          only:
-            - one.png
+          "public/images/sprites/:name/*.{png,jpg,jpeg,gif}":
+            to: "public/images/:name.png"
+
         CONFIG
 
-        @helper.write_source('one')
+        @helper.write_source('only/one')
 
         Montage::SassBuilder.new(@helper.project).write
 
@@ -262,7 +238,7 @@ describe Montage::SassBuilder do
         @sass.should include(
           "  background: url(/right/about/here/only.png)")
       end
-    end # with a project using a custom sprite_url setting
+    end # with a project using a custom url setting
 
   end # build
 

@@ -23,18 +23,69 @@ module Montage
   class SpriteDefinition
     # Creates a new SpriteDefinition instance.
     #
-    # @param [String, Pathname] path
+    # @param [Montage::Project]       project
+    # @param [String, Pathname]       path
+    # @param [Hash{String => Object}] options
     #
-    def initialize(path)
-      @raw = Pathname.new(path)
+    def initialize(project, path, options = {})
+      @project = project
+      @path    = project.paths.root + path
+
+      # Symbolize option keys.
+      @options = options.inject({}) do |opts, (key, value)|
+        opts[key.to_sym] = value ; opts
+      end
+
+      @options[:to] = (@project.paths.root +
+                      (@options[:to] || Project::DEFAULTS[:to])).to_s
+
+      @options[:url]     ||= project.paths.url
+      @options[:padding] ||= project.padding
+
+      if has_name_segment? and @options.has_key?(:name)
+        raise Montage::DuplicateName, <<-ERROR.compress_lines
+          Sprite `#{path}' has both a :name path segment and a "name"
+          option; please use only one.
+        ERROR
+      elsif not has_name_segment? and not @options.has_key?(:name)
+        raise Montage::MissingName, <<-ERROR.compress_lines
+          Sprite `#{path}' requires a name. Add a :name path segment
+          or add a "name" option.
+        ERROR
+      elsif has_name_segment? and not @options[:to] =~ /:name/
+        raise Montage::MissingName, <<-ERROR.compress_lines
+          Sprite `#{path}' requires :name in the "to" option.
+        ERROR
+      end
     end
+
+    # Returns an array of Sprites defined.
+    #
+    # @return [Array(Montage::Sprite)]
+    #
+    def to_sprites
+      matching_sources.map do |sprite_name, sources|
+        save_path = Pathname.new(@options[:to].gsub(/:name/, sprite_name))
+
+        url = @options[:url].dup # Since it may be the DEFAULT string
+        url.gsub!(/:name/, sprite_name)
+        url.gsub!(/:filename/, save_path.basename.to_s)
+
+        Montage::Sprite.new(sprite_name, sources, save_path, @project,
+          :url     => url,
+          :padding => @options[:padding]
+        )
+      end
+    end
+
+    private # ================================================================
 
     # Returns whether the path has a :name segment.
     #
     # @return [Boolean]
     #
     def has_name_segment?
-      @raw.to_s =~ /:name/
+      @path.to_s =~ /:name/
     end
 
     # Returns a Hash containing source files which can be used when creating
@@ -47,9 +98,9 @@ module Montage
     def matching_sources
       @matching_sources ||= begin
         if not has_name_segment?
-          { nil => Pathname.glob(@raw.to_s) }
+          { @options[:name] => Pathname.glob(@path.to_s) }
         else
-          regexp = Regexp.escape(@raw.to_s)
+          regexp = Regexp.escape(@path.to_s)
           regexp.gsub!(/\\\*\\\*/, '.+')
           regexp.gsub!(/\\\*/,     '[^\\/]+')
           regexp.gsub!(/:name/,    '([^\\/]+)')
@@ -59,7 +110,7 @@ module Montage
             "(?:#{found[2..-4].split(',').join('|')})"
           end
 
-          all_files = Pathname.glob(@raw.to_s.gsub(/:name/, '*'))
+          all_files = Pathname.glob(@path.to_s.gsub(/:name/, '*'))
           all_files.inject({}) do |sources, file|
             if file.file? && match = file.to_s.match(regexp)
               sources[match[1]] ||= []
@@ -71,16 +122,6 @@ module Montage
         end
       end # begin
     end # matching_sources
-
-    # Returns the name of each sprite which this SpriteDefinition will match.
-    # In the event that the instance contains no :name segment, +sprite_names+
-    # returns nil.
-    #
-    # @return [Array(String), nil]
-    #
-    def sprite_names
-      has_name_segment? and matching_sources.keys
-    end
 
   end # SpriteDefinition
 end # Montage

@@ -15,7 +15,7 @@ context 'Generating a new project in the current directory' do
 
   it 'should copy the sample source images' do
     %w( book box-label calculator calendar-month camera eraser ).each do |source|
-      (@runner.project.paths.sources + "#{source}.png").should be_file
+      @runner.path_to_source(source).should be_file
     end
   end
 
@@ -26,8 +26,8 @@ context 'Generating a new project in the current directory' do
       @config = File.read(@runner.project.paths.config)
     end
 
-    it { @config.should =~ %r{^  config.sprites:\s+"public/images/sprites"$} }
-    it { @config.should =~ %r{^  config.sources:\s+"public/images/sprites/src"$} }
+    it { @config.should =~ %r|^  "public/images/sprites/:name/\*\.\{png,jpg,jpeg,gif\}":$| }
+    it { @config.should =~ %r|^    to: "public/images/:name\.png"$| }
   end
 end
 
@@ -54,8 +54,8 @@ context 'Generating a new project with a custom sprites directory' do
       @config = File.read(@runner.project.paths.config)
     end
 
-    it { @config.should =~ %r{^  config.sprites:\s+"public/other"$} }
-    it { @config.should =~ %r{^  config.sources:\s+"public/other/src"$} }
+    it { @config.should =~ %r|^  "public/other/sprites/:name/\*\.\{png,jpg,jpeg,gif\}":$| }
+    it { @config.should =~ %r|^    to: "public/other/:name\.png"$| }
   end
 end
 
@@ -70,8 +70,8 @@ context 'Generating a new project with an absolute custom sprites directory' do
       @config = File.read(@runner.project.paths.config)
     end
 
-    it { @config.should =~ %r{^  config.sprites:\s+"/tmp"$} }
-    it { @config.should =~ %r{^  config.sources:\s+"/tmp/src"$} }
+    it { @config.should =~ %r|^  "/tmp/sprites/:name/\*\.\{png,jpg,jpeg,gif\}":$| }
+    it { @config.should =~ %r|^    to: "/tmp/:name\.png"$| }
   end
 end
 
@@ -86,7 +86,7 @@ context 'Generating a new project with a custom sprites and sources directory' d
       @config = File.read(@runner.project.paths.config)
     end
 
-    it { @config.should =~ %r{^  config.sprites:\s+"public/other"$} }
-    it { @config.should =~ %r{^  config.sources:\s+"src/sprites"$} }
+    it { @config.should =~ %r|^  "src/sprites/:name/\*\.\{png,jpg,jpeg,gif\}":$| }
+    it { @config.should =~ %r|^    to: "public/other/:name\.png"$| }
   end
 end

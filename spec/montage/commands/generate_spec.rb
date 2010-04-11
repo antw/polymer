@@ -5,14 +5,9 @@ require File.expand_path('../../../spec_helper', __FILE__)
 context 'Generating a single sprite with two sources' do
   before(:all) do
     @runner = Montage::Spec::CommandRunner.new('montage')
-    @runner.write_config <<-CONFIG
-      ---
-        sprite_one:
-          - one.png
-          - two.png
-    CONFIG
-    @runner.write_source('one')
-    @runner.write_source('two')
+    @runner.write_simple_config
+    @runner.write_source('sprite_one/one')
+    @runner.write_source('sprite_one/two')
     @runner.run!
   end
 
@@ -33,18 +28,10 @@ end
 context 'Generating multiple sprites' do
   before(:all) do
     @runner = Montage::Spec::CommandRunner.new('montage')
-    @runner.write_config <<-CONFIG
-      ---
-        sprite_one:
-          - one.png
-
-        sprite_two:
-          - two.png
-          - three.png
-    CONFIG
-    @runner.write_source('one')
-    @runner.write_source('two')
-    @runner.write_source('three', 200, 200)
+    @runner.write_simple_config
+    @runner.write_source('sprite_one/one')
+    @runner.write_source('sprite_two/two')
+    @runner.write_source('sprite_two/three', 200, 200)
     @runner.run!
   end
 
@@ -72,12 +59,12 @@ context 'Generating a single sprite with custom padding' do
       ---
         config.padding: 50
 
-        sprite_one:
-          - one.png
-          - two.png
+        "public/images/sprites/:name/*.{png,jpg,jpeg,gif}":
+          to: "public/images/:name.png"
+
     CONFIG
-    @runner.write_source('one')
-    @runner.write_source('two')
+    @runner.write_source('sprite_one/one')
+    @runner.write_source('sprite_one/two')
     @runner.run!
   end
 
@@ -85,34 +72,6 @@ context 'Generating a single sprite with custom padding' do
   it { @runner.stdout.should =~ /Generating "sprite_one": Done/ }
   it { @runner.path_to_sprite('sprite_one').should be_file }
   it { @runner.dimensions_of('sprite_one').should == [50, 90] }
-end
-
-# ----------------------------------------------------------------------------
-
-context 'Generating a single sprite using custom directories' do
-  before(:all) do
-    @runner = Montage::Spec::CommandRunner.new('montage')
-    @runner.sources_path = 'img/sources'
-    @runner.sprites_path = 'img/sprites'
-
-    @runner.write_config <<-CONFIG
-      ---
-        config.sources: img/sources
-        config.sprites: img/sprites
-
-        sprite_one:
-          - one.png
-          - two.png
-    CONFIG
-
-    @runner.write_source('one')
-    @runner.write_source('two')
-    @runner.run!
-  end
-
-  it { @runner.should be_success }
-  it { @runner.stdout.should =~ /Generating "sprite_one": Done/ }
-  it { @runner.path_to_sprite('sprite_one').should be_file }
 end
 
 # ----------------------------------------------------------------------------
@@ -128,41 +87,21 @@ end
 
 # ----------------------------------------------------------------------------
 
-context 'Trying to generate sprites when a source is missing' do
-  before(:all) do
-    @runner = Montage::Spec::CommandRunner.new('montage')
-    @runner.write_config <<-CONFIG
-      ---
-        sprite_one:
-          - one.png
-    CONFIG
-    @runner.mkdir('public/images/sprites/src')
-    @runner.run!
-  end
-
-  it { @runner.should be_failure }
-  it { @runner.stdout.should =~ /Couldn't find the source file/ }
-end
-
-# ----------------------------------------------------------------------------
-
 context 'Trying to generate sprites when the sprite directory is not writable' do
   before(:all) do
     @runner = Montage::Spec::CommandRunner.new('montage')
-    @runner.write_config <<-CONFIG
-      ---
-        sprite_one:
-          - one.png
-    CONFIG
-    @runner.write_source('one')
+    @runner.write_simple_config
+    @runner.write_source('sprite_one/one')
 
-    old_mode = @runner.project.paths.sprites.stat.mode
-    @runner.project.paths.sprites.chmod(040555)
+    output_dir = @runner.path_to_file('public/images')
+
+    old_mode = output_dir.stat.mode
+    output_dir.chmod(040555)
 
     begin
       @runner.run!
     ensure
-      @runner.project.paths.sprites.chmod(old_mode)
+      output_dir.chmod(old_mode)
     end
   end
 
@@ -175,22 +114,14 @@ end
 context 'Generating two sprites, one of which is unchanged' do
   before(:all) do
     @runner = Montage::Spec::CommandRunner.new('montage')
-    @runner.write_config <<-CONFIG
-      ---
-        sprite_one:
-          - one.png
-          - two.png
-
-        sprite_two:
-          - three.png
-    CONFIG
-    @runner.write_source('one')
-    @runner.write_source('two')
-    @runner.write_source('three')
+    @runner.write_simple_config
+    @runner.write_source('sprite_one/one')
+    @runner.write_source('sprite_one/two')
+    @runner.write_source('sprite_two/three')
     @runner.run!
 
     # Change the 'one' source.
-    @runner.write_source('one', 100, 25)
+    @runner.write_source('sprite_one/one', 100, 25)
     @runner.run!
   end
 
@@ -214,18 +145,10 @@ end
 context 'Generating two sprites, one of which is unchanged when using the --force option' do
   before(:all) do
     @runner = Montage::Spec::CommandRunner.new('montage')
-    @runner.write_config <<-CONFIG
-      ---
-        sprite_one:
-          - one.png
-          - two.png
-
-        sprite_two:
-          - three.png
-    CONFIG
-    @runner.write_source('one')
-    @runner.write_source('two')
-    @runner.write_source('three')
+    @runner.write_simple_config
+    @runner.write_source('sprite_one/one')
+    @runner.write_source('sprite_one/two')
+    @runner.write_source('sprite_two/three')
     @runner.run!
 
     # Change the 'one' source.
@@ -247,13 +170,8 @@ end
 context 'Generating an unchanged sprite which has been deleted' do
   before(:all) do
     @runner = Montage::Spec::CommandRunner.new('montage')
-    @runner.write_config <<-CONFIG
-      ---
-        sprite_one:
-          - one.png
-
-    CONFIG
-    @runner.write_source('one')
+    @runner.write_simple_config
+    @runner.write_source('sprite_one/one')
     @runner.run!
 
     # Remove the generated sprite.
@@ -279,11 +197,11 @@ context 'Generating sprites with a project which disables Sass' do
       ---
         config.sass: false
 
-        sprite_one:
-          - one.png
+        "public/images/sprites/:name/*.{png,jpg,jpeg,gif}":
+          to: "public/images/:name.png"
 
     CONFIG
-    @runner.write_source('one')
+    @runner.write_source('sprite_one/one')
     @runner.run!
   end
 
@@ -299,11 +217,11 @@ context 'Generating sprites when specifying a custom config file' do
       ---
         config.root: '..'
 
-        sprite_one:
-          - one.png
+        "public/images/sprites/:name/*.{png,jpg,jpeg,gif}":
+          to: "public/images/:name.png"
 
     CONFIG
-    @runner.write_source('one')
+    @runner.write_source('sprite_one/one')
     @runner.run!
   end
 

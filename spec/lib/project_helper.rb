@@ -34,8 +34,8 @@ module Montage
         self.class.cleanup!
         project_dir.mkpath
 
-        self.sources_path = "public/images/sprites/src"
-        self.sprites_path = "public/images/sprites"
+        self.sources_path = "public/images/sprites"
+        self.sprites_path = "public/images"
       end
 
       def sources_path=(path)
@@ -115,8 +115,8 @@ module Montage
       def write_simple_config(to = '.montage')
         write_config to, <<-CONFIG
           ---
-            sprite_one:
-              - source_one.png
+            "public/images/sprites/:name/*.{png,jpg,jpeg,gif}":
+              to: "public/images/:name.png"
         CONFIG
       end
 

@@ -10,17 +10,12 @@ describe Montage::Source do
   describe '#image' do
     before(:each) do
       @helper = Montage::Spec::ProjectHelper.new
-      @helper.write_config <<-CONFIG
-      ---
-        sprite_one:
-          - one.png
-      CONFIG
-
-      @helper.write_source('one', 100, 25)
+      @helper.write_simple_config
+      @helper.write_source('sprite_one/one', 100, 25)
     end
 
     it 'should return the Image instance path when the source file exists' do
-      source = Montage::Source.new(@helper.path_to_source('one'))
+      source = Montage::Source.new(@helper.path_to_source('sprite_one/one'))
       source.image.should be_a(Magick::Image)
     end
 

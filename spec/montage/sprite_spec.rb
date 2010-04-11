@@ -25,8 +25,7 @@ describe Montage::Sprite do
 
     describe 'when the sprite contains no sources' do
       before(:each) do
-        @sprite = Montage::Sprite.new('sprite', [],
-          @helper.project.paths.sources)
+        @sprite = Montage::Sprite.new('sprite', [], @helper.project)
       end
 
       it 'should return an array' do

@@ -15,11 +15,15 @@ module Montage
     #   The project to which the sprite belongs.
     #
     def initialize(name, sources, project)
-      @name, @project = name, project
+      @name = name
+
+      @source_dir = project.paths.sources
+      @sprite_dir = project.paths.sprites
+      @padding    = project.padding
 
       @sources =
         sources.inject(ActiveSupport::OrderedHash.new) do |hash, source|
-          hash[source] = Source.new(@project.paths.sources, source, @name)
+          hash[source] = Source.new(@source_dir, source, @name)
           hash
         end
     end
@@ -46,7 +50,7 @@ module Montage
     # @return [Pathname]
     #
     def path
-      @project.paths.sprites + "#{@name}.png"
+      @sprite_dir + "#{@name}.png"
     end
 
     # Returns the y-position of a given source.
@@ -71,7 +75,7 @@ module Montage
         @positions = {}
         @sources.inject(0) do |offset, (name, src)|
           @positions[name] = offset
-          offset + src.image.rows + 20
+          offset + src.image.rows + @padding
         end
       end
 
@@ -96,16 +100,16 @@ module Montage
     #   Raised when the output directory can not be written to.
     #
     def write
-      unless @project.paths.sprites.writable?
+      unless @sprite_dir.writable?
         raise TargetNotWritable, <<-MESSAGE
-          Montage can't save the sprite in `#{@project.paths.sprites.to_s}'
+          Montage can't save the sprite in `#{@sprite_dir.to_s}'
           as it isn't writable.
         MESSAGE
       end
 
       list = sources.inject(Magick::ImageList.new) do |list, source|
         list << source.image
-        list << Magick::Image.new(1, @project.padding) do
+        list << Magick::Image.new(1, @padding) do
           self.background_color = '#FFF0'
         end
       end
@@ -124,7 +128,7 @@ module Montage
       end
 
       # Remove the blank space from the bottom of the image.
-      montage.crop!(0, 0, 0, (montage.first.rows) - @project.padding)
+      montage.crop!(0, 0, 0, (montage.first.rows) - @padding)
       montage.write("PNG32:#{path}")
     end
 

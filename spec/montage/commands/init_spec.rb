@@ -14,7 +14,8 @@ context 'Generating a new project in the current directory' do
   # Example sources?
 
   it 'should copy the sample source images' do
-    %w( book box-label calculator calendar-month camera eraser ).each do |source|
+    %w( one/book one/box-label one/calculator
+        two/calendar-month two/camera two/eraser ).each do |source|
       @runner.path_to_source(source).should be_file
     end
   end

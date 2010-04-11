@@ -3,50 +3,34 @@ require File.expand_path('../../spec_helper', __FILE__)
 describe Montage::Source do
   subject { Montage::Source }
 
-  # --- path -----------------------------------------------------------------
+  # --- image -----------------------------------------------------------------
 
-  it { should have_public_method_defined(:path) }
+  it { should have_public_method_defined(:image) }
 
-  describe '#path' do
+  describe '#image' do
     before(:each) do
       @helper = Montage::Spec::ProjectHelper.new
       @helper.write_config <<-CONFIG
       ---
         sprite_one:
-          - one
-          - two
+          - one.png
       CONFIG
 
       @helper.write_source('one', 100, 25)
-      @helper.write_source('two', 100, 25)
     end
 
-    it 'should return the path when the source file exists' do
-      name = @helper.project.sprites.first.sources.first.name
-
-      source = Montage::Source.new(@helper.project.paths.sources, name, 'nm')
-      source.path.should == @helper.project.paths.sources + "#{name}.png"
+    it 'should return the Image instance path when the source file exists' do
+      source = Montage::Source.new(@helper.path_to_source('one'))
+      source.image.should be_a(Magick::Image)
     end
 
     it 'should raise an error when the source file does not exist' do
       running = lambda {
-        Montage::Source.new(
-          @helper.project.paths.sources, '__invalid__', 'nm').path
+        Montage::Source.new(@helper.path_to_source('__invalid__')).image
       }
 
       running.should raise_error(Montage::MissingSource,
-        /Couldn't find a matching file/)
-    end
-
-    it 'should raise an error when the source directory does not exist' do
-      name = @helper.project.sprites.first.sources.first.name
-
-      running = lambda {
-        Montage::Source.new(Pathname.new('__invalid__'), name, 'nm').path
-      }
-
-      running.should raise_error(Montage::MissingSource,
-        /Couldn't find the source directory/)
+        /Couldn't find the source file/)
     end
   end
 

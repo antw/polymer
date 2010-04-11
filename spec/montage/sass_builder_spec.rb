@@ -17,8 +17,8 @@ describe Montage::SassBuilder do
         @helper.write_config <<-CONFIG
         ---
           only:
-            - one
-            - two
+            - one.png
+            - two.png
         CONFIG
 
         @helper.write_source('one')
@@ -123,12 +123,12 @@ describe Montage::SassBuilder do
         @helper.write_config <<-CONFIG
         ---
           first:
-            - one
-            - two
+            - one.png
+            - two.png
 
           second:
-            - three
-            - four
+            - three.png
+            - four.png
         CONFIG
 
         %w( one two three four ).each do |source|
@@ -207,7 +207,7 @@ describe Montage::SassBuilder do
           config.sass: "public/sass"
 
           only:
-            - one
+            - one.png
         CONFIG
 
         @helper.write_source('one')
@@ -227,7 +227,7 @@ describe Montage::SassBuilder do
           config.sass: "public/sass/_here.sass"
 
           only:
-            - one
+            - one.png
         CONFIG
 
         @helper.write_source('one')
@@ -247,7 +247,7 @@ describe Montage::SassBuilder do
           config.sprite_url: "/right/about/here"
 
           only:
-            - one
+            - one.png
         CONFIG
 
         @helper.write_source('one')

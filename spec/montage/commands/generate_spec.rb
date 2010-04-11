@@ -8,8 +8,8 @@ context 'Generating a single sprite with two sources' do
     @runner.write_config <<-CONFIG
       ---
         sprite_one:
-          - one
-          - two
+          - one.png
+          - two.png
     CONFIG
     @runner.write_source('one')
     @runner.write_source('two')
@@ -36,11 +36,11 @@ context 'Generating multiple sprites' do
     @runner.write_config <<-CONFIG
       ---
         sprite_one:
-          - one
+          - one.png
 
         sprite_two:
-          - two
-          - three
+          - two.png
+          - three.png
     CONFIG
     @runner.write_source('one')
     @runner.write_source('two')
@@ -73,8 +73,8 @@ context 'Generating a single sprite with custom padding' do
         config.padding: 50
 
         sprite_one:
-          - one
-          - two
+          - one.png
+          - two.png
     CONFIG
     @runner.write_source('one')
     @runner.write_source('two')
@@ -101,8 +101,8 @@ context 'Generating a single sprite using custom directories' do
         config.sprites: img/sprites
 
         sprite_one:
-          - one
-          - two
+          - one.png
+          - two.png
     CONFIG
 
     @runner.write_source('one')
@@ -134,31 +134,14 @@ context 'Trying to generate sprites when a source is missing' do
     @runner.write_config <<-CONFIG
       ---
         sprite_one:
-          - one
+          - one.png
     CONFIG
     @runner.mkdir('public/images/sprites/src')
     @runner.run!
   end
 
   it { @runner.should be_failure }
-  it { @runner.stdout.should =~ /Couldn't find a matching file for source image `one'/ }
-end
-
-# ----------------------------------------------------------------------------
-
-context 'Trying to generate sprites when the source directory does not exist' do
-  before(:all) do
-    @runner = Montage::Spec::CommandRunner.new('montage')
-    @runner.write_config <<-CONFIG
-      ---
-        sprite_one:
-          - one
-    CONFIG
-    @runner.run!
-  end
-
-  it { @runner.should be_failure }
-  it { @runner.stdout.should =~ /Couldn't find the source directory/ }
+  it { @runner.stdout.should =~ /Couldn't find the source file/ }
 end
 
 # ----------------------------------------------------------------------------
@@ -169,7 +152,7 @@ context 'Trying to generate sprites when the sprite directory is not writable' d
     @runner.write_config <<-CONFIG
       ---
         sprite_one:
-          - one
+          - one.png
     CONFIG
     @runner.write_source('one')
 
@@ -195,11 +178,11 @@ context 'Generating two sprites, one of which is unchanged' do
     @runner.write_config <<-CONFIG
       ---
         sprite_one:
-          - one
-          - two
+          - one.png
+          - two.png
 
         sprite_two:
-          - three
+          - three.png
     CONFIG
     @runner.write_source('one')
     @runner.write_source('two')
@@ -234,11 +217,11 @@ context 'Generating two sprites, one of which is unchanged when using the --forc
     @runner.write_config <<-CONFIG
       ---
         sprite_one:
-          - one
-          - two
+          - one.png
+          - two.png
 
         sprite_two:
-          - three
+          - three.png
     CONFIG
     @runner.write_source('one')
     @runner.write_source('two')
@@ -267,7 +250,7 @@ context 'Generating an unchanged sprite which has been deleted' do
     @runner.write_config <<-CONFIG
       ---
         sprite_one:
-          - one
+          - one.png
 
     CONFIG
     @runner.write_source('one')
@@ -297,7 +280,7 @@ context 'Generating sprites with a project which disables Sass' do
         config.sass: false
 
         sprite_one:
-          - one
+          - one.png
 
     CONFIG
     @runner.write_source('one')
@@ -317,7 +300,7 @@ context 'Generating sprites when specifying a custom config file' do
         config.root: '..'
 
         sprite_one:
-          - one
+          - one.png
 
     CONFIG
     @runner.write_source('one')

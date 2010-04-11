@@ -58,7 +58,7 @@ describe Montage::Project do
           config.sprite_url: "custom/images"
 
           sprite_one:
-            - source_one
+            - source_one.png
         CONFIG
 
         @project = Montage::Project.find(@helper.project_dir)
@@ -108,7 +108,7 @@ describe Montage::Project do
           config.root: "#{@helper.path_to_file('custom_root')}"
 
           sprite_one:
-            - source_one
+            - source_one.png
         CONFIG
 
         @project = Montage::Project.find(
@@ -169,8 +169,8 @@ describe Montage::Project do
         @helper.write_config <<-CONFIG
         ---
           sprite_one:
-            - one
-            - two
+            - one.png
+            - two.png
         CONFIG
 
         @helper.write_source('one', 100, 25)
@@ -192,8 +192,8 @@ describe Montage::Project do
         @helper.write_config <<-CONFIG
         ---
           sprite_one:
-            - one
-            - two
+            - one.png
+            - two.png
 
           sprite_two:
             - three

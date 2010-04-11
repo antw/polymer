@@ -59,8 +59,8 @@ describe Montage::Sprite do
       @helper.write_config <<-CONFIG
       ---
         sprite_one:
-          - one
-          - two
+          - one.png
+          - two.png
       CONFIG
 
       @helper.write_source('one', 100, 25)
@@ -105,8 +105,8 @@ describe Montage::Sprite do
       @helper.write_config <<-CONFIG
       ---
         sprite_one:
-          - one
-          - two
+          - one.png
+          - two.png
       CONFIG
 
       @helper.write_source('one', 100, 25)
@@ -145,11 +145,11 @@ describe Montage::Sprite do
       @helper.write_config <<-CONFIG
       ---
         sprite_one:
-          - one
-          - two
+          - one.png
+          - two.png
 
         sprite_two:
-          - three
+          - three.png
       CONFIG
 
       @helper.write_source('one',   100, 25)
@@ -168,11 +168,11 @@ describe Montage::Sprite do
         @helper.write_config <<-CONFIG
         ---
           sprite_one:
-            - two
-            - one
+            - two.png
+            - one.png
 
           sprite_two:
-            - three
+            - three.png
         CONFIG
       end
 

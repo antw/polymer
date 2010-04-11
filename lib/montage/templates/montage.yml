@@ -16,11 +16,11 @@
   # specified source images. You can omit file extensions.
 
   one:
-    - book
-    - box-label
-    - calculator
+    - book.png
+    - box-label.png
+    - calculator.png
 
   two:
-    - calendar-month
-    - camera
-    - eraser
+    - calendar-month.png
+    - camera.png
+    - eraser.png

@@ -2,14 +2,14 @@ module Montage
   # Represents a collection of images which will be used to make a sprite.
   #
   class Sprite
-    attr_reader :name, :save_path, :url, :padding
+    attr_reader :name, :save_path, :url, :padding, :sources
 
     # Creates a new Sprite instance.
     #
     # @param [String] name
     #   The name of the sprite. Will be used as the sprite filename (with an
     #   extension added).
-    # @param [Array<String>] sources
+    # @param [Array(String, Pathname)] sources
     #   The name of each source image.
     # @param [Pathname] save_path
     #   The location at which the sprite should be saved.
@@ -28,19 +28,7 @@ module Montage
       @padding    = options.fetch(:padding, project.padding)
       @url        = options.fetch(:url, project.paths.url)
 
-      @sources =
-        sources.inject(ActiveSupport::OrderedHash.new) do |hash, source|
-          hash[source] = Source.new(@source_dir, source, @name)
-          hash
-        end
-    end
-
-    # Returns an array of Source instances held by this Sprite.
-    #
-    # @return [Array<Source>]
-    #
-    def sources
-      @sources.map { |_, source| source }
+      @sources    = sources.map { |path| Source.new(@source_dir + path) }
     end
 
     # Returns an array of RMagick image instances; one for each source.
@@ -52,23 +40,15 @@ module Montage
       sources.map { |source| source.image }
     end
 
-    # Returns the path to the sprite on disk.
-    #
-    # @return [Pathname]
-    #
-    def path
-      @sprite_dir + "#{@name}.png"
-    end
-
     # Returns the y-position of a given source.
     #
     # @return [Integer, Source]
     #   The vertical position of the source image.
     #
     def position_of(source)
-      source = source.name if source.is_a?(Source)
+      source = source.name if source.is_a?(Montage::Source)
 
-      unless @sources.keys.include?(source)
+      unless sources.detect { |src| src.name == source }
         raise MissingSource,
           "Source image '#{source}' is not present in the '#{@name}' sprite"
       end
@@ -80,8 +60,8 @@ module Montage
         # generating CSS), it works out faster to fetch each source height
         # just once.
         @positions = {}
-        @sources.inject(0) do |offset, (name, src)|
-          @positions[name] = offset
+        @sources.inject(0) do |offset, src|
+          @positions[src.name] = offset
           offset + src.image.rows + @padding
         end
       end
@@ -114,7 +94,7 @@ module Montage
         MESSAGE
       end
 
-      list = sources.inject(Magick::ImageList.new) do |list, source|
+      list = @sources.inject(Magick::ImageList.new) do |list, source|
         list << source.image
         list << Magick::Image.new(1, @padding) do
           self.background_color = '#FFF0'
@@ -122,7 +102,7 @@ module Montage
       end
 
       # RMagick uses instance_eval, @set isn't available in the block below.
-      sources_length = sources.length
+      sources_length = @sources.length
 
       montage = list.montage do
         self.gravity = Magick::NorthWestGravity
@@ -136,7 +116,7 @@ module Montage
 
       # Remove the blank space from the bottom of the image.
       montage.crop!(0, 0, 0, (montage.first.rows) - @padding)
-      montage.write("PNG32:#{path}")
+      montage.write("PNG32:#{@save_path}")
     end
 
   end # Set

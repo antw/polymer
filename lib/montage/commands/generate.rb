@@ -96,7 +96,8 @@ module Montage
           digest = sprite.digest
 
 
-          if @force or cache[sprite.name] != digest or not sprite.path.file?
+          if @force or cache[sprite.name] != digest or
+              not sprite.save_path.file?
             with_feedback %(Generating "#{sprite.name}"), 'Generating' do
               sprite.write
               cache[sprite.name] = digest
@@ -137,18 +138,19 @@ module Montage
         end
 
         @generated.each do |sprite|
-          original_size = sprite.path.size
+          original_size = sprite.save_path.size
+          save_path = sprite.save_path
 
           with_feedback %(Optimising "#{sprite.name}"), 'Optimising' do
             5.times do |i|
               # Optimise until pngout reports that it can't compress further,
               # or until we've tried five times.
-              out = `#{pngout} #{sprite.path} #{sprite.path} -s0 -k0 -y`
+              out = `#{pngout} #{save_path} #{save_path} -s0 -k0 -y`
               break if out =~ /Unable to compress further/
             end
           end
 
-          new_size  = sprite.path.size
+          new_size  = save_path.size
 
           reduction = ('%.1fkb (%d' % [
             (original_size.to_f - new_size) / 1024,

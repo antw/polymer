@@ -57,7 +57,7 @@ module Montage
 
       # All remaining config keys are sprite defintions.
       @sprites = config.inject([]) do |sprites, (name, sources)|
-        sprites << Sprite.new(name, sources, @paths.sprites, self)
+        sprites << Sprite.new(name, sources, @paths.sprites + "#{name}.png", self)
       end
     end
 

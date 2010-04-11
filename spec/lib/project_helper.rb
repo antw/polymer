@@ -116,7 +116,7 @@ module Montage
         write_config to, <<-CONFIG
           ---
             sprite_one:
-              - source_one
+              - source_one.png
         CONFIG
       end
 
@@ -158,9 +158,11 @@ module Montage
       # @param [String] path
       #   Path to the file to be touched.
       #
-      def touch(path)
-        (project_dir + path).dirname.mkpath
-        FileUtils.touch(project_dir + path)
+      def touch(*paths)
+        paths.each do |path|
+          (project_dir + path).dirname.mkpath
+          FileUtils.touch(project_dir + path)
+        end
       end
 
     end # ProjectHelper

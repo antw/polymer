@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{montage}
-  s.version = "0.2.1"
+  s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Anthony Williams"]
-  s.date = %q{2010-04-11}
+  s.date = %q{2010-04-12}
   s.default_executable = %q{montage}
   s.description = %q{Even Rocky had a montage.}
   s.email = %q{hi@antw.me}
@@ -39,12 +39,18 @@ Gem::Specification.new do |s|
      "lib/montage/sprite_definition.rb",
      "lib/montage/templates/montage.yml",
      "lib/montage/templates/sass_mixins.erb",
-     "lib/montage/templates/sources/book.png",
-     "lib/montage/templates/sources/box-label.png",
-     "lib/montage/templates/sources/calculator.png",
-     "lib/montage/templates/sources/calendar-month.png",
-     "lib/montage/templates/sources/camera.png",
-     "lib/montage/templates/sources/eraser.png",
+     "lib/montage/templates/sources/one/book.png",
+     "lib/montage/templates/sources/one/box-label.png",
+     "lib/montage/templates/sources/one/calculator.png",
+     "lib/montage/templates/sources/one/calendar-month.png",
+     "lib/montage/templates/sources/one/camera.png",
+     "lib/montage/templates/sources/one/eraser.png",
+     "lib/montage/templates/sources/two/inbox-image.png",
+     "lib/montage/templates/sources/two/magnet.png",
+     "lib/montage/templates/sources/two/newspaper.png",
+     "lib/montage/templates/sources/two/television.png",
+     "lib/montage/templates/sources/two/wand-hat.png",
+     "lib/montage/templates/sources/two/wooden-box-label.png",
      "lib/montage/version.rb",
      "montage.gemspec",
      "spec/lib/command_runner.rb",
@@ -71,7 +77,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/antw/montage}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{Montage}
   s.test_files = [
     "spec/lib/command_runner.rb",
@@ -99,7 +105,6 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<rmagick>, [">= 2.12"])
       s.add_runtime_dependency(%q<highline>, [">= 1.5"])
       s.add_development_dependency(%q<rspec>, [">= 1.3.0"])
-      s.add_development_dependency(%q<cucumber>, [">= 0.6"])
       s.add_development_dependency(%q<open4>, [">= 1.0"])
       s.add_development_dependency(%q<haml>, [">= 3.0.0.beta.1"])
       s.add_development_dependency(%q<yard>, [">= 0.5"])
@@ -107,7 +112,6 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<rmagick>, [">= 2.12"])
       s.add_dependency(%q<highline>, [">= 1.5"])
       s.add_dependency(%q<rspec>, [">= 1.3.0"])
-      s.add_dependency(%q<cucumber>, [">= 0.6"])
       s.add_dependency(%q<open4>, [">= 1.0"])
       s.add_dependency(%q<haml>, [">= 3.0.0.beta.1"])
       s.add_dependency(%q<yard>, [">= 0.5"])
@@ -116,7 +120,6 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rmagick>, [">= 2.12"])
     s.add_dependency(%q<highline>, [">= 1.5"])
     s.add_dependency(%q<rspec>, [">= 1.3.0"])
-    s.add_dependency(%q<cucumber>, [">= 0.6"])
     s.add_dependency(%q<open4>, [">= 1.0"])
     s.add_dependency(%q<haml>, [">= 3.0.0.beta.1"])
     s.add_dependency(%q<yard>, [">= 0.5"])

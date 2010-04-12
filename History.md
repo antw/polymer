@@ -1,5 +1,5 @@
-Git HEAD
---------
+v0.3.0 - 2010-04-12
+-------------------
 
 * The "montage.yml" file has been replaced with ".montage" which should be
   located in your project root. In addition, the file is now rather different,

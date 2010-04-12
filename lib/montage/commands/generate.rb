@@ -65,6 +65,7 @@ module Montage
           optimise_with_pngout!
           write_cache!
           write_sass!
+          warn_deviants!
         end
       end
 
@@ -191,6 +192,37 @@ module Montage
         end
       end
 
+      # Step 5: Warn about images which are more than one standard deviation
+      # from the mean width.
+      #
+      def warn_deviants!
+        @generated.each do |sprite|
+          next if sprite.sources.size < 2
+
+          mean, std_dev = standard_deviation(sprite.sources.map do |source|
+            source.image.columns
+          end)
+
+          next if std_dev < 100 # Skip relatively narrow images.
+
+          sprite.sources.each do |source|
+            width = source.image.columns
+            if width > mean + std_dev || width < mean - std_dev
+              say <<-MESSAGE.compress_lines
+                The "#{source.name}" source image in the "#{sprite.name}"
+                sprite deviates significantly from the average width. You
+                might want to consider removing this source from the sprite.
+
+                The mean width for sources in this sprite is #{mean}px,
+                while this source is #{width}px wide.
+
+              MESSAGE
+              say Montage::Commands::BLANK
+            end
+          end
+        end
+      end
+
       # --- Optimisation Output ----------------------------------------------
 
       # Executes a block while providing live feedback to the user.
@@ -242,6 +274,20 @@ module Montage
         worker.join
 
         say "#{RESET}#{prefix}"
+      end
+
+      # Knuth. via Wikipedia. :/
+      def standard_deviation(data)
+        n, mean, m2 = 0, 0, 0
+
+        data.each do |x|
+          n = n + 1
+          delta = x - mean
+          mean = mean + delta / n
+          m2 = m2 + delta * (x - mean)
+        end
+
+        [mean, Math.sqrt(m2 / (n - 1))]
       end
 
     end # Generate

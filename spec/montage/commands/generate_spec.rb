@@ -242,3 +242,21 @@ context 'Generating sprites when specifying an invalid custom config file' do
   it { @runner.should be_failure }
   it { @runner.stdout.should =~ /Couldn't find `invalid.yml' configuration file/ }
 end
+
+# ----------------------------------------------------------------------------
+
+context 'Generating a sprite with wildly varying source widths' do
+  before(:all) do
+    @runner = Montage::Spec::CommandRunner.new('montage')
+    @runner.write_simple_config
+    @runner.write_source('sprite/one')
+    @runner.write_source('sprite/two')
+    @runner.write_source('sprite/three')
+    @runner.write_source('sprite/four')
+    @runner.write_source('sprite/five', 500, 1)
+    @runner.run!
+  end
+
+  it { @runner.should be_success }
+  it { @runner.stdout.should =~ %r{The "five" source image in the "sprite" sprite deviates significantly from the average width} }
+end

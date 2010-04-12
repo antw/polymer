@@ -55,15 +55,6 @@ module Montage
       argv
     end
 
-    # Prints the Montage masthead, introducing the programme, and including
-    # the current version number.
-    def print_masthead
-      say BLANK
-      say "Montage v#{Montage::VERSION}"
-      say "=========#{'=' * Montage::VERSION.length}"
-      say BLANK
-    end
-
     # Exits immediately, outputting a blank line first.
     def exit(status = 0)
       say BLANK

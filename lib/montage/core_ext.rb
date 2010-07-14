@@ -1,3 +1,4 @@
+# Some simple string extensions to make things easier.
 class String
 
   # Replace sequences of whitespace (including newlines) with either
@@ -8,13 +9,10 @@ class String
   #     FROM users
   #   QUERY => "SELECT name FROM users"
   #
-  # @param [TrueClass, FalseClass] spaced (default=true)
-  #   Determines whether returned string has whitespace collapsed or removed
-  #
   # @return [String] Receiver with whitespace (including newlines) replaced
   #
-  def compress_lines(spaced = true)
-    split($/).map { |line| line.strip }.join(spaced ? ' ' : '')
+  def compress_lines
+    split($/).map { |line| line.strip }.join(' ')
   end
 
   # Removes leading whitespace from each line, such as might be added when

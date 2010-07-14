@@ -76,6 +76,30 @@ end
 
 # ----------------------------------------------------------------------------
 
+context 'Generating a single sprite with zero padding' do
+  before(:all) do
+    @runner = Montage::Spec::CommandRunner.new('montage')
+    @runner.write_config <<-CONFIG
+      ---
+        config.padding: 0
+
+        "public/images/sprites/:name/*.{png,jpg,jpeg,gif}":
+          to: "public/images/:name.png"
+
+    CONFIG
+    @runner.write_source('sprite_one/one')
+    @runner.write_source('sprite_one/two')
+    @runner.run!
+  end
+
+  it { @runner.should be_success }
+  it { @runner.stdout.should =~ /Generating "sprite_one": Done/ }
+  it { @runner.path_to_sprite('sprite_one').should be_file }
+  it { @runner.dimensions_of('sprite_one').should == [50, 40] }
+end
+
+# ----------------------------------------------------------------------------
+
 context 'Trying to generate sprites in a non-project directory' do
   before(:all) do
     @runner = Montage::Spec::CommandRunner.new('montage').run!

@@ -91,10 +91,15 @@ module Montage
         MESSAGE
       end
 
-      list = @sources.inject(Magick::ImageList.new) do |list, source|
+      list = Magick::ImageList.new
+
+      @sources.each do |source|
         list << source.image
-        list << Magick::Image.new(1, @padding) do
-          self.background_color = '#FFF0'
+
+        if @padding and @padding > 0
+          list << Magick::Image.new(1, @padding) do
+            self.background_color = '#FFF0'
+          end
         end
       end
 

@@ -48,10 +48,9 @@ module Montage
           option; please use only one.
         ERROR
       elsif not has_name_segment? and not @options.has_key?(:name)
-        raise Montage::MissingName, <<-ERROR.compress_lines
-          Sprite `#{path}' requires a name. Add a :name path segment
-          or add a "name" option.
-        ERROR
+        # Infer the sprite name from the filename.
+        @options[:name] =
+          File.basename(@options[:to], File.extname(@options[:to]))
       elsif has_name_segment? and not @options[:to] =~ /:name/
         raise Montage::MissingName, <<-ERROR.compress_lines
           Sprite `#{path}' requires :name in the "to" option.

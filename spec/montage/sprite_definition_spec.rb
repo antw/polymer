@@ -338,12 +338,17 @@ describe Montage::SpriteDefinition do
 
   # --------------------------------------------------------------------------
 
-  context 'with a no :name capture, and and no "name" option' do
-    it 'should raise an error' do
-      running = lambda { Montage::SpriteDefinition.new(
-        @helper.project, '/__invalid__/*', "to" => "_") }
+  context 'with a full file name, and no :name capture or option' do
+    it 'should infer the sprite name from the filename' do
+      @helper.touch('src/source')
 
-      running.should raise_error(Montage::MissingName)
+      definition = Montage::SpriteDefinition.new(
+        @helper.project, 'src/*', 'to' => 'lurrr.png')
+
+      @return = definition.to_sprites
+
+      @return.length.should == 1
+      @return[0].name.should == 'lurrr'
     end
   end
 

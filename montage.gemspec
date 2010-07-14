@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{montage}
-  s.version = "0.3.0"
+  s.version = "0.4.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Anthony Williams"]
-  s.date = %q{2010-04-12}
+  s.date = %q{2010-07-14}
   s.default_executable = %q{montage}
   s.description = %q{Even Rocky had a montage.}
   s.email = %q{hi@antw.me}
@@ -68,7 +68,6 @@ Gem::Specification.new do |s|
      "spec/montage/sprite_definition_spec.rb",
      "spec/montage/sprite_spec.rb",
      "spec/rcov.opts",
-     "spec/spec.opts",
      "spec/spec_helper.rb",
      "tasks/spec.rake",
      "tasks/yard.rake"
@@ -77,7 +76,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/antw/montage}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.6}
+  s.rubygems_version = %q{1.3.7}
   s.summary = %q{Montage}
   s.test_files = [
     "spec/lib/command_runner.rb",
@@ -101,17 +100,21 @@ Gem::Specification.new do |s|
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
-    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
+    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<rmagick>, [">= 2.12"])
       s.add_runtime_dependency(%q<highline>, [">= 1.5"])
-      s.add_development_dependency(%q<rspec>, [">= 1.3.0"])
+      s.add_development_dependency(%q<rspec-core>, [">= 2.0.0.beta.12"])
+      s.add_development_dependency(%q<rspec-expectations>, [">= 2.0.0.beta.12"])
+      s.add_development_dependency(%q<rspec-mocks>, [">= 2.0.0.beta.12"])
       s.add_development_dependency(%q<open4>, [">= 1.0"])
       s.add_development_dependency(%q<haml>, [">= 3.0.0.beta.1"])
       s.add_development_dependency(%q<yard>, [">= 0.5"])
     else
       s.add_dependency(%q<rmagick>, [">= 2.12"])
       s.add_dependency(%q<highline>, [">= 1.5"])
-      s.add_dependency(%q<rspec>, [">= 1.3.0"])
+      s.add_dependency(%q<rspec-core>, [">= 2.0.0.beta.12"])
+      s.add_dependency(%q<rspec-expectations>, [">= 2.0.0.beta.12"])
+      s.add_dependency(%q<rspec-mocks>, [">= 2.0.0.beta.12"])
       s.add_dependency(%q<open4>, [">= 1.0"])
       s.add_dependency(%q<haml>, [">= 3.0.0.beta.1"])
       s.add_dependency(%q<yard>, [">= 0.5"])
@@ -119,7 +122,9 @@ Gem::Specification.new do |s|
   else
     s.add_dependency(%q<rmagick>, [">= 2.12"])
     s.add_dependency(%q<highline>, [">= 1.5"])
-    s.add_dependency(%q<rspec>, [">= 1.3.0"])
+    s.add_dependency(%q<rspec-core>, [">= 2.0.0.beta.12"])
+    s.add_dependency(%q<rspec-expectations>, [">= 2.0.0.beta.12"])
+    s.add_dependency(%q<rspec-mocks>, [">= 2.0.0.beta.12"])
     s.add_dependency(%q<open4>, [">= 1.0"])
     s.add_dependency(%q<haml>, [">= 3.0.0.beta.1"])
     s.add_dependency(%q<yard>, [">= 0.5"])

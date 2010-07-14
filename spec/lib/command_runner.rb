@@ -54,7 +54,7 @@ module Montage
       #
       def run(command, &block)
         if command =~ /^montage(.*)$/
-          command = "#{RUBY} -rubygems #{EXECUTABLE}#{$1} --no-color"
+          command = "#{RUBY} #{EXECUTABLE}#{$1} --no-color"
         end
 
         @status, @stderr, @stdout = nil, nil, nil

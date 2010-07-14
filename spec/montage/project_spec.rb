@@ -130,14 +130,14 @@ describe Montage::Project do
 
       it 'should raise an error' do
         running = lambda { Montage::Project.find(@helper.project_dir) }
-        running.should raise_exception(Montage::MissingProject)
+        running.should raise_error(Montage::MissingProject)
       end
     end # when given an empty directory
 
     describe 'when given an invalid path' do
       it 'should raise an error' do
         running = lambda { Montage::Project.find('__invalid__') }
-        running.should raise_exception(Montage::MissingProject)
+        running.should raise_error(Montage::MissingProject)
       end
     end # when given an invalid path
   end

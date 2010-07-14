@@ -1,4 +1,4 @@
-describe 'a project with correct paths', :shared => true do
+shared_examples_for 'a project with correct paths' do
   # Requires:
   #
   #   @project => Montage::Project

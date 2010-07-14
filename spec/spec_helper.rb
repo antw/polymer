@@ -4,16 +4,15 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'tmpdir'
 
 require 'rubygems'
-require 'spec'
-require 'spec/autorun'
+require 'rspec/core'
+require 'rspec/autorun'
 
 require 'montage'
 require 'sass'
 
 # Spec libraries.
-spec_libs = Dir.glob(File.expand_path(File.dirname(__FILE__)) + '/lib/**/*.rb')
-spec_libs.each { |file| require file }
+Dir["#{File.dirname(__FILE__)}/lib/**/*.rb"].each { |f| require f }
 
-Spec::Runner.configure do |config|
+RSpec.configure do |config|
   config.after(:suite) { Montage::Spec::ProjectHelper.cleanup! }
 end

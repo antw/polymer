@@ -1,4 +1,4 @@
-describe 'saving a sprite', :shared => true do
+shared_examples_for 'saving a sprite' do
   # Requires:
   #
   #   @sprite => Montage::Sprite

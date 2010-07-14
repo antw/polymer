@@ -1,4 +1,4 @@
-::Spec::Matchers.define :have_public_method_defined do |value|
+::RSpec::Matchers.define :have_public_method_defined do |value|
   match do |klass|
     klass.public_method_defined?(value.to_sym)
   end

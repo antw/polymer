@@ -24,10 +24,13 @@ begin
     gem.add_dependency 'highline', '>= 1.5'
 
     # Development dependencies.
-    gem.add_development_dependency 'rspec',    '>= 1.3.0'
-    gem.add_development_dependency 'open4',    '>= 1.0'
-    gem.add_development_dependency 'haml',     '>= 3.0.0.beta.1'
-    gem.add_development_dependency 'yard',     '>= 0.5'
+    gem.add_development_dependency 'rspec-core',         '>= 2.0.0.beta.12'
+    gem.add_development_dependency 'rspec-expectations', '>= 2.0.0.beta.12'
+    gem.add_development_dependency 'rspec-mocks',        '>= 2.0.0.beta.12'
+
+    gem.add_development_dependency 'open4', '>= 1.0'
+    gem.add_development_dependency 'haml',  '>= 3.0.0.beta.1'
+    gem.add_development_dependency 'yard',  '>= 0.5'
   end
 
   Jeweler::GemcutterTasks.new

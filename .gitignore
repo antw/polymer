@@ -26,6 +26,7 @@ measurements
 pkg
 rdoc
 tmp
+*.gem
 
 ## PROJECT::SPECIFIC
 .sass-cache

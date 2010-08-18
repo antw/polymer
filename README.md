@@ -44,6 +44,19 @@ Montage has been split out from [Kin](http://github.com/antw/kin) -- a collectio
 
 Montage is pretty primitive in that it stacks each image in a single column. This is perfect when your source images are of a similar width (such as is the case with icons), but not so good when they vary significantly in size.
 
+INSTALLING
+----------
+
+To install with RubyGems, simply `gem install montage`; Montage, and
+it's dependencies, will be installed for you.
+
+If you wish to install from source:
+
+    gem build montage.gemspec
+    gem install --local montage-VERSION.gem
+
+(Where "VERSION" is the current version of Montage).
+
 FEATURE LIST
 ------------
 

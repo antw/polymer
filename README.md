@@ -1,7 +1,7 @@
 Montage
 =======
 
-_"[Even Rocky had a montage](http://www.youtube.com/watch?v=FIi0vFyqWAc)."_
+_"[Even Rocky had a montage](http://www.youtube.com/watch?v=yLuOl36vamI)."_
 
 **Source**
 :  [http://github.com/antw/montage](http://github.com/antw/montage)

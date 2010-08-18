@@ -7,6 +7,7 @@ begin
   end
 
 rescue LoadError
+  desc 'spec task requires that the rspec gem is installed'
   task :spec do
     abort 'rspec is not available. In order to run spec, you must: gem ' \
           'install rspec'

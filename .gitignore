@@ -19,9 +19,11 @@ tmtags
 rakefile.compiled.rbc
 
 ## PROJECT::GENERAL
+.bundle
 .yardoc
 coverage
 doc
+Gemfile.lock
 measurements
 pkg
 rdoc

@@ -38,7 +38,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec-mocks',        '>= 2.0.0.beta.12'
   s.add_development_dependency 'open4',              '>= 1.0'
   s.add_development_dependency 'haml',               '>= 3.0.0'
-  s.add_development_dependency 'yard',               '>= 0.5'
 
   # The manifest is created by the "gemspec" rake task. Do not edit it
   # directly; you changes will be wiped out when you next run the task.

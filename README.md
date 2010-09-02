@@ -2,7 +2,7 @@ Flexo
 =====
 
 **Source**
-:  [http://github.com/antw/flexo](http://github.com/antw/flexo)
+:  [http://github.com/antw/flexo][flexo]
 
 **Author**
 :  Anthony Williams
@@ -16,10 +16,9 @@ Flexo
 SYNOPSIS
 --------
 
-Popularised by Dave Shea in an
-[A List Apart](http://www.alistapart.com/articles/sprites), "sprite"
-images combine many smaller images into a single larger image, with CSS
-then being used to divide the sprite back into it's constituent parts.
+Popularised by Dave Shea in an [A List Apart][ala], "sprite" images
+combine many smaller images into a single larger image, with CSS then
+being used to divide the sprite back into it's constituent parts.
 
 However, creating sprites burdens the developer with the need to
 manually update them every time a minor change is required. Even more
@@ -47,10 +46,13 @@ with your sprites incredibly simple:
       #navigation a#products {
         background-position: 0 -40px; }
 
-Flexo was been split out from [Kin](http://github.com/antw/kin) in 2009
+Flexo was been split out from [Kin][kin] in 2009
 after it became clear that Merb was dead (R.I.P.), and a flexible image
 spriter was sorely needed on other projects. Flexo is named after
 Bender's "good" twin in Futurama.
+
+Flexo follows the rules of [Semantic Versioning][semver] and uses
+[YARD][yard] for API documentation.
 
 INSTALLATION
 ------------
@@ -107,10 +109,17 @@ COPYRIGHT
 ---------
 
 Flexo &copy; 2009-2010 by [Anthony Williams](mailto:hi@antw.me).
-Licensed under the BSD license. Please see the {file:LICENSE} for more
+Licensed under the BSD license. Please see the LICENSE for more
 information.
 
 The sample sources in lib/flexo/templates/sources are courtesy of
-[Yusuke Kamiyamane](http://p.yusukekamiyamane.com), whose extraordinary
+[Yusuke Kamiyamane][yusuke], whose extraordinary
 generocity in releasing three-thousand royalty-free icons cannot be
 stated enough.
+
+[flexo]:     http://github.com/antw/flexo
+[ala]:       http://www.alistapart.com/articles/sprites
+[kin]:       http://github.com/antw/kin
+[semver]:    http://semver.org/
+[yard]:      http://yardoc.org/
+[yusuke]:    http://p.yusukekamiyamane.com

@@ -1,3 +1,3 @@
 module Montage
-  VERSION = File.read(File.expand_path('../../../VERSION', __FILE__)).strip
+  VERSION = '0.4.0'
 end

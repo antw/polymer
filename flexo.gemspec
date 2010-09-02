@@ -7,26 +7,28 @@ Gem::Specification.new do |s|
   # The following four lines are automatically updates by the "gemspec"
   # rake task. It it completely safe to edit them, but using the rake task
   # is easier.
-  s.name              = 'montage'
+  s.name              = 'flexo'
   s.version           = '0.4.0'
   s.date              = '2010-07-14'
-  s.rubyforge_project = 'montage'
+  s.rubyforge_project = 'flexo'
 
   # You may safely edit the section below.
 
   s.platform     = Gem::Platform::RUBY
   s.authors      = ['Anthony Williams']
   s.email        = ['hi@antw.me']
-  s.homepage     = 'http:/github.com/antw/montage'
-  s.summary      = 'Even Rocky had a montage.'
-  s.description  = 'Montage simplifies the creation of sprite images for ' \
+  s.homepage     = 'http:/github.com/antw/flexo'
+  s.summary      = 'Creates sprites for web applications'
+  s.description  = 'Flexo simplifies the creation of sprite images for ' \
                    'web applications, while also generating nifty Sass ' \
-                   'mixins. Sprites have never been so easy.'
+                   'mixins. CSS files are available for non-Sass users,' \
+                   'along with a directory-watcher and Rack middleware ' \
+                   'to make development a breeze.'
 
   s.rdoc_options     = ['--charset=UTF-8']
   s.extra_rdoc_files = %w[History.md LICENSE README.md]
 
-  s.executables  = ['montage']
+  s.executables  = ['flexo']
   s.require_path = 'lib'
 
   s.add_runtime_dependency     'rmagick',            '>= 2.12'

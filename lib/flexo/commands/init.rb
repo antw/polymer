@@ -1,4 +1,4 @@
-module Montage
+module Flexo
   module Commands
     # Creates a new project.
     class Init
@@ -17,9 +17,9 @@ module Montage
       def self.run(*)
         new(Dir.pwd).run!
 
-      rescue Montage::ProjectExists => e
+      rescue Flexo::ProjectExists => e
         if e.message.match(/`(.*)'$/)[1] == Dir.pwd
-          say color("A Montage project already exists in the " \
+          say color("A Flexo project already exists in the " \
             "current directory", :red)
         else
           say color(e.message.compress_lines, :red)
@@ -50,10 +50,10 @@ module Montage
           create_config!
           copy_sources!
           say color("Your project was created", :green)
-          say Montage::Commands::BLANK
+          say Flexo::Commands::BLANK
         else
-          raise Montage::ProjectExists, <<-ERROR.compress_lines
-            A Montage project exists in a parent directory at
+          raise Flexo::ProjectExists, <<-ERROR.compress_lines
+            A Flexo project exists in a parent directory at
             `#{found.paths.root}'
           ERROR
         end
@@ -93,11 +93,11 @@ module Montage
       # Step 3: Write the configuration.
       #
       def create_config!
-        template = File.read(TEMPLATES + 'montage.yml')
+        template = File.read(TEMPLATES + 'flexo.yml')
         template.gsub!(/<sprites>/, @sprites_path.to_s)
         template.gsub!(/<sources>/, @sources_path.to_s)
 
-        File.open(@dir + '.montage', 'w') do |config|
+        File.open(@dir + '.flexo', 'w') do |config|
           config.puts template
         end
       end
@@ -110,4 +110,4 @@ module Montage
 
     end # Init
   end # Commands
-end # Montage
+end # Flexo

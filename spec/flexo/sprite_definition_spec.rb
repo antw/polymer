@@ -1,12 +1,12 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
-describe Montage::SpriteDefinition do
-  subject { Montage::SpriteDefinition }
+describe Flexo::SpriteDefinition do
+  subject { Flexo::SpriteDefinition }
 
   # --------------------------------------------------------------------------
 
   before(:each) do
-    @helper = Montage::Spec::ProjectHelper.new
+    @helper = Flexo::Spec::ProjectHelper.new
     @helper.write_simple_config
   end
 
@@ -16,7 +16,7 @@ describe Montage::SpriteDefinition do
     before(:each) do
       @helper.touch('src/big', 'src/small')
 
-      definition = Montage::SpriteDefinition.new(
+      definition = Flexo::SpriteDefinition.new(
         @helper.project, 'src/*', 'name' => 'lurrr', "to" => "_")
 
       @return = definition.to_sprites
@@ -58,7 +58,7 @@ describe Montage::SpriteDefinition do
     before(:each) do
       @helper.touch('src/big/one', 'src/small/one')
 
-      definition = Montage::SpriteDefinition.new(
+      definition = Flexo::SpriteDefinition.new(
         @helper.project, 'src/:name/*', "to" => ":name")
 
       @return = definition.to_sprites
@@ -100,7 +100,7 @@ describe Montage::SpriteDefinition do
                     'base/one/small/three',
                     'base/two/small/four'
 
-      definition = Montage::SpriteDefinition.new(
+      definition = Flexo::SpriteDefinition.new(
         @helper.project, '**/:name/*', "to" => ":name")
 
       @return = definition.to_sprites
@@ -142,7 +142,7 @@ describe Montage::SpriteDefinition do
                     'src/sprite/three.app', # non-match
                     'src/sprite/four'       # non-match
 
-      definition = Montage::SpriteDefinition.new(
+      definition = Flexo::SpriteDefinition.new(
         @helper.project, 'src/:name/*.{png,jpg}', "to" => ":name")
 
       @return = definition.to_sprites
@@ -180,7 +180,7 @@ describe Montage::SpriteDefinition do
     before(:each) do
       @helper.touch('src/big/one', 'src/small/one')
 
-      definition = Montage::SpriteDefinition.new(
+      definition = Flexo::SpriteDefinition.new(
         @helper.project, @helper.project.paths.root + 'src/:name/*',
         "to" => ":name")
 
@@ -220,7 +220,7 @@ describe Montage::SpriteDefinition do
     before(:each) do
       @helper.touch('src/big/one')
 
-      definition = Montage::SpriteDefinition.new(
+      definition = Flexo::SpriteDefinition.new(
         @helper.project, 'src/:name/*', 'padding' => 50)
 
       @return = definition.to_sprites
@@ -244,7 +244,7 @@ describe Montage::SpriteDefinition do
             to: "public/images/:name.png"
       CONFIG
 
-      definition = Montage::SpriteDefinition.new(
+      definition = Flexo::SpriteDefinition.new(
         @helper.project, 'src/:name/*')
 
       @return = definition.to_sprites
@@ -261,7 +261,7 @@ describe Montage::SpriteDefinition do
     before(:each) do
       @helper.touch('src/big/one')
 
-      definition = Montage::SpriteDefinition.new(
+      definition = Flexo::SpriteDefinition.new(
         @helper.project, 'src/:name/*', 'url' => '/omicron_persei_8/:name')
 
       @return = definition.to_sprites
@@ -278,7 +278,7 @@ describe Montage::SpriteDefinition do
     before(:each) do
       @helper.touch('src/big/one')
 
-      definition = Montage::SpriteDefinition.new(
+      definition = Flexo::SpriteDefinition.new(
         @helper.project, 'src/:name/*', 'url' => '/omicron_persei_8/:filename')
 
       @return = definition.to_sprites
@@ -302,7 +302,7 @@ describe Montage::SpriteDefinition do
             to: "public/images/:name.png"
       CONFIG
 
-      definition = Montage::SpriteDefinition.new(
+      definition = Flexo::SpriteDefinition.new(
         @helper.project, 'src/:name/*')
 
       @return = definition.to_sprites
@@ -317,11 +317,11 @@ describe Montage::SpriteDefinition do
 
   context 'with a :name capture, and a "name" option' do
     it 'should raise an error' do
-      running = lambda { @path = Montage::SpriteDefinition.new(
+      running = lambda { @path = Flexo::SpriteDefinition.new(
         @helper.project, '/__invalid__/:name/*',
         'name' => 'lurrr', 'to' => ':name') }
 
-      running.should raise_error(Montage::DuplicateName)
+      running.should raise_error(Flexo::DuplicateName)
     end
   end
 
@@ -329,10 +329,10 @@ describe Montage::SpriteDefinition do
 
   context 'with a :name capture, and no :name segment in the "to" option' do
     it 'should raise an error' do
-      running = lambda { @path = Montage::SpriteDefinition.new(
+      running = lambda { @path = Flexo::SpriteDefinition.new(
         @helper.project, '/:name/*', 'to' => '_') }
 
-      running.should raise_error(Montage::MissingName)
+      running.should raise_error(Flexo::MissingName)
     end
   end
 
@@ -342,7 +342,7 @@ describe Montage::SpriteDefinition do
     it 'should infer the sprite name from the filename' do
       @helper.touch('src/source')
 
-      definition = Montage::SpriteDefinition.new(
+      definition = Flexo::SpriteDefinition.new(
         @helper.project, 'src/*', 'to' => 'lurrr.png')
 
       @return = definition.to_sprites
@@ -356,7 +356,7 @@ describe Montage::SpriteDefinition do
 
   context 'with no "to" option' do
     it 'should set a default' do
-      @sprite = Montage::SpriteDefinition.new(@helper.project, '_',
+      @sprite = Flexo::SpriteDefinition.new(@helper.project, '_',
         'name' => 'lurrr').to_sprites.first
 
       @sprite.save_path.should_not be_nil

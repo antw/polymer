@@ -7,36 +7,36 @@ require 'yaml'
 require 'rmagick'
 
 # On with the library...
-require 'montage/core_ext'
-require 'montage/project'
-require 'montage/sass_builder'
-require 'montage/source'
-require 'montage/sprite'
-require 'montage/sprite_definition'
-require 'montage/version'
+require 'flexo/core_ext'
+require 'flexo/project'
+require 'flexo/sass_builder'
+require 'flexo/source'
+require 'flexo/sprite'
+require 'flexo/sprite_definition'
+require 'flexo/version'
 
-module Montage
-  # Generic exception for all Montage exception classes.
-  MontageError = Class.new(StandardError)
+module Flexo
+  # Generic exception for all Flexo exception classes.
+  FlexoError = Class.new(StandardError)
 
   # Raised when a project directory couldn't be found.
-  MissingProject = Class.new(MontageError)
+  MissingProject = Class.new(FlexoError)
 
   # Raised when a creating a new project in an existing project directory.
-  ProjectExists = Class.new(MontageError)
+  ProjectExists = Class.new(FlexoError)
 
   # Raised when a sprite set expects a source image, but none could be found.
-  MissingSource = Class.new(MontageError)
+  MissingSource = Class.new(FlexoError)
 
   # Raised when a sprite can't be saved due to incorrect permissions.
-  TargetNotWritable = Class.new(MontageError)
+  TargetNotWritable = Class.new(FlexoError)
 
   # Raised when a sprite defintion doesn't include a name.
-  MissingName = Class.new(MontageError)
+  MissingName = Class.new(FlexoError)
 
   # Raised when a sprite defines a :name path segment, and a name option.
-  DuplicateName = Class.new(MontageError)
+  DuplicateName = Class.new(FlexoError)
 
   # Raised when a sprite definition doesn't have a to option.
-  MissingTo = Class.new(MontageError)
+  MissingTo = Class.new(FlexoError)
 end

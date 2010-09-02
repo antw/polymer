@@ -1,7 +1,7 @@
 shared_examples_for 'saving a sprite' do
   # Requires:
   #
-  #   @sprite => Montage::Sprite
+  #   @sprite => Flexo::Sprite
   #   @dir    => Pathname (path at which the sprite is saved)
   #   @output => Pathname (path for the final sprite)
   #

@@ -4,12 +4,12 @@ require 'open4'
 
 require Pathname(__FILE__).dirname + 'project_helper'
 
-module Montage
+module Flexo
   module Spec
-    # Runs montage commands in a subprocess and reports back on their exit
+    # Runs flexo commands in a subprocess and reports back on their exit
     # status and output.
     #
-    # See spec/montage/commands/*_spec.rb.
+    # See spec/flexo/commands/*_spec.rb.
     #
     class CommandRunner < ProjectHelper
 
@@ -17,9 +17,9 @@ module Montage
       RUBY = Pathname.new(Config::CONFIG['bindir']) +
                           Config::CONFIG['ruby_install_name']
 
-      # Path to the montage executable.
+      # Path to the flexo executable.
       EXECUTABLE = Pathname.new(__FILE__).dirname.
-                      expand_path + '../../bin/montage'
+                      expand_path + '../../bin/flexo'
 
       attr_reader :status, :stderr, :stdout
 
@@ -53,7 +53,7 @@ module Montage
       #   Returns self.
       #
       def run(command, &block)
-        if command =~ /^montage(.*)$/
+        if command =~ /^flexo(.*)$/
           command = "#{RUBY} #{EXECUTABLE}#{$1} --no-color"
         end
 
@@ -108,7 +108,7 @@ module Montage
 
     end # CommandRunner
 
-    # Runs the montage init command, providing the command with the various
+    # Runs the flexo init command, providing the command with the various
     # inputs it wants.
     #
     class InitCommandRunner < CommandRunner
@@ -119,7 +119,7 @@ module Montage
       #   :sprites
       #
       def initialize(responses = {})
-        super 'montage init'
+        super 'flexo init'
         @responses = responses
       end
 
@@ -137,4 +137,4 @@ module Montage
     end
 
   end # Spec
-end # Montage
+end # Flexo

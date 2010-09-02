@@ -1,7 +1,7 @@
 require 'rbconfig'
 require 'tempfile'
 
-module Montage
+module Flexo
   module Spec
     # Provides useful functionality for dealing with temporary project
     # directories when running tests.
@@ -49,7 +49,7 @@ module Montage
       # Returns a project instance representing the contents of the test
       # directory.
       #
-      # @return [Montage::Project]
+      # @return [Flexo::Project]
       #
       def project
         Project.find(project_dir)
@@ -86,7 +86,7 @@ module Montage
 
       # --- File Writers -----------------------------------------------------
 
-      # Writes .montage file in the project root with the given contents.
+      # Writes .flexo file in the project root with the given contents.
       #
       # @param [String] to
       #   The path at which to save the config file. Or: The file contents if
@@ -97,7 +97,7 @@ module Montage
       def write_config(to, contents = nil)
         if contents.nil?
           # Sigh; if only 1.9 was more popular...
-          contents, to = to, '.montage'
+          contents, to = to, '.flexo'
         else
           (project_dir + to).dirname.mkpath
         end
@@ -112,7 +112,7 @@ module Montage
       # @param [String] to
       #   The path at which to save the config file.
       #
-      def write_simple_config(to = '.montage')
+      def write_simple_config(to = '.flexo')
         write_config to, <<-CONFIG
           ---
             "public/images/sprites/:name/*.{png,jpg,jpeg,gif}":
@@ -167,4 +167,4 @@ module Montage
 
     end # ProjectHelper
   end # Spec
-end # Montage
+end # Flexo

@@ -1,10 +1,10 @@
-module Montage
+module Flexo
   # Represents a pseudo-file system path, where a directory can be replaced
   # with the :sprite named segment. :name will match any directory -- all
   # files with the same :name value will be placed into the same sprite file.
   #
   # Where a sprite source defines a :name segment, no sprite name needs to be
-  # explicitly set in the .montage file.
+  # explicitly set in the .flexo file.
   #
   # For example, given the following directory structure:
   #
@@ -23,7 +23,7 @@ module Montage
   class SpriteDefinition
     # Creates a new SpriteDefinition instance.
     #
-    # @param [Montage::Project]       project
+    # @param [Flexo::Project]       project
     # @param [String, Pathname]       path
     # @param [Hash{String => Object}] options
     #
@@ -43,7 +43,7 @@ module Montage
       @options[:padding] ||= project.padding
 
       if has_name_segment? and @options.has_key?(:name)
-        raise Montage::DuplicateName, <<-ERROR.compress_lines
+        raise Flexo::DuplicateName, <<-ERROR.compress_lines
           Sprite `#{path}' has both a :name path segment and a "name"
           option; please use only one.
         ERROR
@@ -52,7 +52,7 @@ module Montage
         @options[:name] =
           File.basename(@options[:to], File.extname(@options[:to]))
       elsif has_name_segment? and not @options[:to] =~ /:name/
-        raise Montage::MissingName, <<-ERROR.compress_lines
+        raise Flexo::MissingName, <<-ERROR.compress_lines
           Sprite `#{path}' requires :name in the "to" option.
         ERROR
       end
@@ -60,7 +60,7 @@ module Montage
 
     # Returns an array of Sprites defined.
     #
-    # @return [Array(Montage::Sprite)]
+    # @return [Array(Flexo::Sprite)]
     #
     def to_sprites
       matching_sources.map do |sprite_name, sources|
@@ -70,7 +70,7 @@ module Montage
         url.gsub!(/:name/, sprite_name)
         url.gsub!(/:filename/, save_path.basename.to_s)
 
-        Montage::Sprite.new(sprite_name, sources, save_path, @project,
+        Flexo::Sprite.new(sprite_name, sources, save_path, @project,
           :url     => url,
           :padding => @options[:padding]
         )
@@ -123,4 +123,4 @@ module Montage
     end # matching_sources
 
   end # SpriteDefinition
-end # Montage
+end # Flexo

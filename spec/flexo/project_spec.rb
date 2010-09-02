@@ -1,7 +1,7 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
-describe Montage::Project do
-  subject { Montage::Project }
+describe Flexo::Project do
+  subject { Flexo::Project }
 
   # Class Methods ============================================================
 
@@ -10,26 +10,26 @@ describe Montage::Project do
   it { should respond_to(:find) }
 
   describe '.find' do
-    describe 'when given a project root with .montage in the root' do
+    describe 'when given a project root with .flexo in the root' do
       before(:all) do
-        @helper = Montage::Spec::ProjectHelper.new
+        @helper = Flexo::Spec::ProjectHelper.new
         @helper.write_simple_config
 
-        @project = Montage::Project.find(@helper.project_dir)
-        @config  = @helper.path_to_file('.montage')
+        @project = Flexo::Project.find(@helper.project_dir)
+        @config  = @helper.path_to_file('.flexo')
       end
 
       it_should_behave_like 'a project with correct paths'
-    end # when given a project root with .montage in the root
+    end # when given a project root with .flexo in the root
 
     describe 'when given a project subdirectory' do
       before(:all) do
-        @helper = Montage::Spec::ProjectHelper.new
+        @helper = Flexo::Spec::ProjectHelper.new
         @helper.mkdir('sub/sub')
         @helper.write_simple_config
 
-        @project = Montage::Project.find(@helper.project_dir + 'sub/sub')
-        @config  = @helper.path_to_file('.montage')
+        @project = Flexo::Project.find(@helper.project_dir + 'sub/sub')
+        @config  = @helper.path_to_file('.flexo')
       end
 
       it_should_behave_like 'a project with correct paths'
@@ -37,11 +37,11 @@ describe Montage::Project do
 
     describe 'when given a configuration file in the root' do
       before(:all) do
-        @helper = Montage::Spec::ProjectHelper.new
-        @helper.write_simple_config('montage.yml')
+        @helper = Flexo::Spec::ProjectHelper.new
+        @helper.write_simple_config('flexo.yml')
 
-        @project = Montage::Project.find(@helper.path_to_file('montage.yml'))
-        @config  = @helper.path_to_file('montage.yml')
+        @project = Flexo::Project.find(@helper.path_to_file('flexo.yml'))
+        @config  = @helper.path_to_file('flexo.yml')
       end
 
       it_should_behave_like 'a project with correct paths'
@@ -49,7 +49,7 @@ describe Montage::Project do
 
     describe 'when the config file specifies custom directories' do
       before(:all) do
-        @helper = Montage::Spec::ProjectHelper.new
+        @helper = Flexo::Spec::ProjectHelper.new
         @helper.write_config <<-CONFIG
         ---
           config.sass: "custom/sass"
@@ -57,8 +57,8 @@ describe Montage::Project do
 
         CONFIG
 
-        @project = Montage::Project.find(@helper.project_dir)
-        @config  = @helper.path_to_file('.montage')
+        @project = Flexo::Project.find(@helper.project_dir)
+        @config  = @helper.path_to_file('.flexo')
         @base    = @helper.path_to_file('custom')
       end
 
@@ -73,14 +73,14 @@ describe Montage::Project do
 
     describe 'when the config file specifies a custom root' do
       before(:all) do
-        @helper = Montage::Spec::ProjectHelper.new
+        @helper = Flexo::Spec::ProjectHelper.new
         @helper.write_config 'settings/sprites.yml', <<-CONFIG
         ---
           config.root: "../custom_root"
 
         CONFIG
 
-        @project = Montage::Project.find(
+        @project = Flexo::Project.find(
           @helper.path_to_file('settings/sprites.yml'))
 
         @config  = @helper.path_to_file('settings/sprites.yml')
@@ -92,14 +92,14 @@ describe Montage::Project do
 
     describe 'when the config file specifies a custom absolute root' do
       before(:all) do
-        @helper = Montage::Spec::ProjectHelper.new
+        @helper = Flexo::Spec::ProjectHelper.new
         @helper.write_config 'settings/sprites.yml', <<-CONFIG
         ---
           config.root: "#{@helper.path_to_file('custom_root')}"
 
         CONFIG
 
-        @project = Montage::Project.find(
+        @project = Flexo::Project.find(
           @helper.path_to_file('settings/sprites.yml'))
 
         @config  = @helper.path_to_file('settings/sprites.yml')
@@ -111,7 +111,7 @@ describe Montage::Project do
 
     describe 'when the config file specifies not to generate Sass' do
       before(:all) do
-        @helper = Montage::Spec::ProjectHelper.new
+        @helper = Flexo::Spec::ProjectHelper.new
         @helper.write_config <<-CONFIG
         ---
           config.sass: false
@@ -125,19 +125,19 @@ describe Montage::Project do
 
     describe 'when given an empty directory' do
       before(:all) do
-        @helper = Montage::Spec::ProjectHelper.new
+        @helper = Flexo::Spec::ProjectHelper.new
       end
 
       it 'should raise an error' do
-        running = lambda { Montage::Project.find(@helper.project_dir) }
-        running.should raise_error(Montage::MissingProject)
+        running = lambda { Flexo::Project.find(@helper.project_dir) }
+        running.should raise_error(Flexo::MissingProject)
       end
     end # when given an empty directory
 
     describe 'when given an invalid path' do
       it 'should raise an error' do
-        running = lambda { Montage::Project.find('__invalid__') }
-        running.should raise_error(Montage::MissingProject)
+        running = lambda { Flexo::Project.find('__invalid__') }
+        running.should raise_error(Flexo::MissingProject)
       end
     end # when given an invalid path
   end
@@ -153,7 +153,7 @@ describe Montage::Project do
   describe '#sprites' do
     context "when the project has one sprite with two sources" do
       before(:each) do
-        @helper = Montage::Spec::ProjectHelper.new
+        @helper = Flexo::Spec::ProjectHelper.new
         @helper.write_simple_config
         @helper.write_source('sprite_one/one', 100, 25)
         @helper.write_source('sprite_one/two', 100, 25)
@@ -170,7 +170,7 @@ describe Montage::Project do
 
     context "when the project has two sprites with 2/1 sources" do
       before(:each) do
-        @helper = Montage::Spec::ProjectHelper.new
+        @helper = Flexo::Spec::ProjectHelper.new
         @helper.write_simple_config
         @helper.write_source('sprite_one/one',   100, 25)
         @helper.write_source('sprite_one/two',   100, 25)

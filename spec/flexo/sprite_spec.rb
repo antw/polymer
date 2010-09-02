@@ -1,41 +1,41 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
-describe Montage::Sprite do
-  subject { Montage::Sprite }
+describe Flexo::Sprite do
+  subject { Flexo::Sprite }
 
   # --- initialization -------------------------------------------------------
 
   describe 'when initialized' do
     before(:all) do
-      @helper = Montage::Spec::ProjectHelper.new
+      @helper = Flexo::Spec::ProjectHelper.new
       @helper.write_simple_config
     end
 
     it 'should set the name' do
-      sprite = Montage::Sprite.new('wheee', [], '_', @helper.project)
+      sprite = Flexo::Sprite.new('wheee', [], '_', @helper.project)
       sprite.name.should == 'wheee'
     end
 
     it 'should set the padding' do
-      sprite = Montage::Sprite.new('_', [], '_', @helper.project)
+      sprite = Flexo::Sprite.new('_', [], '_', @helper.project)
       sprite.padding.should == @helper.project.padding
     end
 
     it 'should set the save_path' do
-      sprite = Montage::Sprite.new('_', [],
+      sprite = Flexo::Sprite.new('_', [],
         @helper.path_to_file('bye'), @helper.project)
 
       sprite.save_path.should == @helper.path_to_file('bye')
     end
 
     it 'should set the url' do
-      sprite = Montage::Sprite.new('_', [], '_', @helper.project)
+      sprite = Flexo::Sprite.new('_', [], '_', @helper.project)
       sprite.url.should == @helper.project.paths.url
     end
 
     describe 'with custom options' do
       before(:all) do
-        @sprite = Montage::Sprite.new('wheee', [], '_', @helper.project,
+        @sprite = Flexo::Sprite.new('wheee', [], '_', @helper.project,
           :padding => 50, :url => '/omicron_persei_8')
       end
 
@@ -55,7 +55,7 @@ describe Montage::Sprite do
 
   describe '#images' do
     before(:each) do
-      @helper = Montage::Spec::ProjectHelper.new
+      @helper = Flexo::Spec::ProjectHelper.new
       @helper.write_simple_config
 
       @helper.write_source('sprite_one/one', 100, 25)
@@ -66,7 +66,7 @@ describe Montage::Sprite do
 
     describe 'when the sprite contains no sources' do
       before(:each) do
-        @sprite = Montage::Sprite.new('sprite', [], 'path', @helper.project)
+        @sprite = Flexo::Sprite.new('sprite', [], 'path', @helper.project)
       end
 
       it 'should return an array' do
@@ -96,7 +96,7 @@ describe Montage::Sprite do
 
   describe '#position_of' do
     before(:each) do
-      @helper = Montage::Spec::ProjectHelper.new
+      @helper = Flexo::Spec::ProjectHelper.new
       @helper.write_simple_config
 
       @helper.write_source('sprite_one/one', 100, 25)
@@ -107,7 +107,7 @@ describe Montage::Sprite do
 
     it 'should raise a MissingSource when the given source is not present' do
       running = lambda { @sprite.position_of('__invalid__') }
-      running.should raise_error(Montage::MissingSource,
+      running.should raise_error(Flexo::MissingSource,
         /'__invalid__' is not present in the 'sprite_one' sprite/)
     end
 
@@ -131,7 +131,7 @@ describe Montage::Sprite do
 
   describe '#digest' do
     before(:each) do
-      @helper = Montage::Spec::ProjectHelper.new
+      @helper = Flexo::Spec::ProjectHelper.new
       @helper.write_simple_config
 
       @helper.write_source('sprite_one/one',   100, 25)
@@ -166,6 +166,6 @@ describe Montage::Sprite do
 
   it { should have_public_method_defined(:write) }
 
-  # Fully spec'ed in spec/montage/commands/generate_spec.rb
+  # Fully spec'ed in spec/flexo/commands/generate_spec.rb
 
 end

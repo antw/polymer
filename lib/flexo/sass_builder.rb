@@ -1,4 +1,4 @@
-module Montage
+module Flexo
   # Given a project, builds a SASS file containing mixin to simplify use of
   # the generated sprites in a project.
   #
@@ -8,7 +8,7 @@ module Montage
 
     # Creates a new SassBuilder instance.
     #
-    # @param [Montage::Project] project
+    # @param [Flexo::Project] project
     #   The project whose Sass file is to be built.
     #
     def initialize(project)
@@ -25,7 +25,7 @@ module Montage
         save_to = @project.paths.sass
       else
         @project.paths.sass.mkpath
-        save_to = @project.paths.sass + '_montage.sass'
+        save_to = @project.paths.sass + '_flexo.sass'
       end
 
       File.open(save_to, 'w') do |file|
@@ -34,4 +34,4 @@ module Montage
     end
 
   end # SassBuilder
-end
+end # Flexo

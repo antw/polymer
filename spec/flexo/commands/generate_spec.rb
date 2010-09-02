@@ -4,7 +4,7 @@ require File.expand_path('../../../spec_helper', __FILE__)
 
 context 'Generating a single sprite with two sources' do
   before(:all) do
-    @runner = Montage::Spec::CommandRunner.new('montage')
+    @runner = Flexo::Spec::CommandRunner.new('flexo')
     @runner.write_simple_config
     @runner.write_source('sprite_one/one')
     @runner.write_source('sprite_one/two')
@@ -12,12 +12,13 @@ context 'Generating a single sprite with two sources' do
   end
 
   it { @runner.should be_success }
+  it { @runner.stderr.should == '' }
   it { @runner.stdout.should =~ /Generating "sprite_one": Done/ }
   it { @runner.path_to_sprite('sprite_one').should be_file }
   it { @runner.dimensions_of('sprite_one').should == [50, 60] }
 
   # Sass.
-  it { @runner.path_to_file('public/stylesheets/sass/_montage.sass').should be_file }
+  it { @runner.path_to_file('public/stylesheets/sass/_flexo.sass').should be_file }
 
   # PNGOut.
   it { @runner.stdout.should =~ /Optimising "sprite_one": Done/ }
@@ -27,7 +28,7 @@ end
 
 context 'Generating multiple sprites' do
   before(:all) do
-    @runner = Montage::Spec::CommandRunner.new('montage')
+    @runner = Flexo::Spec::CommandRunner.new('flexo')
     @runner.write_simple_config
     @runner.write_source('sprite_one/one')
     @runner.write_source('sprite_two/two')
@@ -54,7 +55,7 @@ end
 
 context 'Generating a single sprite with custom padding' do
   before(:all) do
-    @runner = Montage::Spec::CommandRunner.new('montage')
+    @runner = Flexo::Spec::CommandRunner.new('flexo')
     @runner.write_config <<-CONFIG
       ---
         config.padding: 50
@@ -78,7 +79,7 @@ end
 
 context 'Generating a single sprite with zero padding' do
   before(:all) do
-    @runner = Montage::Spec::CommandRunner.new('montage')
+    @runner = Flexo::Spec::CommandRunner.new('flexo')
     @runner.write_config <<-CONFIG
       ---
         config.padding: 0
@@ -102,18 +103,18 @@ end
 
 context 'Trying to generate sprites in a non-project directory' do
   before(:all) do
-    @runner = Montage::Spec::CommandRunner.new('montage').run!
+    @runner = Flexo::Spec::CommandRunner.new('flexo').run!
   end
 
   it { @runner.should be_failure }
-  it { @runner.stdout.should =~ /Couldn't find a Montage project/ }
+  it { @runner.stdout.should =~ /Couldn't find a Flexo project/ }
 end
 
 # ----------------------------------------------------------------------------
 
 context 'Trying to generate sprites when the sprite directory is not writable' do
   before(:all) do
-    @runner = Montage::Spec::CommandRunner.new('montage')
+    @runner = Flexo::Spec::CommandRunner.new('flexo')
     @runner.write_simple_config
     @runner.write_source('sprite_one/one')
 
@@ -137,7 +138,7 @@ end
 
 context 'Generating two sprites, one of which is unchanged' do
   before(:all) do
-    @runner = Montage::Spec::CommandRunner.new('montage')
+    @runner = Flexo::Spec::CommandRunner.new('flexo')
     @runner.write_simple_config
     @runner.write_source('sprite_one/one')
     @runner.write_source('sprite_one/two')
@@ -168,7 +169,7 @@ end
 
 context 'Generating two sprites, one of which is unchanged when using the --force option' do
   before(:all) do
-    @runner = Montage::Spec::CommandRunner.new('montage')
+    @runner = Flexo::Spec::CommandRunner.new('flexo')
     @runner.write_simple_config
     @runner.write_source('sprite_one/one')
     @runner.write_source('sprite_one/two')
@@ -177,7 +178,7 @@ context 'Generating two sprites, one of which is unchanged when using the --forc
 
     # Change the 'one' source.
     @runner.write_source('one', 100, 25)
-    @runner.run('montage --force')
+    @runner.run('flexo --force')
   end
 
   it { @runner.should be_success }
@@ -193,7 +194,7 @@ end
 
 context 'Generating an unchanged sprite which has been deleted' do
   before(:all) do
-    @runner = Montage::Spec::CommandRunner.new('montage')
+    @runner = Flexo::Spec::CommandRunner.new('flexo')
     @runner.write_simple_config
     @runner.write_source('sprite_one/one')
     @runner.run!
@@ -216,7 +217,7 @@ end
 
 context 'Generating sprites with a project which disables Sass' do
   before(:all) do
-    @runner = Montage::Spec::CommandRunner.new('montage')
+    @runner = Flexo::Spec::CommandRunner.new('flexo')
     @runner.write_config <<-CONFIG
       ---
         config.sass: false
@@ -229,14 +230,14 @@ context 'Generating sprites with a project which disables Sass' do
     @runner.run!
   end
 
-  it { @runner.path_to_file('public/stylesheets/sass/_montage.sass').should_not be_file }
+  it { @runner.path_to_file('public/stylesheets/sass/_flexo.sass').should_not be_file }
 end
 
 # ----------------------------------------------------------------------------
 
 context 'Generating sprites when specifying a custom config file' do
   before(:all) do
-    @runner = Montage::Spec::CommandRunner.new('montage settings/sprites.yml')
+    @runner = Flexo::Spec::CommandRunner.new('flexo settings/sprites.yml')
     @runner.write_config 'settings/sprites.yml', <<-CONFIG
       ---
         config.root: '..'
@@ -252,14 +253,14 @@ context 'Generating sprites when specifying a custom config file' do
   it { @runner.should be_success }
   it { @runner.stdout.should =~ /Generating "sprite_one": Done/ }
   it { @runner.path_to_sprite('sprite_one').should be_file }
-  it { @runner.path_to_file('public/stylesheets/sass/_montage.sass').should be_file }
+  it { @runner.path_to_file('public/stylesheets/sass/_flexo.sass').should be_file }
 end
 
 # ----------------------------------------------------------------------------
 
 context 'Generating sprites when specifying an invalid custom config file' do
   before(:all) do
-    @runner = Montage::Spec::CommandRunner.new('montage invalid.yml')
+    @runner = Flexo::Spec::CommandRunner.new('flexo invalid.yml')
     @runner.run!
   end
 
@@ -271,7 +272,7 @@ end
 
 context 'Generating a sprite with wildly varying source widths' do
   before(:all) do
-    @runner = Montage::Spec::CommandRunner.new('montage')
+    @runner = Flexo::Spec::CommandRunner.new('flexo')
     @runner.write_simple_config
     @runner.write_source('sprite/one')
     @runner.write_source('sprite/two')

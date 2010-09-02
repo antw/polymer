@@ -1,4 +1,4 @@
-module Montage
+module Flexo
   module Commands
     # Generates sprites for a project.
     class Generate
@@ -17,7 +17,7 @@ module Montage
       #   The arguments given on the command line.
       #
       def self.run(argv)
-        # If there are any arguments, the first one is a path to a montage
+        # If there are any arguments, the first one is a path to a flexo
         # config file.
         if argv.first and not Pathname.new(argv.first).file?
           say color(<<-ERROR.compress_lines, :red)
@@ -29,19 +29,19 @@ module Montage
         end
 
 
-        new(Montage::Project.find(argv.first || Dir.pwd),
-            Montage::Commands.config[:force]).run!
+        new(Flexo::Project.find(argv.first || Dir.pwd),
+            Flexo::Commands.config[:force]).run!
 
-      rescue Montage::MissingProject
+      rescue Flexo::MissingProject
         say color(<<-ERROR.compress_lines, :red)
-          Couldn't find a Montage project in the current directory. If
-          you want to create a new project here, run `montage init'.
+          Couldn't find a Flexo project in the current directory. If
+          you want to create a new project here, run `flexo init'.
         ERROR
 
         exit(1)
 
-      rescue Montage::MissingSource, Montage::TargetNotWritable => e
-        say Montage::Commands::BLANK
+      rescue Flexo::MissingSource, Flexo::TargetNotWritable => e
+        say Flexo::Commands::BLANK
         say color(e.message.compress_lines, :red)
 
         exit(1)
@@ -49,7 +49,7 @@ module Montage
 
       # Creates a new Generate instance.
       #
-      # @param [Montage::Project] project
+      # @param [Flexo::Project] project
       #   The project whose sprites are to be generated.
       # @param [Boolean] force
       #   Rengerate sprites, even if they haven't been changed.
@@ -77,7 +77,7 @@ module Montage
       #
       def cache
         @_sprite_caches ||= begin
-          cache_path = @project.paths.root + '.montage_cache'
+          cache_path = @project.paths.root + '.flexo_cache'
           cache_path.file? ? YAML.load_file(cache_path) || {} : {}
         end
       end
@@ -112,7 +112,7 @@ module Montage
           end
         end
 
-        say Montage::Commands::BLANK
+        say Flexo::Commands::BLANK
         @generated.any?
       end
 
@@ -126,10 +126,10 @@ module Montage
 
         if pngout.nil?
           say <<-MESSAGE.compress_lines
-            Skipping optimisation with PNGOut since Montage couldn't find
+            Skipping optimisation with PNGOut since Flexo couldn't find
             "pngout" or "pngout-darwin" anywhere.
           MESSAGE
-          say Montage::Commands::BLANK
+          say Flexo::Commands::BLANK
 
           return
         end
@@ -160,21 +160,21 @@ module Montage
           say color("Done; saved #{reduction}", :green)
         end
 
-        say Montage::Commands::BLANK
+        say Flexo::Commands::BLANK
 
       rescue Errno::ENOENT
         say ("#{RESET}" + <<-MESSAGE.compress_lines)
-          Skipping optimisation with PNGOut since Montage is currently only in
+          Skipping optimisation with PNGOut since Flexo is currently only in
           bed with Linux and OS X. Sorry!
         MESSAGE
-        say Montage::Commands::BLANK
+        say Flexo::Commands::BLANK
         exit(1)
       end
 
       # Step 3: Writes the cached digests to the cache file.
       #
       def write_cache!
-        cache_path = @project.paths.root + '.montage_cache'
+        cache_path = @project.paths.root + '.flexo_cache'
 
         File.open(cache_path, 'w') do |cache_writer|
           cache_writer.puts YAML.dump(cache)
@@ -186,9 +186,9 @@ module Montage
       def write_sass!
         unless @project.paths.sass == false
           say "- Generating Sass: "
-          Montage::SassBuilder.new(@project).write
+          Flexo::SassBuilder.new(@project).write
           say color("Done", :green)
-          say Montage::Commands::BLANK
+          say Flexo::Commands::BLANK
         end
       end
 
@@ -217,7 +217,7 @@ module Montage
                 while this source is #{width}px wide.
 
               MESSAGE
-              say Montage::Commands::BLANK
+              say Flexo::Commands::BLANK
             end
           end
         end
@@ -292,4 +292,4 @@ module Montage
 
     end # Generate
   end # Commands
-end # Montage
+end # Flexo

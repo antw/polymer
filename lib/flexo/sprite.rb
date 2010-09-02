@@ -1,4 +1,4 @@
-module Montage
+module Flexo
   # Represents a collection of images which will be used to make a sprite.
   #
   class Sprite
@@ -13,7 +13,7 @@ module Montage
     #   The name of each source image.
     # @param [Pathname] save_path
     #   The location at which the sprite should be saved.
-    # @param [Montage::Project] project
+    # @param [Flexo::Project] project
     #   The project to which the sprite belongs.
     # @param [Hash] options
     #   Extra options where you wish to override project defaults.
@@ -43,7 +43,7 @@ module Montage
     #   The vertical position of the source image.
     #
     def position_of(source)
-      source = source.name if source.is_a?(Montage::Source)
+      source = source.name if source.is_a?(Flexo::Source)
 
       unless sources.detect { |src| src.name == source }
         raise MissingSource,
@@ -80,13 +80,13 @@ module Montage
     #
     # If a file exists at the output path, it will be overwritten.
     #
-    # @raise [Montage::TargetNotWritable]
+    # @raise [Flexo::TargetNotWritable]
     #   Raised when the output directory can not be written to.
     #
     def write
       unless @save_path.dirname.writable?
         raise TargetNotWritable, <<-MESSAGE
-          Montage can't save the sprite in `#{@save_path.dirname.to_s}'
+          Flexo can't save the sprite in `#{@save_path.dirname.to_s}'
           as it isn't writable.
         MESSAGE
       end
@@ -121,5 +121,5 @@ module Montage
       montage.write("PNG32:#{@save_path}")
     end
 
-  end # Set
-end # Montage
+  end # Sprite
+end # Flexo

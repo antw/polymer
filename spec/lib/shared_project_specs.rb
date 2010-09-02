@@ -1,8 +1,8 @@
 shared_examples_for 'a project with correct paths' do
   # Requires:
   #
-  #   @project => Montage::Project
-  #   @helper  => Montage::Spec::ProjectHelper
+  #   @project => Flexo::Project
+  #   @helper  => Flexo::Spec::ProjectHelper
   #   @config  => Pathname (path to config file)
   #
   #   (optional)

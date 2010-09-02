@@ -1,4 +1,4 @@
-module Montage
+module Flexo
   module Commands
     extend self
 
@@ -22,7 +22,7 @@ module Montage
       HighLine.use_color = false if !STDOUT.tty? && !ENV.has_key?("AUTOTEST")
 
       OptionParser.new do |opts|
-        opts.banner = "Usage: montage [config file path] [options]"
+        opts.banner = "Usage: flexo [config file path] [options]"
 
         opts.on('-c', '--[no-]color', '--[no-]colour',
                 'Enables and disables colour output.') do |color|
@@ -31,12 +31,12 @@ module Montage
 
         opts.on('-f', '--force',
                 'Regenerate sprites even if no changes have been made.') do
-          Montage::Commands.config[:force] = true
+          Flexo::Commands.config[:force] = true
         end
 
         # opts.on('-q', '--quiet',
-        #         'Tell Montage to shut up. No messages sent to STDOUT.') do
-        #   Montage::Commands.config[:quiet] = true
+        #         'Tell Flexo to shut up. No messages sent to STDOUT.') do
+        #   Flexo::Commands.config[:quiet] = true
         # end
 
         opts.on_tail("-h", "--help", "Shows this message.") do
@@ -45,9 +45,9 @@ module Montage
           exit
         end
 
-        opts.on_tail("--version", "Print the current Montage version.") do
+        opts.on_tail("--version", "Print the current Flexo version.") do
           say BLANK
-          say "Montage v#{Montage::VERSION}"
+          say "Flexo v#{Flexo::VERSION}"
           exit
         end
       end.parse!(argv)
@@ -62,4 +62,4 @@ module Montage
     end
 
   end # Commands
-end # Montage
+end # Flexo

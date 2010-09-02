@@ -1,4 +1,4 @@
-module Montage
+module Flexo
   # Represents a directory in which it is expected that there be a
   # configuration file, and source images.
   class Project
@@ -16,13 +16,13 @@ module Montage
 
     # Returns the Paths instance for the project.
     #
-    # @return [Montage::Project::Paths]
+    # @return [Flexo::Project::Paths]
     #
     attr_reader :paths
 
     # Returns an Array containing all the Sprites defined in the project.
     #
-    # @return [Array<Montage::Sprite>]
+    # @return [Array<Flexo::Sprite>]
     #
     attr_reader :sprites
 
@@ -60,7 +60,7 @@ module Montage
 
       # All remaining config keys are sprite defintions.
       @sprites = config.map do |path, opts|
-        Montage::SpriteDefinition.new(self, path, opts).to_sprites
+        Flexo::SpriteDefinition.new(self, path, opts).to_sprites
       end.flatten
     end
 
@@ -69,7 +69,7 @@ module Montage
     # @param [String] name
     #   The name of the sprite to be retrieved.
     #
-    # @return [Montage::Sprite]
+    # @return [Flexo::Sprite]
     #
     def sprite(name)
       sprites.detect { |sprite| sprite.name == name }
@@ -122,11 +122,11 @@ module Montage
     class << self
 
       # Given a path to a directory, or config file, attempts to find the
-      # Montage root.
+      # Flexo root.
       #
       # If given a path to a file:
       #
-      #   * Montage assumes that the file is the configuration.
+      #   * Flexo assumes that the file is the configuration.
       #
       #   * The root directory is assumed to be the same directory as the one
       #     in which the configuration resides _unless_ the directory is
@@ -135,7 +135,7 @@ module Montage
       #
       # If given a path to a directory:
       #
-      #   * Montage will look for a .montage file.
+      #   * Flexo will look for a .flexo file.
       #
       #   * If a configuration couldn't be found, +find+ looks in the next
       #     directory up. It continues until it finds a valid project or runs
@@ -144,7 +144,7 @@ module Montage
       # @param [String, Pathname] path
       #   Path to the configuration or directory.
       #
-      # @return [Montage::Project]
+      # @return [Flexo::Project]
       #   Returns the project.
       #
       # @raise [MissingProject]
@@ -162,7 +162,7 @@ module Montage
           end
         end
 
-        raise MissingProject, "Montage couldn't find a project to work " \
+        raise MissingProject, "Flexo couldn't find a project to work " \
           "on at `#{path}'" unless config_path
 
         new(config_path)
@@ -170,12 +170,12 @@ module Montage
 
       private
 
-      # Looks for a .montage configuration file in the given directory.
+      # Looks for a .flexo configuration file in the given directory.
       #
       # @return [String]
       #
       def contains_config?(dir)
-        expected = (dir + '.montage')
+        expected = (dir + '.flexo')
         expected.file? and expected
       end
 
@@ -197,4 +197,4 @@ module Montage
 
     end # class << self
   end # Project
-end # Montage
+end # Flexo

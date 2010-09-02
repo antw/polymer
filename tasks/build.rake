@@ -18,34 +18,34 @@ task :release => :build do
     exit!
   end
 
-  sh "git commit --allow-empty -a -m 'Release #{Montage::VERSION}'"
-  sh "git tag v#{Montage::VERSION}"
+  sh "git commit --allow-empty -a -m 'Release #{Flexo::VERSION}'"
+  sh "git tag v#{Flexo::VERSION}"
   sh "git push origin master"
-  sh "git push origin v#{Montage::VERSION}"
+  sh "git push origin v#{Flexo::VERSION}"
 
   puts "Push to Rubygems.org with"
-  puts "  gem push pkg/montage-#{Montage::VERSION}.gem"
+  puts "  gem push pkg/flexo-#{Flexo::VERSION}.gem"
 end
 
 desc 'Builds the gem'
 task :build => :gemspec do
   sh "mkdir -p pkg"
-  sh "gem build montage.gemspec"
-  sh "mv montage-#{Montage::VERSION}.gem pkg"
+  sh "gem build flexo.gemspec"
+  sh "mv flexo-#{Flexo::VERSION}.gem pkg"
 end
 
 desc 'Create a fresh gemspec'
 task :gemspec => :validate do
-  gemspec_file = File.expand_path('../../montage.gemspec', __FILE__)
+  gemspec_file = File.expand_path('../../flexo.gemspec', __FILE__)
 
   # Read spec file and split out the manifest section.
   spec = File.read(gemspec_file)
   head, manifest, tail = spec.split("  # = MANIFEST =\n")
 
   # Replace name version and date.
-  replace_header head, :name,              'montage'
-  replace_header head, :rubyforge_project, 'montage'
-  replace_header head, :version,            Montage::VERSION
+  replace_header head, :name,              'flexo'
+  replace_header head, :rubyforge_project, 'flexo'
+  replace_header head, :version,            Flexo::VERSION
   replace_header head, :date,               Date.today.to_s
 
   # Determine file list from git ls-files.
@@ -66,9 +66,9 @@ task :gemspec => :validate do
 end
 
 task :validate do
-  unless Dir['lib/*'] - %w(lib/montage.rb lib/montage)
-    puts 'The lib/ directory should only contain a montage.rb file, and a ' \
-         'montage/ directory'
+  unless Dir['lib/*'] - %w(lib/flexo.rb lib/flexo)
+    puts 'The lib/ directory should only contain a flexo.rb file, and a ' \
+         'flexo/ directory'
     exit!
   end
 

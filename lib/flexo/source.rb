@@ -1,4 +1,4 @@
-module Montage
+module Flexo
   # Represents a single source file used in a sprite.
   #
   class Source
@@ -17,7 +17,7 @@ module Montage
     end
 
     def inspect # :nodoc
-      "#<Montage::Source #{@name}>"
+      "#<Flexo::Source #{@name}>"
     end
 
     # Returns the RMagick image instance representing the source.
@@ -43,4 +43,4 @@ module Montage
     end
 
   end # Source
-end # Montage
+end # Flexo

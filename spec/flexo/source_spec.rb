@@ -1,7 +1,7 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
-describe Montage::Source do
-  subject { Montage::Source }
+describe Flexo::Source do
+  subject { Flexo::Source }
 
   # --- image -----------------------------------------------------------------
 
@@ -9,22 +9,22 @@ describe Montage::Source do
 
   describe '#image' do
     before(:each) do
-      @helper = Montage::Spec::ProjectHelper.new
+      @helper = Flexo::Spec::ProjectHelper.new
       @helper.write_simple_config
       @helper.write_source('sprite_one/one', 100, 25)
     end
 
     it 'should return the Image instance path when the source file exists' do
-      source = Montage::Source.new(@helper.path_to_source('sprite_one/one'))
+      source = Flexo::Source.new(@helper.path_to_source('sprite_one/one'))
       source.image.should be_a(Magick::Image)
     end
 
     it 'should raise an error when the source file does not exist' do
       running = lambda {
-        Montage::Source.new(@helper.path_to_source('__invalid__')).image
+        Flexo::Source.new(@helper.path_to_source('__invalid__')).image
       }
 
-      running.should raise_error(Montage::MissingSource,
+      running.should raise_error(Flexo::MissingSource,
         /Couldn't find the source file/)
     end
   end

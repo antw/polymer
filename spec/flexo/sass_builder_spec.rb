@@ -1,7 +1,7 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
-describe Montage::SassBuilder do
-  subject { Montage::SassBuilder }
+describe Flexo::SassBuilder do
+  subject { Flexo::SassBuilder }
 
   # --- write ----------------------------------------------------------------
 
@@ -9,7 +9,7 @@ describe Montage::SassBuilder do
 
   describe '#write' do
     before(:each) do
-      @helper = Montage::Spec::ProjectHelper.new
+      @helper = Flexo::Spec::ProjectHelper.new
     end
 
     context 'with a project containing a single sprite and two sources' do
@@ -18,14 +18,14 @@ describe Montage::SassBuilder do
         @helper.write_source('only/one')
         @helper.write_source('only/two')
 
-        Montage::SassBuilder.new(@helper.project).write
+        Flexo::SassBuilder.new(@helper.project).write
 
         @sass_path = @helper.path_to_file(
-          'public/stylesheets/sass/_montage.sass')
+          'public/stylesheets/sass/_flexo.sass')
 
         if @sass_path.file?
           @sass = File.read(@helper.path_to_file(
-            'public/stylesheets/sass/_montage.sass'))
+            'public/stylesheets/sass/_flexo.sass'))
         else
           @sass = 'MISSING SASS FILE'
         end
@@ -63,7 +63,7 @@ describe Montage::SassBuilder do
       describe 'the generated mixins' do
         it 'should correctly position the first source' do
           sass = Sass::Engine.new(<<-SASS.unindent).render
-            @import #{@helper.project.paths.sass.realpath + '_montage.sass'}
+            @import #{@helper.project.paths.sass.realpath + '_flexo.sass'}
 
             .rule
               +only-sprite("one")
@@ -75,7 +75,7 @@ describe Montage::SassBuilder do
 
         it 'should correctly position the second source' do
           sass = Sass::Engine.new(<<-SASS.unindent).render
-            @import #{@helper.project.paths.sass.realpath + '_montage.sass'}
+            @import #{@helper.project.paths.sass.realpath + '_flexo.sass'}
 
             .rule
               +only-sprite("two")
@@ -87,7 +87,7 @@ describe Montage::SassBuilder do
 
         it 'should apply x-offsets' do
           sass = Sass::Engine.new(<<-SASS.unindent).render
-            @import #{@helper.project.paths.sass.realpath + '_montage.sass'}
+            @import #{@helper.project.paths.sass.realpath + '_flexo.sass'}
 
             .rule
               +only-sprite("one", 5px)
@@ -99,7 +99,7 @@ describe Montage::SassBuilder do
 
         it 'should apply y-offsets' do
           sass = Sass::Engine.new(<<-SASS.unindent).render
-            @import #{@helper.project.paths.sass.realpath + '_montage.sass'}
+            @import #{@helper.project.paths.sass.realpath + '_flexo.sass'}
 
             .rule
               +only-sprite("two", 0px, -10px)
@@ -120,14 +120,14 @@ describe Montage::SassBuilder do
           @helper.write_source(source)
         end
 
-        Montage::SassBuilder.new(@helper.project).write
+        Flexo::SassBuilder.new(@helper.project).write
 
         @sass_path = @helper.path_to_file(
-          'public/stylesheets/sass/_montage.sass')
+          'public/stylesheets/sass/_flexo.sass')
 
         if @sass_path.file?
           @sass = File.read(@helper.path_to_file(
-            'public/stylesheets/sass/_montage.sass'))
+            'public/stylesheets/sass/_flexo.sass'))
         else
           @sass = 'MISSING SASS FILE'
         end
@@ -185,12 +185,12 @@ describe Montage::SassBuilder do
         CONFIG
 
         @helper.write_source('only/one')
-        Montage::SassBuilder.new(@helper.project).write
+        Flexo::SassBuilder.new(@helper.project).write
       end
 
       it 'should save the Sass file' do
         @helper.path_to_file(
-          'public/sass/_montage.sass').should be_file
+          'public/sass/_flexo.sass').should be_file
       end
     end # with a project using a custom SASS location
 
@@ -206,7 +206,7 @@ describe Montage::SassBuilder do
         CONFIG
 
         @helper.write_source('only/one')
-        Montage::SassBuilder.new(@helper.project).write
+        Flexo::SassBuilder.new(@helper.project).write
       end
 
       it 'should save the Sass file' do
@@ -228,10 +228,10 @@ describe Montage::SassBuilder do
 
         @helper.write_source('only/one')
 
-        Montage::SassBuilder.new(@helper.project).write
+        Flexo::SassBuilder.new(@helper.project).write
 
         @sass = File.read(@helper.path_to_file(
-          'public/stylesheets/sass/_montage.sass'))
+          'public/stylesheets/sass/_flexo.sass'))
       end
 
       it 'should include the background statement' do

@@ -1,4 +1,4 @@
-require File.expand_path('../../spec_helper', __FILE__)
+require 'spec_helper'
 
 describe String do
   it 'should not do anything when there is no leading whitespace' do

@@ -6,7 +6,7 @@ everything will work as written... _yet_. Flexo's prececessor --
 [Montage][montage] -- should provide for most of your needs until Flexo
 is released.
 
-SYNOPSIS
+Synopsis
 --------
 
 Popularised by Dave Shea in an [A List Apart][ala], "sprite" images
@@ -47,7 +47,7 @@ Bender's "good" twin in Futurama.
 Flexo follows the rules of [Semantic Versioning][semver] and uses
 [YARD][yard] for API documentation.
 
-INSTALLATION
+Installation
 ------------
 
 The recommended way to install Flexo is with Rubygems:
@@ -69,12 +69,12 @@ If you wish to install Flexo from source:
 
 (Where "VERSION" is the current version of Flexo).
 
-FEATURE
--------
+Features
+--------
 
 Coming soon.
 
-USAGE
+Usage
 -----
 
 Coming soon.
@@ -88,7 +88,7 @@ Ward specs are run against:
 Flexo requires RMagick which presently rules out support for JRuby and
 Rubinius.
 
-CONTRIBUTING
+Contributing
 ------------
 
 * Fork the project, taking care not to get any in your eyes.
@@ -107,7 +107,7 @@ CONTRIBUTING
 * Send me a pull request. Bonus points for topic branches (although
   "everything is made up, and the points don't matter...").
 
-DETAILS
+Details
 -------
 
 **Source**

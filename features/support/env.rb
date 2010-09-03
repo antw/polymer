@@ -19,11 +19,15 @@ class Flexo::Spec::CucumberWorld
   # The CommandRunner instance used by the world to run commands.
   attr_reader :command
 
+  # A list of files whose attributes have been modified.
+  attr_reader :chmods
+
   # Helpers which should be passed through to the command.
   def_delegators :command, :status, :stdout, :stderr
 
   def initialize
     @command = Flexo::Spec::CommandRunner.new nil
+    @chmods  = {}
   end
 
   # Runs a command.
@@ -55,6 +59,11 @@ end # Flexo::Spec::CucumberWorld
 
 World do
   Flexo::Spec::CucumberWorld.new
+end
+
+After do
+  # Restore the attributes of any files which changed.
+  chmods.each { |path, mode| Pathname.new(path).chmod(mode) }
 end
 
 # Always clean up temporary project directories once finished.

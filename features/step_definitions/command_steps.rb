@@ -3,17 +3,21 @@
 
 # Steps ----------------------------------------------------------------------
 
-When /^I run "([^"]+)"$/ do |command|
+When /^I run "(.+)"$/ do |command|
   run(command)
+end
+
+When /^I delete the file (.*)$/ do |path|
+  command.path_to_file(path).unlink
 end
 
 # Results --------------------------------------------------------------------
 
-Then /^the output should contain "([^"]+)"$/ do |partial_output|
+Then /^the output should contain "(.+)"$/ do |partial_output|
   combined_output.should =~ compile_and_escape(partial_output)
 end
 
-Then /^the output should not contain "([^"]*)"$/ do |partial_output|
+Then /^the output should not contain "(.+)"$/ do |partial_output|
   combined_output.should_not =~ compile_and_escape(partial_output)
 end
 
@@ -25,7 +29,7 @@ Then /^the output should not contain:$/ do |partial_output|
   combined_output.should_not =~ compile_and_escape(partial_output)
 end
 
-Then /^the output should contain exactly "([^"]*)"$/ do |exact_output|
+Then /^the output should contain exactly "(.+)"$/ do |exact_output|
   combined_output.should == unescape(exact_output)
 end
 
@@ -53,18 +57,18 @@ Then /^the exit status should not be (\d+)$/ do |exit_status|
   status.should_not == exit_status.to_i
 end
 
-Then /^the stderr should contain "([^"]*)"$/ do |partial_output|
+Then /^the stderr should contain "(.+)"$/ do |partial_output|
   stderr.should =~ compile_and_escape(partial_output)
 end
 
-Then /^the stdout should contain "([^"]*)"$/ do |partial_output|
+Then /^the stdout should contain "(.+)"$/ do |partial_output|
   stdout.should =~ compile_and_escape(partial_output)
 end
 
-Then /^the stderr should not contain "([^"]*)"$/ do |partial_output|
+Then /^the stderr should not contain "(.+)"$/ do |partial_output|
   stderr.should_not =~ compile_and_escape(partial_output)
 end
 
-Then /^the stdout should not contain "([^"]*)"$/ do |partial_output|
+Then /^the stdout should not contain "(.+)"$/ do |partial_output|
   stdout.should_not =~ compile_and_escape(partial_output)
 end

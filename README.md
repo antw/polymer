@@ -1,17 +1,10 @@
 Flexo
 =====
 
-**Source**
-:  [http://github.com/antw/flexo][flexo]
-
-**Author**
-:  Anthony Williams
-
-**Copyright**
-:  2009-2010
-
-**License**
-:  BSD License
+This file is an example of [Readme Driven Development][rdd], and not
+everything will work as written... _yet_. Flexo's prececessor --
+[Montage][montage] -- should provide for most of your needs until Flexo
+is released.
 
 SYNOPSIS
 --------
@@ -57,18 +50,27 @@ Flexo follows the rules of [Semantic Versioning][semver] and uses
 INSTALLATION
 ------------
 
-To install with RubyGems, simply `gem install flexo`; Flexo, and it's
-dependencies, will be installed for you.
+The recommended way to install Flexo is with Rubygems:
 
-If you wish to install from source:
+    $ [sudo] gem install flexo
 
-    gem build flexo.gemspec
-    gem install --local flexo-VERSION.gem
+"Out of the box" Flexo will use the ChunkyPNG library to read and write
+images. This allows Flexo to run on both JRuby and Rubinius. In order
+to read foramts other than PNG requires that you have RMagick (and
+ImageMagick) installed on your system. However, you do not need to
+install RMagick immediately, however; Flexo will tell you to do so if
+you ask it to work on an image not supported by ChunkPNG.
+
+If you wish to install Flexo from source:
+
+    $ git clone http://github.com/antw/flexo.git && cd flexo
+    $ gem build flexo.gemspec
+    $ [sudo] gem install --local flexo-VERSION.gem
 
 (Where "VERSION" is the current version of Flexo).
 
-FEATURE LIST
-------------
+FEATURE
+-------
 
 Coming soon.
 
@@ -105,18 +107,32 @@ CONTRIBUTING
 * Send me a pull request. Bonus points for topic branches (although
   "everything is made up, and the points don't matter...").
 
-COPYRIGHT
----------
+DETAILS
+-------
+
+**Source**
+:  [http://github.com/antw/flexo][flexo]
+
+**Author**
+:  Anthony Williams
+
+**Copyright**
+:  2009-2010
+
+**License**
+:  BSD License
 
 Flexo &copy; 2009-2010 by [Anthony Williams](mailto:hi@antw.me).
-Licensed under the BSD license. Please see the LICENSE for more
-information.
+Flexo is free software, released under the BSD license. Please see the
+LICENSE file for more information.
 
 The sample sources in lib/flexo/templates/sources are courtesy of
 [Yusuke Kamiyamane][yusuke], whose extraordinary
 generocity in releasing three-thousand royalty-free icons cannot be
 stated enough.
 
+[rdd]:       http://tom.preston-werner.com/2010/08/23/readme-driven-development.html
+[montage]:   http://github.com/antw/montage
 [flexo]:     http://github.com/antw/flexo
 [ala]:       http://www.alistapart.com/articles/sprites
 [kin]:       http://github.com/antw/kin

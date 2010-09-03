@@ -34,16 +34,18 @@ class Flexo::Spec::CucumberWorld
   #
   # @param [String] to_run
   #   The command to be run, exactly as it would be on the command line.
+  # @param [Block] block
+  #   Yields the stdin.
   #
   # @return [Boolean]
   #   Returns true if the command exited with zero status, false if non-zero.
   #
-  def run(to_run)
+  def run(to_run, &block)
     if to_run =~ /^flexo(.*)$/
       to_run = "#{EXECUTABLE}#{$1} --no-color"
     end
 
-    @command.run(to_run)
+    @command.run(to_run, &block)
     @command.status == 0
   end
 

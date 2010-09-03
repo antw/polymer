@@ -72,3 +72,15 @@ end
 Then /^the stdout should not contain "(.+)"$/ do |partial_output|
   stdout.should_not =~ compile_and_escape(partial_output)
 end
+
+Then /^(.*) should be a file$/ do |path|
+  command.path_to_file(path).should be_file
+end
+
+Then /^the file (.+) should contain "(.+)"$/ do |path, partial_content|
+  command.path_to_file(path).read.should =~ compile_and_escape(partial_content)
+end
+
+Then /^the file (.+) should not contain "(.+)"$/ do |file, partial_content|
+  command.path_to_file(path).read.should_not =~ compile_and_escape(partial_content)
+end

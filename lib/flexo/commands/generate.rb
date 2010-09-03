@@ -77,7 +77,7 @@ module Flexo
       #
       def cache
         @_sprite_caches ||= begin
-          cache_path = @project.paths.root + '.flexo_cache'
+          cache_path = @project.paths.root + '.flexo-cache'
           cache_path.file? ? YAML.load_file(cache_path) || {} : {}
         end
       end
@@ -174,7 +174,7 @@ module Flexo
       # Step 3: Writes the cached digests to the cache file.
       #
       def write_cache!
-        cache_path = @project.paths.root + '.flexo_cache'
+        cache_path = @project.paths.root + '.flexo-cache'
 
         File.open(cache_path, 'w') do |cache_writer|
           cache_writer.puts YAML.dump(cache)

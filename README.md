@@ -39,10 +39,10 @@ with your sprites incredibly simple:
       #navigation a#products {
         background-position: 0 -40px; }
 
-Flexo was been split out from [Kin][kin] in 2009
-after it became clear that Merb was dead (R.I.P.), and a flexible image
-spriter was sorely needed on other projects. Flexo is named after
-Bender's "good" twin in Futurama.
+Flexo was split out from [Kin][kin] in 2009 after it became clear that
+Merb was dead (R.I.P.), and a flexible image spriter was sorely needed
+on other projects. Flexo is named after Bender's "good" twin in
+Futurama.
 
 Flexo follows the rules of [Semantic Versioning][semver] and uses
 [YARD][yard] for API documentation.

@@ -1,0 +1,8 @@
+-o documentation/
+-
+bin/*
+features/**/*.feature
+History.md
+LICENSE
+lib/**/*.rb
+README.md

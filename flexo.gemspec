@@ -36,6 +36,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec-core',         '>= 2.0.0.beta.12'
   s.add_development_dependency 'rspec-expectations', '>= 2.0.0.beta.12'
   s.add_development_dependency 'rspec-mocks',        '>= 2.0.0.beta.12'
+  s.add_development_dependency 'cucumber',           '>= 0.8.5'
   s.add_development_dependency 'open4',              '>= 1.0'
   s.add_development_dependency 'haml',               '>= 3.0.0'
 

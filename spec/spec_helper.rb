@@ -5,7 +5,6 @@ require 'tmpdir'
 
 require 'rubygems'
 require 'rspec/core'
-require 'rspec/autorun'
 
 require 'flexo'
 require 'sass'

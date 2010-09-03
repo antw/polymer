@@ -22,7 +22,7 @@ rakefile.compiled.rbc
 .bundle
 .yardoc
 coverage
-doc
+documentation
 Gemfile.lock
 measurements
 pkg

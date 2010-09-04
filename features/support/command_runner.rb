@@ -2,8 +2,6 @@ require 'rbconfig'
 require 'tempfile'
 require 'open4'
 
-require Pathname(__FILE__).dirname + 'project_helper'
-
 module Flexo
   module Spec
     # Runs flexo commands in a subprocess and reports back on their exit

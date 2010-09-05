@@ -45,37 +45,38 @@ Gem::Specification.new do |s|
 
   # = MANIFEST =
   s.files = %w[
+    Gemfile
     History.md
     LICENSE
     README.md
     Rakefile
-    bin/montage
-    lib/montage.rb
-    lib/montage/commands.rb
-    lib/montage/commands/generate.rb
-    lib/montage/commands/init.rb
-    lib/montage/core_ext.rb
-    lib/montage/project.rb
-    lib/montage/sass_builder.rb
-    lib/montage/source.rb
-    lib/montage/sprite.rb
-    lib/montage/sprite_definition.rb
-    lib/montage/templates/montage.yml
-    lib/montage/templates/sass_mixins.erb
-    lib/montage/templates/sources/one/book.png
-    lib/montage/templates/sources/one/box-label.png
-    lib/montage/templates/sources/one/calculator.png
-    lib/montage/templates/sources/one/calendar-month.png
-    lib/montage/templates/sources/one/camera.png
-    lib/montage/templates/sources/one/eraser.png
-    lib/montage/templates/sources/two/inbox-image.png
-    lib/montage/templates/sources/two/magnet.png
-    lib/montage/templates/sources/two/newspaper.png
-    lib/montage/templates/sources/two/television.png
-    lib/montage/templates/sources/two/wand-hat.png
-    lib/montage/templates/sources/two/wooden-box-label.png
-    lib/montage/version.rb
-    montage.gemspec
+    bin/flexo
+    flexo.gemspec
+    lib/flexo.rb
+    lib/flexo/commands.rb
+    lib/flexo/commands/generate.rb
+    lib/flexo/commands/init.rb
+    lib/flexo/core_ext.rb
+    lib/flexo/project.rb
+    lib/flexo/sass_builder.rb
+    lib/flexo/source.rb
+    lib/flexo/sprite.rb
+    lib/flexo/sprite_definition.rb
+    lib/flexo/templates/flexo.yml
+    lib/flexo/templates/sass_mixins.erb
+    lib/flexo/templates/sources/one/book.png
+    lib/flexo/templates/sources/one/box-label.png
+    lib/flexo/templates/sources/one/calculator.png
+    lib/flexo/templates/sources/one/calendar-month.png
+    lib/flexo/templates/sources/one/camera.png
+    lib/flexo/templates/sources/one/eraser.png
+    lib/flexo/templates/sources/two/inbox-image.png
+    lib/flexo/templates/sources/two/magnet.png
+    lib/flexo/templates/sources/two/newspaper.png
+    lib/flexo/templates/sources/two/television.png
+    lib/flexo/templates/sources/two/wand-hat.png
+    lib/flexo/templates/sources/two/wooden-box-label.png
+    lib/flexo/version.rb
   ]
   # = MANIFEST =
 

@@ -53,9 +53,7 @@ module Flexo
 
       # Determine if the config path is a standard .flexo file, or a Windows
       # flexo.yml, and adjust the cache path accordinly.
-      #
-      # TODO Replace (\w+) with flexo once custom config support is removed.
-      cache_path = config_path.to_s.gsub(/([^\/\\\.]+)(\.yml)?$/, '\1-cache\2')
+      cache_path = config_path.to_s.gsub(/flexo(\.yml)?$/, 'flexo-cache\1')
       cache_path = Pathname.new(cache_path)
 
       @paths = Paths.new(

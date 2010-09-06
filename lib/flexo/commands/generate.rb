@@ -17,19 +17,7 @@ module Flexo
       #   The arguments given on the command line.
       #
       def self.run(argv)
-        # If there are any arguments, the first one is a path to a flexo
-        # config file.
-        if argv.first and not Pathname.new(argv.first).file?
-          say color(<<-ERROR.compress_lines, :red)
-            Couldn't find `#{argv.first}' configuration file. Are you
-            sure you got the path right?
-          ERROR
-
-          exit(1)
-        end
-
-
-        new(Flexo::Project.find(argv.first || Dir.pwd),
+        new(Flexo::Project.find(Dir.pwd),
             Flexo::Commands.config[:force]).run!
 
       rescue Flexo::MissingProject

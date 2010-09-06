@@ -12,7 +12,7 @@ module Flexo
     }
 
     # Stores all the paths the project needs.
-    Paths = Struct.new(:root, :config, :sass, :url)
+    Paths = Struct.new(:root, :config, :sass, :url, :cache)
 
     # Returns the Paths instance for the project.
     #
@@ -51,9 +51,17 @@ module Flexo
       sass_path = config.delete("config.sass") { DEFAULTS[:sass] }
       sass_path = sass_path.is_a?(String) ? root_path + sass_path : sass_path
 
+      # Determine if the config path is a standard .flexo file, or a Windows
+      # flexo.yml, and adjust the cache path accordinly.
+      #
+      # TODO Replace (\w+) with flexo once custom config support is removed.
+      cache_path = config_path.to_s.gsub(/([^\/\\\.]+)(\.yml)?$/, '\1-cache\2')
+      cache_path = Pathname.new(cache_path)
+
       @paths = Paths.new(
         root_path, config_path, sass_path,
-        config.delete('config.url') { DEFAULTS[:url] }
+        config.delete('config.url') { DEFAULTS[:url] },
+        cache_path
       )
 
       @padding = (config.delete('config.padding') || 20).to_i

@@ -42,6 +42,7 @@ describe Flexo::Project do
 
         @project = Flexo::Project.find(@helper.path_to_file('flexo.yml'))
         @config  = @helper.path_to_file('flexo.yml')
+        @cache   = @helper.path_to_file('flexo-cache.yml')
       end
 
       it_should_behave_like 'a project with correct paths'
@@ -84,6 +85,7 @@ describe Flexo::Project do
           @helper.path_to_file('settings/sprites.yml'))
 
         @config  = @helper.path_to_file('settings/sprites.yml')
+        @cache   = @helper.path_to_file('settings/sprites-cache.yml')
         @root    = @helper.path_to_file('custom_root')
       end
 
@@ -103,6 +105,7 @@ describe Flexo::Project do
           @helper.path_to_file('settings/sprites.yml'))
 
         @config  = @helper.path_to_file('settings/sprites.yml')
+        @cache   = @helper.path_to_file('settings/sprites-cache.yml')
         @root    = @helper.path_to_file('custom_root')
       end
 

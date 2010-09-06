@@ -8,22 +8,19 @@ require 'optparse'
 require 'rubygems' unless ENV['NORUBYGEMS']
 
 require 'flexo'
-require 'flexo/commands'
-
 require 'highline/import'
 
 module Kernel
   def_delegators :$terminal, :color
 end
 
-args = Flexo::Commands.parse_options!(ARGV.dup)
-puts
-
 case ARGV[0]
   when 'init'
-    require 'flexo/commands/init'
-    Flexo::Commands::Init.run(args)
+    require 'flexo/cli'
+    Flexo::CLI.start
   else
+    require 'flexo/commands'
     require 'flexo/commands/generate'
+    args = Flexo::Commands.parse_options!(ARGV.dup)
     Flexo::Commands::Generate.run(args)
 end

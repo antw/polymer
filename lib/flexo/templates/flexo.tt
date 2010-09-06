@@ -14,8 +14,8 @@
   # begin with a / in which case they are absolute. Add as many
   # sprite definitions as you need.
 
-  "<sources>/:name/*.{png,jpg,jpeg,gif}":
-    to: "<sprites>/:name.png"
+  "<%= config[:sources] %>/:name/*.{png,jpg,jpeg,gif}":
+    to: "<%= config[:sprites] %>/:name.png"
 
   # You can override any of the default settings on a per-sprite
   # basis. For example... (these are the defaults)
@@ -32,5 +32,5 @@
 
   # # Alternatively, change the default settings for all sprites:
   #
-  # config.url: "/omicron_persei_8/sprites"
+  # config.url: "/omicron-persei-8/sprites"
   # config.sass: false

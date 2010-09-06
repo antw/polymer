@@ -33,6 +33,7 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency     'rmagick',            '>= 2.12'
   s.add_runtime_dependency     'highline',           '>= 1.5'
+  s.add_runtime_dependency     'thor',               '>= 0.14.0'
   s.add_development_dependency 'rspec-core',         '>= 2.0.0.beta.12'
   s.add_development_dependency 'rspec-expectations', '>= 2.0.0.beta.12'
   s.add_development_dependency 'rspec-mocks',        '>= 2.0.0.beta.12'

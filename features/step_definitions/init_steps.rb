@@ -30,6 +30,10 @@ Then /^the fixture sources should exist in (.*)$/ do |directory|
   end
 end
 
+Then /^the fixture sources should not exist$/ do
+  command.path_to_file('public/images/sprites').should_not be_directory
+end
+
 Then /^\.flexo should expect default sources in (.*)$/ do |directory|
   command.path_to_file('.flexo').read.should =~
     compile_and_escape("#{directory}/:name/*.{png,jpg,jpeg,gif}")

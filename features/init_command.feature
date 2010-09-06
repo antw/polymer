@@ -31,3 +31,9 @@ Feature: The init command
       And .flexo should expect default sources in src/sprites
       And .flexo should expect default sprites to be saved in public/other
       And the fixture sources should exist in src/sprites
+
+  Scenario: Initializing without example images
+    When I run "flexo init --no-examples"
+    Then the exit status should be 0
+      And .flexo should be a file
+      And the fixture sources should not exist

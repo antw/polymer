@@ -15,7 +15,7 @@ module Kernel
 end
 
 case ARGV[0]
-  when 'init'
+  when 'init', 'help'
     require 'flexo/cli'
     Flexo::CLI.start
   else

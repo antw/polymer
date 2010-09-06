@@ -19,10 +19,16 @@ module Flexo
 
     # The directory, relative to the project root, where the genrated sprite
     # files are to be saved.
-    method_option :sprites, :type => :string, :default => 'public/images'
+    method_option :sprites, :type => :string, :default => 'public/images',
+      :desc => 'Default location to which generated sprites are saved'
 
     # The directory in which source files are found.
-    method_option :sources, :type => :string, :default => '<sprites>/sprites'
+    method_option :sources, :type => :string, :default => '<sprites>/sprites',
+      :desc => 'Default location of source images'
+
+    # Disable copying example sources.
+    method_option 'no-examples', :type => :boolean, :default => false,
+      :desc => "Disables copying of example source files"
 
     def init
       if File.exists?('.flexo')
@@ -37,8 +43,11 @@ module Flexo
         :sources => options[:sources].gsub(/<sprites>/, options[:sprites])
       }
 
-      template  'flexo.tt', project_dir + '.flexo', config
-      directory 'sources',  project_dir + config[:sources]
+      template 'flexo.tt', project_dir + '.flexo', config
+
+      unless options['no-examples']
+        directory 'sources',  project_dir + config[:sources]
+      end
 
       say_status '', '-------------------------'
       say_status '', 'Your project was created!'

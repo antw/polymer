@@ -34,3 +34,5 @@
   #
   # config.url: "/omicron-persei-8/sprites"
   # config.sass: false
+
+# vim: set filetype=yaml :

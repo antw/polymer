@@ -19,20 +19,35 @@ module Flexo
       end
 
       def project_dir
-        self.class.project_dir
+        @project_dir || self.class.project_dir
       end
 
       def self.cleanup!
         FileUtils.remove_entry_secure(project_dir) if project_dir.directory?
       end
 
+      def cleanup!
+        if @project_dir and @project_dir.directory?
+          FileUtils.remove_entry_secure(@project_dir)
+        end
+      end
+
       # ----------------------------------------------------------------------
 
-      def initialize
+      # Creates a new project helper.
+      #
+      # @param [Pathname] project_dir
+      #   An optional directory in which the helper should create a project.
+      #   This is normally handled automatically; if you supply a directory
+      #   path, remember to call cleanup! once done.
+      #
+      def initialize(project_dir = nil)
+        @project_dir = project_dir unless project_dir.nil?
+
         # Wipe out the temporary directory to ensure
         # we have a clean state before each run.
-        self.class.cleanup!
-        project_dir.mkpath
+        self.class.cleanup! unless @project_dir
+        self.project_dir.mkpath
 
         self.sources_path = "public/images/sprites"
         self.sprites_path = "public/images"

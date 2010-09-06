@@ -23,25 +23,6 @@ module Flexo
 
       # ----------------------------------------------------------------------
 
-      # Creates a new CommandRunner instance.
-      #
-      # @param [String] command
-      #   The command to be run (exactly as it would be on the command-line).
-      #
-      def initialize(command)
-        super()
-        @command = command
-      end
-
-      # Runs the command in the test directory.
-      #
-      # @return [CommandRunner]
-      #   Returns self.
-      #
-      def run!(&block)
-        run(@command, &block)
-      end
-
       # Runs the given command in the test directory.
       #
       # @param [String] command
@@ -105,34 +86,5 @@ module Flexo
       end
 
     end # CommandRunner
-
-    # Runs the flexo init command, providing the command with the various
-    # inputs it wants.
-    #
-    class InitCommandRunner < CommandRunner
-      # Creates a new InitCommandRunner instance.
-      #
-      # @param [Hash] responses
-      #   Takes inputs to be given to the highline GUI. Accepts :sources and
-      #   :sprites
-      #
-      def initialize(responses = {})
-        super 'flexo init'
-        @responses = responses
-      end
-
-      # Runs the command in the test directory.
-      #
-      # @return [InitCommandRunner]
-      #   Returns self.
-      #
-      def run!
-        super do |stdin|
-          stdin.puts @responses.fetch(:sprites, "\n")
-          stdin.puts @responses.fetch(:sources, "\n")
-        end
-      end
-    end
-
   end # Spec
 end # Flexo

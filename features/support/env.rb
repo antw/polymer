@@ -29,7 +29,7 @@ class Flexo::Spec::CucumberWorld
   def_delegators :command, :status, :stdout, :stderr
 
   def initialize
-    @command = Flexo::Spec::CommandRunner.new nil
+    @command = Flexo::Spec::CommandRunner.new
     @chmods  = {}
   end
 
@@ -60,6 +60,29 @@ class Flexo::Spec::CucumberWorld
     stdout + (stderr == '' ? '' : "\n#{'-'*70}\n#{stderr}")
   end
 
+  def create_default_project!
+    self.class.create_default_project! @command.project_dir
+  end
+
+  # --- Class Methods --------------------------------------------------------
+
+  # A sample project with a configuration only.
+  def self.create_default_project!(to)
+    unless defined? @default_project
+      path = Pathname.new(Dir.mktmpdir)
+
+      @default_project = Flexo::Spec::CommandRunner.new(path)
+      @default_project.run('flexo init --no-examples')
+    end
+
+    FileUtils.cp_r(@default_project.project_dir.to_s + '/.', to)
+  end
+
+  # Returns the default project or nil if one has not been used.
+  def self.default_project
+    @default_project
+  end
+
 end # Flexo::Spec::CucumberWorld
 
 World do
@@ -74,4 +97,7 @@ end
 # Always clean up temporary project directories once finished.
 at_exit do
   Flexo::Spec::ProjectHelper.cleanup!
+
+  default_project = Flexo::Spec::CucumberWorld.default_project
+  default_project and default_project.cleanup!
 end

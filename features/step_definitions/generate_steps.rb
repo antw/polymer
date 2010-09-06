@@ -2,7 +2,8 @@
 
 Given /^I have a default project$/ do
   # TODO Run flexo init, and remove the default sources.
-  command.write_simple_config
+  #command.write_simple_config
+  create_default_project!
 end
 
 Given /^I have a project with config:$/ do |config|

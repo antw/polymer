@@ -22,7 +22,20 @@ describe Flexo::Project do
       it_should_behave_like 'a project with correct paths'
     end # when given a project root with .flexo in the root
 
-    describe 'when given a project subdirectory' do
+    describe 'when given a project root with flexo.yml in the root' do
+      before(:all) do
+        @helper = Flexo::Spec::ProjectHelper.new
+        @helper.write_simple_config('flexo.yml')
+
+        @project = Flexo::Project.find(@helper.project_dir)
+        @config  = @helper.path_to_file('flexo.yml')
+        @cache   = @helper.path_to_file('flexo-cache.yml')
+      end
+
+      it_should_behave_like 'a project with correct paths'
+    end # when given a project root with flexo.yml in the root
+
+    describe 'when given a project subdirectory with .flexo in the root' do
       before(:all) do
         @helper = Flexo::Spec::ProjectHelper.new
         @helper.mkdir('sub/sub')
@@ -33,9 +46,35 @@ describe Flexo::Project do
       end
 
       it_should_behave_like 'a project with correct paths'
-    end # when given a project subdirectory
+    end # when given a project subdirectory with .flexo in the root
 
-    describe 'when given a configuration file in the root' do
+    describe 'when given a project subdirectory with flexo.yml in the root' do
+      before(:all) do
+        @helper = Flexo::Spec::ProjectHelper.new
+        @helper.mkdir('sub/sub')
+        @helper.write_simple_config('flexo.yml')
+
+        @project = Flexo::Project.find(@helper.project_dir + 'sub/sub')
+        @config  = @helper.path_to_file('flexo.yml')
+        @cache   = @helper.path_to_file('flexo-cache.yml')
+      end
+
+      it_should_behave_like 'a project with correct paths'
+    end # when given a project subdirectory with flexo.yml in the root
+
+    describe 'when given a standard configuration file' do
+      before(:all) do
+        @helper = Flexo::Spec::ProjectHelper.new
+        @helper.write_simple_config('.flexo')
+
+        @project = Flexo::Project.find(@helper.path_to_file('.flexo'))
+        @config  = @helper.path_to_file('.flexo')
+      end
+
+      it_should_behave_like 'a project with correct paths'
+    end # when given a standard configuration file
+
+    describe 'when given a Windows configuration file' do
       before(:all) do
         @helper = Flexo::Spec::ProjectHelper.new
         @helper.write_simple_config('flexo.yml')
@@ -46,7 +85,7 @@ describe Flexo::Project do
       end
 
       it_should_behave_like 'a project with correct paths'
-    end # when given a configuration file in the root
+    end # when given a Windows configuration file
 
     describe 'when the config file specifies custom directories' do
       before(:all) do
@@ -70,46 +109,6 @@ describe Flexo::Project do
       it 'should set the URL' do
         @project.paths.url.should == 'custom/images/:name'
       end
-    end
-
-    describe 'when the config file specifies a custom root' do
-      before(:all) do
-        @helper = Flexo::Spec::ProjectHelper.new
-        @helper.write_config 'settings/sprites.yml', <<-CONFIG
-        ---
-          config.root: "../custom_root"
-
-        CONFIG
-
-        @project = Flexo::Project.find(
-          @helper.path_to_file('settings/sprites.yml'))
-
-        @config  = @helper.path_to_file('settings/sprites.yml')
-        @cache   = @helper.path_to_file('settings/sprites-cache.yml')
-        @root    = @helper.path_to_file('custom_root')
-      end
-
-      it_should_behave_like 'a project with correct paths'
-    end
-
-    describe 'when the config file specifies a custom absolute root' do
-      before(:all) do
-        @helper = Flexo::Spec::ProjectHelper.new
-        @helper.write_config 'settings/sprites.yml', <<-CONFIG
-        ---
-          config.root: "#{@helper.path_to_file('custom_root')}"
-
-        CONFIG
-
-        @project = Flexo::Project.find(
-          @helper.path_to_file('settings/sprites.yml'))
-
-        @config  = @helper.path_to_file('settings/sprites.yml')
-        @cache   = @helper.path_to_file('settings/sprites-cache.yml')
-        @root    = @helper.path_to_file('custom_root')
-      end
-
-      it_should_behave_like 'a project with correct paths'
     end
 
     describe 'when the config file specifies not to generate Sass' do

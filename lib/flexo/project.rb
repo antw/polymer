@@ -45,7 +45,7 @@ module Flexo
     def initialize(config_path)
       config_path = Pathname.new(config_path)
       config      = YAML.load_file(config_path)
-      root_path   = determine_project_root(config_path, config)
+      root_path   = config_path.dirname
 
       # Sass path may be a string representing a path, or `false`.
       sass_path = config.delete("config.sass") { DEFAULTS[:sass] }
@@ -66,7 +66,7 @@ module Flexo
 
       @padding = (config.delete('config.padding') || 20).to_i
 
-      # All remaining config keys are sprite defintions.
+      # All remaining entries are sprite defintions.
       @sprites = config.map do |path, opts|
         Flexo::SpriteDefinition.new(self, path, opts).to_sprites
       end.flatten
@@ -101,106 +101,43 @@ module Flexo
       value.is_a?(String) ? root + value : value
     end
 
-    # Attempts to find the project root for the configuration file. If the
-    # config file is in a directory called 'config' then the project root is
-    # assumed to be one level up.
-    #
-    # @param [Pathname] config_path  The path to the config file.
-    # @param [Hash]     config       The project configuration.
-    #
-    # @return [Pathname]
-    #
-    def determine_project_root(config_path, config)
-      config_dir = config_path.dirname
-
-      if config.has_key?('config.root')
-        root_dir = Pathname.new(config.delete('config.root'))
-        root_dir.absolute? ? root_dir : (config_dir + root_dir)
-      else
-        if config_dir.split.last.to_s == 'config'
-          config_dir + '..'
-        else
-          config_dir
-        end
-      end
-    end
-
     # === Class Methods ======================================================
 
     class << self
 
-      # Given a path to a directory, or config file, attempts to find the
-      # Flexo root.
+      # Given a path to a directory, +find+ attempts to locate a suitable
+      # configuration file by looking for a ".flexo" or "flexo.yml" file. If
+      # no such file is found in the given directory, it ascends the directory
+      # structure until one is found, or it runs out of paths to check.
       #
-      # If given a path to a file:
+      # If given a path to a file, +find+ assumes that this file is the config
+      # and simply returns it.
       #
-      #   * Flexo assumes that the file is the configuration.
-      #
-      #   * The root directory is assumed to be the same directory as the one
-      #     in which the configuration resides _unless_ the directory is
-      #     called 'config', in which case the root is considered to be the
-      #     parent directory.
-      #
-      # If given a path to a directory:
-      #
-      #   * Flexo will look for a .flexo file.
-      #
-      #   * If a configuration couldn't be found, +find+ looks in the next
-      #     directory up. It continues until it finds a valid project or runs
-      #     out of parent directories.
-      #
-      # @param [String, Pathname] path
-      #   Path to the configuration or directory.
+      # @param [Pathname, String] path
+      #   The path to the directory or confiration file.
       #
       # @return [Flexo::Project]
-      #   Returns the project.
+      #   Returns the Project representing the found configuration.
       #
       # @raise [MissingProject]
-      #   Raised when a project directory couldn't be found.
+      #   Raised when no project directory could be found.
       #
       def find(path)
-        path = Pathname(path).expand_path
-        config_path, root_path = nil, nil
+        path, config_path = Pathname.new(path).expand_path, nil
+        return new(path) if path.file?
 
-        if path.file?
-          config_path = path
-        elsif path.directory?
-          path.ascend do |directory|
-            break if config_path = contains_config?(directory)
+        path.ascend do |directory|
+          if (dot_flexo = directory + '.flexo').file?
+            break config_path = dot_flexo
+          elsif (flexo_yml = directory + 'flexo.yml').file?
+            break config_path = flexo_yml
           end
         end
 
         raise MissingProject, "Flexo couldn't find a project to work " \
-          "on at `#{path}'" unless config_path
+          "on at `#{path.to_s}'" unless config_path
 
         new(config_path)
-      end
-
-      private
-
-      # Looks for a .flexo configuration file in the given directory.
-      #
-      # @return [String]
-      #
-      def contains_config?(dir)
-        expected = (dir + '.flexo')
-        expected.file? and expected
-      end
-
-      # Attempts to find the project root for the configuration file. If the
-      # config file is in a directory called 'config' then the project root is
-      # assumed to be one level up.
-      #
-      # @return [String]
-      #
-      def find_root(config)
-        config_dir = config.dirname
-
-        if config_dir.split.last.to_s == 'config'
-          (config_dir + '..').expand_path
-        else
-          config_dir
-        end
       end
 
     end # class << self

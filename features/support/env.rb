@@ -44,10 +44,6 @@ class Flexo::Spec::CucumberWorld
   #   Returns true if the command exited with zero status, false if non-zero.
   #
   def run(to_run, &block)
-    if to_run =~ /^flexo(.*)$/
-      to_run = "#{EXECUTABLE}#{$1} --no-color"
-    end
-
     @command.run(to_run, &block)
     @command.status == 0
   end

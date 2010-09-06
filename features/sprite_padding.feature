@@ -1,3 +1,4 @@
+@flexo-generate
 Feature: Setting the transparent padding between source images
 
   In order to make sprites more useable where the size of an element is large

@@ -1,3 +1,4 @@
+@flexo-version
 Feature: Showing the Flexo version
 
   In order that I can find out how recent my copy of Flexo is

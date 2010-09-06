@@ -1,3 +1,4 @@
+@flexo-generate
 Feature: Sass mixin files
 
   In order to make Flexo awesome

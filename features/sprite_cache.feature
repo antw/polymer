@@ -1,3 +1,4 @@
+@flexo-generate
 Feature: The sprite cache
 
   Since optimising sprites can take a while

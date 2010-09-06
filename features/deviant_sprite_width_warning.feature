@@ -1,3 +1,4 @@
+@flexo-generate
 Feature: Warning about sprites with wildly varying widths
 
   Since sprites are as wide as their widest source

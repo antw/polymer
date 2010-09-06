@@ -1,3 +1,4 @@
+@flexo-generate
 Feature: Generating sprites with Flexo
 
   In order to create sprites

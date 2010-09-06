@@ -40,8 +40,8 @@ module Flexo
       template  'flexo.tt', project_dir + '.flexo', config
       directory 'sources',  project_dir + config[:sources]
 
-      say_status '', '-' * 25
-      say_status '', "Your project was created!"
+      say_status '', '-------------------------'
+      say_status '', 'Your project was created!'
     end
 
     # ------------------------------------------------------------------------

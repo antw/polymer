@@ -27,9 +27,9 @@ with your sprites incredibly simple:
 
       #navigation
         a#home, a#products
-          +main-sprite("home")
+          +flexo("main/home")
         a#products
-          +main-sprite-pos("products")
+          +flexo-pos("main/products")
 
     Generated CSS:
 

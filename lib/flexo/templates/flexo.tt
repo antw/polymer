@@ -1,6 +1,5 @@
 ---
 
-  config.root: "."
   config.sass: "public/stylesheets/sass"
   config.url:  "/images/:filename"
 

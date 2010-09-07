@@ -116,9 +116,9 @@ module Flexo
       #process Processors::CSS,        project
 
       # Find sprites with deviant-width sources.
-      #sprites.each do |sprite|
-        #process Processors::Deviants, sprite
-      #end
+      sprites.each do |sprite|
+        process Processors::Deviants, sprite
+      end
 
       # Finish by writing the new cache.
       File.open(project.paths.cache, 'w') do |cache_file|

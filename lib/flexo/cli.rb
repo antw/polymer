@@ -178,6 +178,15 @@ module Flexo
       exit 1
     end
 
+    # --- version ------------------------------------------------------------
+
+    desc 'version', "Shows the version of Flexo you're using"
+    map '--version' => :version
+
+    def version
+      say "Flexo #{Flexo::VERSION}"
+    end
+
     private # ----------------------------------------------------------------
 
     # Given a processor class, runs it with the second argument as the

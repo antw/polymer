@@ -45,8 +45,13 @@ module Flexo::Processors
       montage.crop!(0, 0, 0, (montage.first.rows) - sprite.padding)
       montage.write("PNG32:#{sprite.save_path}")
 
-      [ 'generated', sprite.name, :green ]
+      true
     end # self.process
+
+    # Formats a say_status message.
+    def self.format_success_message(sprite)
+      [ 'generated', sprite.name, :green ]
+    end
 
   end
 end # Flexo::Processors

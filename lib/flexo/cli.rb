@@ -94,8 +94,8 @@ module Flexo
       sprites = project.sprites.select do |sprite|
         if sprites.empty? or sprites.include?(sprite.name)
           # The user specified no sprites, or this sprite was requested.
-          if (digest = sprite.digest) != cache[sprite.name] or options[:force] or
-                not sprite.save_path.file?
+          if (digest = sprite.digest) != cache[sprite.name] or
+                options[:force] or not sprite.save_path.file?
             # Digest is different, user is forcing update or sprite file
             # has been deleted.
             cache[sprite.name] = digest
@@ -192,19 +192,27 @@ module Flexo
     # Given a processor class, runs it with the second argument as the
     # paramter to Processor.process. Handles callbacks where used.
     #
-    # @param [Class, Object] processor_class
+    # @param [Class, Object] processor
     #   The Flexo::Processor to be called.
-    # @param [Object] processor_param
-    #   The parameter to be passed to +process+.
+    # @param [Object] thing
+    #   The "thing" being processed.
     #
-    def process(processor_class, processor_param)
-      if processor_class.respond_to?(:ui_before_message)
-        say_status *processor_class.ui_before_message(processor_param)
+    def process(processor, thing)
+      processor_message(:before, processor, thing)
+      callback = processor.process(thing) ? :success : :failure
+      processor_message(callback, processor, thing)
+    end
+
+    # Runs a callback method on a given processor. If the method doesn't exist
+    # nothing happens. As long as the method doesn't return nil, +say+ or
+    # +say_status+ will be called with the output.
+    #
+    def processor_message(callback, processor, thing)
+      method = :"format_#{callback}_message"
+
+      if processor.respond_to?(method) and msg = processor.send(method, thing)
+        msg.length == 3 ? say_status(*msg) : say(*msg)
       end
-
-      result = processor_class.process processor_param
-
-      say_status *result if result.is_a?(Array)
     end
 
     # ------------------------------------------------------------------------

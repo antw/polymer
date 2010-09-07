@@ -7,6 +7,15 @@ module Flexo
     include Thor::Actions
 
     # init -------------------------------------------------------------------
+    class_option 'no-color', :type => :boolean, :default => false,
+      :desc => 'Disable colours in output'
+
+    def initialize(*args)
+      super
+      self.shell = Thor::Shell::Basic.new if options['no-color']
+    end
+
+    # --- init ---------------------------------------------------------------
 
     desc 'init', 'Generates the files necessary to use Flexo'
 

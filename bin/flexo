@@ -4,7 +4,6 @@ unless $:.include? File.expand_path('../../lib', __FILE__)
   $:.unshift File.expand_path('../../lib', __FILE__)
 end
 
-require 'rubygems' unless ENV['NORUBYGEMS']
 require 'flexo'
 
 case ARGV[0]

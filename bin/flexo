@@ -5,21 +5,6 @@ unless $:.include? File.expand_path('../../lib', __FILE__)
 end
 
 require 'flexo'
+require 'flexo/cli'
 
-case ARGV[0]
-  when 'init', 'help', 'generate'
-    require 'flexo/cli'
-    Flexo::CLI.start
-  else
-    require 'optparse'
-    require 'highline/import'
-
-    module Kernel
-      def_delegators :$terminal, :color
-    end
-
-    require 'flexo/commands'
-    require 'flexo/commands/generate'
-    args = Flexo::Commands.parse_options!(ARGV.dup)
-    Flexo::Commands::Generate.run(args)
-end
+Flexo::CLI.start

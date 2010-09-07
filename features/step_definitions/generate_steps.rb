@@ -39,11 +39,11 @@ end
 
 Then /^the "(.*)" sprite should have been (?:re-)?generated$/ do |sprite|
   Then %[the "#{sprite}" sprite should exist]
-  Then %[the stdout should contain "Generating "#{sprite}": Done"]
+  Then %[the stdout should contain "generated  #{sprite}"]
 end
 
-Then /^the "(.*)" sprite should not have been re-generated$/ do |sprite|
-  Then %[the stdout should contain "Generating "#{sprite}": Unchanged; ignoring"]
+Then /^the "(.*)" sprite should not have been (?:re-)?generated$/ do |sprite|
+  Then %[the stdout should not contain "generated  #{sprite}"]
 end
 
 Then /^the "(.*)" sprite should have been optimised$/ do |sprite|

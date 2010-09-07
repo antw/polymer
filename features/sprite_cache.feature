@@ -8,14 +8,14 @@ Feature: The sprite cache
     Given I have a default project
       And I have 2 sources in public/images/sprites/fry
       And I have 1 source in public/images/sprites/leela
-    When I run "flexo"
+    When I run "flexo generate"
       And I have a "one" source at public/images/sprites/fry which is 100x25
-    When I run "flexo"
+    When I run "flexo generate"
     Then the exit status should be 0
       And the "fry" sprite should have been re-generated
       And the "leela" sprite should not have been re-generated
-      And the "fry" sprite should have been optimised
-      And the "leela" sprite should not have been optimised
+      #And the "fry" sprite should have been optimised
+      #And the "leela" sprite should not have been optimised
       And the "fry" sprite should be 100x65
       And the "leela" sprite should be 50x20
 
@@ -23,21 +23,21 @@ Feature: The sprite cache
     Given I have a default project
       And I have 2 sources in public/images/sprites/fry
       And I have 1 source in public/images/sprites/leela
-    When I run "flexo"
+    When I run "flexo generate"
       And I have a "one" source at public/images/sprites/fry which is 100x25
-    When I run "flexo --force"
+    When I run "flexo generate --force"
     Then the exit status should be 0
       And the "fry" sprite should have been re-generated
       And the "leela" sprite should have been re-generated
-      And the "fry" sprite should have been optimised
-      And the "leela" sprite should have been optimised
+      #And the "fry" sprite should have been optimised
+      #And the "leela" sprite should have been optimised
 
   Scenario: Generating an unchanged sprite which has been deleted
     Given I have a default project
       And I have 1 source in public/images/sprites/fry
-    When I run "flexo"
+    When I run "flexo generate"
       And I delete the file public/images/fry.png
-    When I run "flexo"
+    When I run "flexo generate"
     Then the exit status should be 0
       And the "fry" sprite should have been re-generated
-      And the "fry" sprite should have been optimised
+      #And the "fry" sprite should have been optimised

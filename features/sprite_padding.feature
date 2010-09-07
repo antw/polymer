@@ -14,7 +14,7 @@ Feature: Setting the transparent padding between source images
           to: "public/images/:name.png"
       """
       And I have 2 sources in public/images/sprites/fry
-    When I run "flexo"
+    When I run "flexo generate"
     Then the exit status should be 0
       And the "fry" sprite should have been generated
       And the "fry" sprite should be 50x90
@@ -32,7 +32,7 @@ Feature: Setting the transparent padding between source images
       """
       And I have 2 sources in public/images/sprites/fry
       And I have 2 sources in public/images/sprites/leela
-    When I run "flexo"
+    When I run "flexo generate"
     Then the exit status should be 0
       And the "fry" sprite should have been generated
       And the "leela" sprite should have been generated
@@ -49,7 +49,7 @@ Feature: Setting the transparent padding between source images
           to: "public/images/:name.png"
       """
       And I have 2 sources in public/images/sprites/fry
-    When I run "flexo"
+    When I run "flexo generate"
     Then the exit status should be 0
       And the "fry" sprite should have been generated
       And the "fry" sprite should be 50x40

@@ -162,10 +162,4 @@ describe Flexo::Sprite do
     end # when changing the image for a source
   end
 
-  # --- write ----------------------------------------------------------------
-
-  it { should have_public_method_defined(:write) }
-
-  # Fully spec'ed in spec/flexo/commands/generate_spec.rb
-
 end

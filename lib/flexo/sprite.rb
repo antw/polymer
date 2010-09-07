@@ -75,51 +75,5 @@ module Flexo
       Digest::SHA256.hexdigest(sources.map { |source| source.digest }.join)
     end
 
-    # Uses RMagick to creates a 8-bit (with alpha) PNG containing all of the
-    # source files.
-    #
-    # If a file exists at the output path, it will be overwritten.
-    #
-    # @raise [Flexo::TargetNotWritable]
-    #   Raised when the output directory can not be written to.
-    #
-    def write
-      unless @save_path.dirname.writable?
-        raise TargetNotWritable, <<-MESSAGE
-          Flexo can't save the sprite in `#{@save_path.dirname.to_s}'
-          as it isn't writable.
-        MESSAGE
-      end
-
-      list = Magick::ImageList.new
-
-      @sources.each do |source|
-        list << source.image
-
-        if @padding and @padding > 0
-          list << Magick::Image.new(1, @padding) do
-            self.background_color = '#FFF0'
-          end
-        end
-      end
-
-      # RMagick uses instance_eval, @set isn't available in the block below.
-      sources_length = @sources.length
-
-      montage = list.montage do
-        self.gravity = Magick::NorthWestGravity
-        # Transparent background.
-        self.background_color = '#FFF0'
-        # Allow each image to take up as much space as it needs.
-        self.geometry = '+0+0'
-        # columns=1, rows=Sources plus padding.
-        self.tile = Magick::Geometry.new(1, sources_length * 2)
-      end
-
-      # Remove the blank space from the bottom of the image.
-      montage.crop!(0, 0, 0, (montage.first.rows) - @padding)
-      montage.write("PNG32:#{@save_path}")
-    end
-
   end # Sprite
 end # Flexo

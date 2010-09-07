@@ -42,7 +42,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'haml',               '>= 3.0.0'
 
   # The manifest is created by the "gemspec" rake task. Do not edit it
-  # directly; you changes will be wiped out when you next run the task.
+  # directly; your changes will be wiped out when you next run the task.
 
   # = MANIFEST =
   s.files = %w[

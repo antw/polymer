@@ -45,8 +45,7 @@ module Flexo
   # Contains classes which are used when creating sprites, optimising images,
   # and otherwise manipulating the various assets Flexo uses.
   module Processors
-    autoload :RMagick,   'flexo/processors/rmagick'
-    autoload :Optimiser, 'flexo/processors/optimiser'
+    autoload :RMagick, 'flexo/processors/rmagick'
   end
 
 end

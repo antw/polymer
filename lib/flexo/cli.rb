@@ -1,8 +1,6 @@
 require 'fileutils'
 require 'thor'
 
-require 'flexo/processors/rmagick'
-
 module Flexo
   class CLI < Thor
 

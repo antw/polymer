@@ -39,4 +39,13 @@ module Flexo
 
   # Raised when a sprite definition doesn't have a to option.
   MissingTo = Class.new(FlexoError)
+
+  # --- Lazy-loaded classes --------------------------------------------------
+
+  # Contains classes which are used when creating sprites, optimising images,
+  # and otherwise manipulating the various assets Flexo uses.
+  module Processors
+    autoload :RMagick, 'flexo/processors/rmagick'
+  end
+
 end

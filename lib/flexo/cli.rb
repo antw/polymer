@@ -125,46 +125,6 @@ module Flexo
         cache_file.puts YAML.dump(cache)
       end
 
-      #generated = project.sprites.find_all do |sprite|
-        ## TODO test [SPRITES]
-        #next if sprites.any? and not sprites.include?(sprite.name)
-
-        ## TODO test --force
-        #if options[:force] or (digest = sprite.digest) != cache[sprite.name]
-          #Processors::RMagick.process(sprite)
-          #cache[sprite.name] = digest
-          #say_status 'generated', sprite.name, :green
-          #true
-        #else
-          #say_status 'unchanged', sprite.name, :yellow
-          #false
-        #end
-      #end
-
-      ## Can we finish early?
-      #return if generated.empty?
-
-      ## Generated now contains a list of sprites which were written; these
-      ## sprites should be optimised unless --fast was passed.
-      ##
-      ## TODO test --fast
-      #unless options['fast']
-        #generated.each do |sprite|
-          #say_status 'optimising', sprite.name, :yellow
-          ## TODO Optimiser
-          ##Optimiser.optimise(sprite)
-          #say_status 'optimised', sprite.name, :green
-        #end
-      #end
-
-      ## Finish by writing the new cache.
-      #File.open(project.paths.cache, 'w') do |cache_file|
-        #cache_file.puts YAML.dump(cache)
-      #end
-
-      ## TODO SCSS
-      ## TODO Deviant-width warnings.
-
     rescue Flexo::MissingProject
       say <<-ERROR.compress_lines, :red
         Couldn't find a Flexo project in the current directory, or any of the

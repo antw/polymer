@@ -10,7 +10,6 @@ Feature: Generating sprites with Flexo
     When I run "flexo generate"
     Then the exit status should be 0
       And the "fry" sprite should have been generated
-      #And the "fry" sprite should have been optimised
       And the "fry" sprite should be 50x60
 
   Scenario: Creating two sprites at once
@@ -20,9 +19,7 @@ Feature: Generating sprites with Flexo
     When I run "flexo generate"
     Then the exit status should be 0
       And the "fry" sprite should have been generated
-      #And the "fry" sprite should have been optimised
       And the "leela" sprite should have been generated
-      #And the "leela" sprite should have been optimised
 
   Scenario: When specifying specific sprites to generate
     Given I have a default project

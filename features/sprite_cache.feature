@@ -14,8 +14,6 @@ Feature: The sprite cache
     Then the exit status should be 0
       And the "fry" sprite should have been re-generated
       And the "leela" sprite should not have been re-generated
-      #And the "fry" sprite should have been optimised
-      #And the "leela" sprite should not have been optimised
       And the "fry" sprite should be 100x65
       And the "leela" sprite should be 50x20
 
@@ -29,8 +27,6 @@ Feature: The sprite cache
     Then the exit status should be 0
       And the "fry" sprite should have been re-generated
       And the "leela" sprite should have been re-generated
-      #And the "fry" sprite should have been optimised
-      #And the "leela" sprite should have been optimised
 
   Scenario: Generating an unchanged sprite which has been deleted
     Given I have a default project
@@ -40,4 +36,3 @@ Feature: The sprite cache
     When I run "flexo generate"
     Then the exit status should be 0
       And the "fry" sprite should have been re-generated
-      #And the "fry" sprite should have been optimised

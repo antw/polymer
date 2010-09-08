@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   # is easier.
   s.name              = 'flexo'
   s.version           = '0.4.0'
-  s.date              = '2010-07-14'
+  s.date              = '2010-09-08'
   s.rubyforge_project = 'flexo'
 
   # You may safely edit the section below.
@@ -32,7 +32,6 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
 
   s.add_runtime_dependency     'rmagick',            '>= 2.12'
-  s.add_runtime_dependency     'highline',           '>= 1.5'
   s.add_runtime_dependency     'thor',               '>= 0.14.0'
   s.add_development_dependency 'rspec-core',         '>= 2.0.0.beta.12'
   s.add_development_dependency 'rspec-expectations', '>= 2.0.0.beta.12'
@@ -54,16 +53,16 @@ Gem::Specification.new do |s|
     bin/flexo
     flexo.gemspec
     lib/flexo.rb
-    lib/flexo/commands.rb
-    lib/flexo/commands/generate.rb
-    lib/flexo/commands/init.rb
+    lib/flexo/cli.rb
     lib/flexo/core_ext.rb
+    lib/flexo/processors/deviants.rb
+    lib/flexo/processors/rmagick.rb
+    lib/flexo/processors/sass.rb
     lib/flexo/project.rb
-    lib/flexo/sass_builder.rb
     lib/flexo/source.rb
     lib/flexo/sprite.rb
     lib/flexo/sprite_definition.rb
-    lib/flexo/templates/flexo.yml
+    lib/flexo/templates/flexo.tt
     lib/flexo/templates/sass_mixins.erb
     lib/flexo/templates/sources/one/book.png
     lib/flexo/templates/sources/one/box-label.png

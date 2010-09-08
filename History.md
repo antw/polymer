@@ -9,6 +9,17 @@ HEAD
   You should rename your existing ".montage" file to ".flexo", and
   ".montage\_cache" should be changed to ".flexo-cache".
 
+* The Sass mixin has changed slightly; instead of generating separate
+  mixins for each of your sprites, all of your sprites are available
+  using the global "flexo()" mixin. This should be called as such:
+
+      .my_selector
+        +flexo("sprite_name/source_name")
+
+  Mixins still permit you to supply an optional x-offset and y-offset as
+  the second and third parameters. the "flexo-pos()" mixin is also
+  available as an alternative to the old "sprite-name-pos()" mixins.
+
 * The Flexo configuration no longer allows a "config.root" option and
   the library will not work correctly if this is present in your config
   file. Please move your ".flexo" file to your project root and remove

@@ -9,7 +9,6 @@ require 'rmagick'
 # On with the library...
 require 'flexo/core_ext'
 require 'flexo/project'
-require 'flexo/sass_builder'
 require 'flexo/source'
 require 'flexo/sprite'
 require 'flexo/sprite_definition'
@@ -47,6 +46,7 @@ module Flexo
   module Processors
     autoload :Deviants, 'flexo/processors/deviants'
     autoload :RMagick,  'flexo/processors/rmagick'
+    autoload :Sass,     'flexo/processors/sass'
   end
 
 end

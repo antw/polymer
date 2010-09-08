@@ -2,19 +2,28 @@
 // command provided by the flexo gem. Don't edit this file directly;
 // change the flexo.yml configuration file, then re-run 'flexo'.
 
-<% @project.sprites.each do |sprite| %>
-=<%= sprite.name %>-sprite($icon, $x_offset: 0px, $y_offset: 0px)
-<% sprite.sources.each_with_index do |source, index| %>
-  @<%= index == 0 ? '' : 'else ' %>if $icon == "<%= source.name %>"
-    $y_offset: $y_offset - <%= sprite.position_of(source) %>px
+@mixin flexo($source, $x-offset: 0px, $y-offset: 0px)
+<% project.sprites.each_with_index do |sprite, sprite_index| %>
+<% sprite.sources.each_with_index do |source, source_index| %>
+<% if sprite_index == 0 and source_index == 0 %>
+  @if $source == "<%= sprite.name %>/<%= source.name %>"
+<% else %>
+  @else if $source == "<%= sprite.name %>/<%= source.name %>"
 <% end %>
-  background: url(<%= sprite.url %>) $x_offset $y_offset no-repeat
-
-=<%= sprite.name %>-sprite-pos($icon, $x_offset: 0px, $y_offset: 0px)
-<% sprite.sources.each_with_index do |source, index| %>
-  @<%= index == 0 ? '' : 'else ' %>if $icon == "<%= source.name %>"
-    $y_offset: $y_offset - <%= sprite.position_of(source) %>px
+    $y-offset: $y-offset - <%= sprite.position_of(source) %>px
+    background: url(<%= sprite.url %>) $x-offset $y-offset no-repeat
 <% end %>
-  background-position: $x_offset $y_offset
+<% end %>
 
+@mixin flexo-pos($source, $x-offset: 0px, $y-offset: 0px)
+<% project.sprites.each_with_index do |sprite, sprite_index| %>
+<% sprite.sources.each_with_index do |source, source_index| %>
+<% if sprite_index == 0 and source_index == 0 %>
+  @if $source == "<%= sprite.name %>/<%= source.name %>"
+<% else %>
+  @else if $source == "<%= sprite.name %>/<%= source.name %>"
+<% end %>
+    $y-offset: $y-offset - <%= sprite.position_of(source) %>px
+    background-position: $x-offset $y-offset
+<% end %>
 <% end %>

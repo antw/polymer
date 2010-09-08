@@ -110,7 +110,7 @@ module Flexo
       end
 
       # Stylesheets.
-      #process Processors::SCSS,       project
+      process Processors::Sass,       project
       #process Processors::CSS,        project
 
       # Find sprites with deviant-width sources.

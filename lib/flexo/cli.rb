@@ -6,8 +6,6 @@ module Flexo
 
     include Thor::Actions
 
-    # init -------------------------------------------------------------------
-
     class_option 'no-color', :type => :boolean, :default => false,
       :desc => 'Disable colours in output'
 

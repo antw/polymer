@@ -1,7 +1,7 @@
-module Flexo::Processors
-  # Given a Sprite, Deviants checks to see if the sprite has any sources which
-  # are significantly wider than the average.
-  class Deviants
+module Flexo
+  # Given a Sprite, DeviantFinder checks to see if the sprite has any sources
+  # which are significantly wider than the average.
+  class DeviantFinder
 
     # Given a Sprite, checks to see if the sprite has any sources which are
     # significantly wider than the average. Images with a small standard
@@ -14,7 +14,7 @@ module Flexo::Processors
     #   Returns an array of source images whose width is greater than the
     #   standard deviation, or nil if all images are an appropriate width.
     #
-    def self.process(sprite)
+    def self.find_deviants(sprite)
       # Need more than two sources to find deviants.
       return false if sprite.sources.size < 2
 
@@ -33,7 +33,7 @@ module Flexo::Processors
     end
 
     # Print a warning if the sprite contains wide sources.
-    def self.format_after_message(sprite, deviants)
+    def self.format_ui_message(sprite, deviants)
       if deviants
         <<-MESSAGE.compress_lines
           Your "#{sprite.name}" sprite contains one or more source images
@@ -62,5 +62,5 @@ module Flexo::Processors
       [ mean, Math.sqrt(m2 / (n - 1)) ]
     end
 
-  end # Deviants
-end # Flexo::Processors
+  end # DeviantFinder
+end # Flexo

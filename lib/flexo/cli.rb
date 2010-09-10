@@ -120,7 +120,9 @@ module Flexo
 
       # Find sprites with deviant-width sources.
       sprites.each do |sprite|
-        process Processors::Deviants, sprite
+        if deviants = DeviantFinder.find_deviants(sprite)
+          say DeviantFinder.format_ui_message(sprite, deviants)
+        end
       end
 
       # Finish by writing the new cache.
@@ -151,34 +153,6 @@ module Flexo
     end
 
     private # ----------------------------------------------------------------
-
-    # Given a processor class, runs it with the second argument as the
-    # paramter to Processor.process. Handles callbacks where used.
-    #
-    # @param [Class, Object] processor
-    #   The Flexo::Processor to be called.
-    # @param [Object] thing
-    #   The "thing" being processed.
-    #
-    def process(processor, thing)
-      processor_message :before, processor, thing
-      processor_message :after,  processor, thing, processor.process(thing)
-    end
-
-    # Runs a callback method on a given processor. If the method doesn't exist
-    # nothing happens. As long as the method doesn't return nil, +say+ or
-    # +say_status+ will be called with the output.
-    #
-    def processor_message(callback, processor, thing, *args)
-      method = :"format_#{callback}_message"
-
-      if processor.respond_to?(method) and
-            message = processor.send(method, thing, *args)
-        message.length == 3 ? say_status(*message) : say(*message)
-      end
-    end
-
-    # ------------------------------------------------------------------------
 
     def self.source_root
       File.expand_path(File.join(File.dirname(__FILE__), 'templates'))

@@ -8,6 +8,7 @@ require 'rmagick'
 
 # On with the library...
 require 'flexo/core_ext'
+require 'flexo/deviant_finder'
 require 'flexo/project'
 require 'flexo/sass_generator'
 require 'flexo/source'
@@ -39,13 +40,4 @@ module Flexo
 
   # Raised when a sprite definition doesn't have a to option.
   MissingTo = Class.new(FlexoError)
-
-  # --- Lazy-loaded classes --------------------------------------------------
-
-  # Contains classes which are used when creating sprites, optimising images,
-  # and otherwise manipulating the various assets Flexo uses.
-  module Processors
-    autoload :Deviants, 'flexo/processors/deviants'
-  end
-
 end

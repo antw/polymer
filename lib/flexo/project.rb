@@ -3,8 +3,8 @@ module Flexo
   # configuration file, and source images.
   class Project
     DEFAULTS = {
-      :sources => 'public/images/sprites/src',
-      :sprites => 'public/images/sprites',
+      :sources => 'public/images/sprites',
+      :sprites => 'public/images',
       :sass    => 'public/stylesheets/sass',
       :to      => "public/images/:name.png",
       :url     => "/images/:name.png",

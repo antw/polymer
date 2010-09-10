@@ -125,6 +125,10 @@ module Flexo
         end
       end
 
+      # Clean up the cache, removing sprites which no longer exist.
+      sprite_names = project.sprites.map { |sprite| sprite.name }
+      cache.reject! { |key, _| not sprite_names.include?(key) }
+
       # Finish by writing the new cache.
       File.open(project.paths.cache, 'w') do |cache_file|
         cache_file.puts YAML.dump(cache)

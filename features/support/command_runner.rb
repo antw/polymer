@@ -1,6 +1,6 @@
 require 'rbconfig'
 require 'tempfile'
-require 'open4'
+require 'open3'
 
 module Flexo
   module Spec
@@ -33,18 +33,15 @@ module Flexo
       #
       def run(command, &block)
         if command =~ /^flexo(.*)$/
-          command = "#{RUBY} #{EXECUTABLE}#{$1} --no-color"
+          # Load Rubygems when on <1.9 (there has to be a better way to do
+          # this, surely)
+          rubygems = RUBY_VERSION < '1.9' ? ' -rubygems' : ''
+          command  = "#{RUBY}#{rubygems} #{EXECUTABLE}#{$1} --no-color"
         end
 
-        @status, @stderr, @stdout = nil, nil, nil
-
         in_project_dir do
-          @status = Open4.popen4(command.to_s) do |_, stdin, stdout, stderr|
-            yield stdin if block_given?
-
-            @stdout = stdout.read
-            @stderr = stderr.read
-          end.exitstatus
+          @stdout, @stderr, @status = Open3.capture3(command)
+          @status = @status.exitstatus
         end
 
         self

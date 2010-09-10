@@ -105,8 +105,10 @@ module Flexo
 
       # Get on with it.
       sprites.each do |sprite|
-        process Processors::RMagick,  sprite
-        #process Processors::Optimise, sprite.save_path unless options[:fast]
+        if sprite.save
+          say_status('generated', sprite.name, :green)
+          #process Processors::Optimise, sprite.save_path unless options[:fast]
+        end
       end
 
       # Stylesheets.

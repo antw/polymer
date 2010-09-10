@@ -46,7 +46,6 @@ module Flexo
   # and otherwise manipulating the various assets Flexo uses.
   module Processors
     autoload :Deviants, 'flexo/processors/deviants'
-    autoload :RMagick,  'flexo/processors/rmagick'
   end
 
 end

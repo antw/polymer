@@ -1,13 +1,13 @@
 require 'spec_helper'
 
-describe Flexo::Processors::Sass do
-  subject { Flexo::Processors::Sass }
+describe Flexo::SassGenerator do
+  subject { Flexo::SassGenerator }
 
-  # --- process --------------------------------------------------------------
+  # --- generate -------------------------------------------------------------
 
-  it { should respond_to(:process) }
+  it { should respond_to(:generate) }
 
-  describe '.process' do
+  describe '.generate' do
     before(:each) do
       @helper = Flexo::Spec::ProjectHelper.new
     end
@@ -18,12 +18,12 @@ describe Flexo::Processors::Sass do
         @helper.write_source('fry/one')
         @helper.write_source('fry/two')
 
-        @result = Flexo::Processors::Sass.process(@helper.project)
+        @result = Flexo::SassGenerator.generate(@helper.project)
 
         @sass = @helper.path_to_file('public/stylesheets/sass/_flexo.sass')
       end
 
-      it_should_behave_like 'a Sass processor'
+      it_should_behave_like 'a Sass generator'
 
       it 'should include conditionals for each sprite' do
         contents = @sass.read
@@ -73,12 +73,12 @@ describe Flexo::Processors::Sass do
         @helper.write_source('fry/one')
         @helper.write_source('leela/one')
 
-        @result = Flexo::Processors::Sass.process(@helper.project)
+        @result = Flexo::SassGenerator.generate(@helper.project)
 
         @sass = @helper.path_to_file('public/stylesheets/sass/_flexo.sass')
       end
 
-      it_should_behave_like 'a Sass processor'
+      it_should_behave_like 'a Sass generator'
 
       it 'should include conditionals for each sprite' do
         contents = @sass.read
@@ -117,11 +117,11 @@ describe Flexo::Processors::Sass do
         CONFIG
 
         @helper.write_source('fry/one')
-        @result = Flexo::Processors::Sass.process(@helper.project)
+        @result = Flexo::SassGenerator.generate(@helper.project)
         @sass = @helper.path_to_file('public/sass/_flexo.sass')
       end
 
-      it_should_behave_like 'a Sass processor'
+      it_should_behave_like 'a Sass generator'
 
     end # with a custom Sass directory path
 
@@ -137,11 +137,11 @@ describe Flexo::Processors::Sass do
         CONFIG
 
         @helper.write_source('fry/one')
-        @result = Flexo::Processors::Sass.process(@helper.project)
+        @result = Flexo::SassGenerator.generate(@helper.project)
         @sass = @helper.path_to_file('public/sass/_here.sass')
       end
 
-      it_should_behave_like 'a Sass processor'
+      it_should_behave_like 'a Sass generator'
 
     end # with a custom Sass file path
 
@@ -157,11 +157,11 @@ describe Flexo::Processors::Sass do
         CONFIG
 
         @helper.write_source('fry/one')
-        @result = Flexo::Processors::Sass.process(@helper.project)
+        @result = Flexo::SassGenerator.generate(@helper.project)
         @sass = @helper.path_to_file('public/stylesheets/sass/_flexo.sass')
       end
 
-      it_should_behave_like 'a Sass processor'
+      it_should_behave_like 'a Sass generator'
 
       it 'should set the correct image URL' do
         sass_to_css(@sass, 'flexo("fry/one")').should \
@@ -182,10 +182,10 @@ describe Flexo::Processors::Sass do
       end
 
       it 'should return false' do
-        Flexo::Processors::Sass.process(@helper.project).should be_false
+        Flexo::SassGenerator.generate(@helper.project).should be_false
       end
     end # with Sass disabled
 
-  end # .process
+  end # .generate
 
 end

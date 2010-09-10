@@ -1,8 +1,8 @@
-shared_examples_for 'a Sass processor' do
+shared_examples_for 'a Sass generator' do
   # Requires
   #
   # @sass   => A Pathname to a Sass/SCSS stylesheet.
-  # @result => The result of calling .process
+  # @result => The result of calling .generator
   #
   it 'should return true' do
     @result.should be_true

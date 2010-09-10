@@ -110,7 +110,10 @@ module Flexo
       end
 
       # Stylesheets.
-      process Processors::Sass,       project
+      if SassGenerator.generate(project)
+        say_status('written', 'Sass mixin', :green)
+      end
+
       #process Processors::CSS,        project
 
       # Find sprites with deviant-width sources.

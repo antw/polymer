@@ -52,10 +52,9 @@ Gem::Specification.new do |s|
     lib/flexo.rb
     lib/flexo/cli.rb
     lib/flexo/core_ext.rb
-    lib/flexo/processors/deviants.rb
-    lib/flexo/processors/rmagick.rb
-    lib/flexo/processors/sass.rb
+    lib/flexo/deviant_finder.rb
     lib/flexo/project.rb
+    lib/flexo/sass_generator.rb
     lib/flexo/source.rb
     lib/flexo/sprite.rb
     lib/flexo/sprite_definition.rb

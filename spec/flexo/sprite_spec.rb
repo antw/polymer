@@ -162,4 +162,10 @@ describe Flexo::Sprite do
     end # when changing the image for a source
   end
 
+  # --- save -----------------------------------------------------------------
+
+  it { should have_public_method_defined(:save) }
+
+  # tested in the generate sprite features
+
 end

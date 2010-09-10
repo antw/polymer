@@ -75,5 +75,52 @@ module Flexo
       Digest::SHA256.hexdigest(sources.map { |source| source.digest }.join)
     end
 
+    # Saves the composited sprite to disk.
+    #
+    # In the event that the sprite has no sources, +save+ will return false
+    # and the existing file will be left untouched.
+    #
+    # @return [Boolean]
+    #
+    def save
+      unless @save_path.dirname.writable?
+        raise Flexo::TargetNotWritable, <<-ERROR
+          Flexo can't save the #{@name} sprite in "#{@save_path.dirname.to_s}"
+          as it isn't writable.
+        ERROR
+      end
+
+      list = Magick::ImageList.new
+
+      @sources.each do |source|
+        list << source.image
+
+        if @padding and @padding > 0
+          list << Magick::Image.new(1, @padding) do
+            self.background_color = '#F000'
+          end
+        end
+      end
+
+      # RMagick uses instance_eval, @set isn't available in the block below.
+      sources_length = @sources.length
+
+      montage = list.montage do
+        self.gravity = Magick::NorthWestGravity
+        # Transparent background.
+        self.background_color = '#FFF0'
+        # Allow each image to take up as much space as it needs.
+        self.geometry = '+0+0'
+        # columns=1, rows=Sources plus padding.
+        self.tile = Magick::Geometry.new(1, sources_length * 2)
+      end
+
+      # Remove the blank space from the bottom of the image.
+      montage.crop!(0, 0, 0, (montage.first.rows) - @padding)
+      montage.write("PNG32:#{@save_path}")
+
+      true
+    end
+
   end # Sprite
 end # Flexo

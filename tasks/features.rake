@@ -3,7 +3,7 @@ begin
   require 'cucumber/rake/task'
 
   Cucumber::Rake::Task.new(:features) do |features|
-    features.cucumber_opts = '--format progress --tag ~@pending'
+    features.cucumber_opts = '--format pretty --tag ~@pending'
   end
 
 rescue LoadError

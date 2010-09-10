@@ -45,6 +45,19 @@ class Flexo::Spec::CucumberWorld
   #
   def run(to_run, &block)
     @command.run(to_run, &block)
+
+    if @announce
+      puts
+      puts '--- STDOUT ---------------------------------'
+      puts stdout.gsub(/\e/, '\\e')
+      puts
+      puts '--- STDERR ---------------------------------'
+      puts stderr.gsub(/\e/, '\\e')
+      puts
+      puts '--------------------------------------------'
+      puts
+    end
+
     @command.status == 0
   end
 
@@ -83,6 +96,10 @@ end # Flexo::Spec::CucumberWorld
 
 World do
   Flexo::Spec::CucumberWorld.new
+end
+
+Before '@announce' do
+  @announce = true
 end
 
 After do

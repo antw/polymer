@@ -37,3 +37,8 @@ Feature: The init command
     Then the exit status should be 0
       And .flexo should be a file
       And the fixture sources should not exist
+
+  Scenario: Initializing with a Windows config file
+    When I run "flexo init --windows"
+    Then the exit status should be 0
+      And flexo.yml should be a file

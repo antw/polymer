@@ -84,7 +84,7 @@ module Flexo
       :desc => "Skip optimisation of images after they are generated"
 
     def generate(*sprites)
-      project = Flexo::Project.find(Dir.pwd)
+      project = find_project!
 
       cache = project.paths.cache.file? ?
         YAML.load_file(project.paths.cache) : {}
@@ -135,17 +135,57 @@ module Flexo
         cache_file.puts YAML.dump(cache)
       end
 
-    rescue Flexo::MissingProject
-      say <<-ERROR.compress_lines, :red
-        Couldn't find a Flexo project in the current directory, or any of the
-        parent directories. Run "flexo init" if you want to create a new
-        project here.
-      ERROR
-      exit 1
-
     rescue Flexo::MissingSource, Flexo::TargetNotWritable => e
       say e.message.compress_lines, :red
       exit 1
+    end
+
+    # --- position -----------------------------------------------------------
+
+    desc 'position [SOURCE]', 'Shows the position of a source within a sprite'
+
+    long_desc <<-DESC
+      The position task shows you the position of a source image within a
+      sprite and also shows the appropriate CSS statement for the source
+      should you wish to create your own CSS files.
+
+      You may supply the name of a source image; if a source image with the
+      same name exists in multiple sprites, the positions of each of them will
+      be shown to you. If you want a particular source, you may instead
+      provide a "sprite/source" pair.
+    DESC
+
+    def position(source)
+      project = find_project!
+
+      if source.index('/')
+        # Full sprite/source pair given.
+        sprite, source = source.split('/', 2)
+
+        if project.sprite(sprite)
+          sprites = [project.sprite(sprite)]
+        else
+          say "No such sprite: #{sprite}", :red
+          exit 1
+        end
+      else
+        # Only a source name was given.
+        sprites = project.sprites
+      end
+
+      # Remove sprites which don't have a matching source.
+      sprites.reject! { |sprite| not sprite.source(source) }
+      say("No such source: #{source}") && exit(1) if sprites.empty?
+
+      say ""
+
+      sprites.each do |sprite|
+        say "#{sprite.name}/#{source}: #{sprite.position_of(source)}px", :green
+        say "    #{Flexo::CSSGenerator.background_statement(sprite, source)}"
+        say "  - or -"
+        say "    #{Flexo::CSSGenerator.position_statement(sprite, source)}"
+        say ""
+      end
     end
 
     # --- version ------------------------------------------------------------
@@ -158,6 +198,22 @@ module Flexo
     end
 
     private # ----------------------------------------------------------------
+
+    # Returns the Project for the current directory. Exits with a message if
+    # no project could be found.
+    #
+    # @return [Flexo::Project]
+    #
+    def find_project!
+      Flexo::Project.find(Dir.pwd)
+    rescue Flexo::MissingProject
+      say <<-ERROR.compress_lines, :red
+        Couldn't find a Flexo project in the current directory, or any of the
+        parent directories. Run "flexo init" if you want to create a new
+        project here.
+      ERROR
+      exit 1
+    end
 
     def self.source_root
       File.expand_path(File.join(File.dirname(__FILE__), 'templates'))

@@ -49,6 +49,30 @@ describe Flexo::Sprite do
     end
   end
 
+  # --- source ---------------------------------------------------------------
+
+  it { should have_public_method_defined(:source) }
+
+  describe '#source' do
+    before(:each) do
+      @helper = Flexo::Spec::ProjectHelper.new
+      @helper.write_simple_config
+
+      @helper.write_source('sprite_one/one', 100, 25)
+      @helper.write_source('sprite_one/two', 100, 25)
+
+      @sprite = @helper.project.sprite('sprite_one')
+    end
+
+    it 'should return nil when no such source exists' do
+      @sprite.source('invalid').should be_nil
+    end
+
+    it 'should return the source' do
+      @sprite.source('one').should be_a(Flexo::Source)
+    end
+  end
+
   # --- images ---------------------------------------------------------------
 
   it { should have_public_method_defined(:images) }

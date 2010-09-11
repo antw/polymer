@@ -28,6 +28,15 @@ module Flexo
       @sources   = sources.map { |path| Source.new(path) }
     end
 
+    # Retrieves the Flexo::Source whose name is +name+.
+    #
+    # @return [Flexo::Source, nil]
+    #   Returns nil if no source with +name+ exists.
+    #
+    def source(name)
+      sources.detect { |source| source.name == name }
+    end
+
     # Returns an array of RMagick image instances; one for each source.
     #
     # @return [Array<Magick::Image>]
@@ -39,15 +48,19 @@ module Flexo
 
     # Returns the y-position of a given source.
     #
+    # @param [String, Flexo::Source] name
+    #   The name of the source whose position is to be returned, or the
+    #   Flexo::Source instance itself.
+    #
     # @return [Integer, Source]
     #   The vertical position of the source image.
     #
-    def position_of(source)
-      source = source.name if source.is_a?(Flexo::Source)
+    def position_of(name)
+      name = name.name if name.is_a?(Flexo::Source)
 
-      unless sources.detect { |src| src.name == source }
+      unless self.source(name)
         raise MissingSource,
-          "Source image '#{source}' is not present in the '#{@name}' sprite"
+          "Source image '#{name}' is not present in the '#{@name}' sprite"
       end
 
       unless @positions
@@ -63,7 +76,7 @@ module Flexo
         end
       end
 
-      @positions[source]
+      @positions[name]
     end
 
     # Returns a digest which represents the sprite and it's contents. If any

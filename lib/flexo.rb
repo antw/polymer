@@ -8,6 +8,7 @@ require 'rmagick'
 
 # On with the library...
 require 'flexo/core_ext'
+require 'flexo/css_generator'
 require 'flexo/deviant_finder'
 require 'flexo/project'
 require 'flexo/sass_generator'

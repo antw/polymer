@@ -1,6 +1,5 @@
 require 'rbconfig'
 require 'tempfile'
-require 'open3'
 
 module Flexo
   module Spec
@@ -40,8 +39,22 @@ module Flexo
         end
 
         in_project_dir do
-          @stdout, @stderr, @status = Open3.capture3(command)
-          @status = @status.exitstatus
+          if RUBY_VERSION < '1.9'
+            # Sigh.
+            stderr_file = Tempfile.new('stderr')
+            stderr_file.close
+
+            IO.popen("#{command} 2> #{stderr_file.path}", 'r') do |io|
+              @stdout = io.read
+            end
+
+            @status = $?.exitstatus
+            @stderr = File.read(stderr_file.path)
+          else
+            require 'open3'
+            @stdout, @stderr, @status = Open3.capture3(command)
+            @status = @status.exitstatus
+          end
         end
 
         self

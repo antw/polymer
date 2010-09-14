@@ -1,4 +1,4 @@
-@flexo-generate @flexo-optimise @pending
+@flexo-generate @flexo-optimise
 Feature: Optimising sprites after generation
 
   In order to reduce the payload sent to users of application
@@ -28,3 +28,10 @@ Feature: Optimising sprites after generation
       And I run "flexo generate"
     When I run "flexo generate --force"
     Then the "fry" sprite should have been optimised
+
+  Scenario: Skipping optimisation of generated sprites with --fast
+    Given I have a default project
+      And I have 1 source in public/images/sprites/fry
+      And I run "flexo generate"
+    When I run "flexo generate --fast"
+    Then the "fry" sprite should not have been optimised

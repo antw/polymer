@@ -106,9 +106,21 @@ module Flexo
 
       # Get on with it.
       sprites.each do |sprite|
-        if sprite.save
-          say_status('generated', sprite.name, :green)
-          #process Processors::Optimise, sprite.save_path unless options[:fast]
+        next unless sprite.save
+
+        say_status('generated', sprite.name, :green)
+
+        unless options[:fast]
+          say "  optimising  #{sprite.name} ... "
+          before = sprite.save_path.size
+
+          if reduction = Flexo::Optimisation.optimise_file(sprite.save_path)
+            saved = '- saved %.2fkb (%.1f' %
+              [reduction.to_f / 1024, before / reduction]
+            say_status "\r\e[0K   optimised", "#{sprite.name} #{saved}%)", :green
+          else
+            print "\r\e[0K"
+          end
         end
       end
 

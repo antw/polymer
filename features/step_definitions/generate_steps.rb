@@ -47,11 +47,11 @@ Then /^the "(.*)" sprite should not have been (?:re-)?generated$/ do |sprite|
 end
 
 Then /^the "(.*)" sprite should have been optimised$/ do |sprite|
-  Then %[the stdout should contain "Optimising "#{sprite}": Done"]
+  Then %[the stdout should contain "optimised  #{sprite}"]
 end
 
 Then /^the "(.*)" sprite should not have been optimised$/ do |sprite|
-  Then %[the stdout should not contain "Optimising "#{sprite}": Done"]
+  Then %[the stdout should not contain "optimised  #{sprite}"]
 end
 
 Then /^the "(.+)" sprite should exist$/ do |sprite|

@@ -44,6 +44,12 @@ class Flexo::Spec::CucumberWorld
   #   Returns true if the command exited with zero status, false if non-zero.
   #
   def run(to_run, &block)
+    if ! @no_fast and to_run =~ /flexo generate/ and to_run !~ /--fast/
+      # When possible, run flexo generate with the --fast option to skip
+      # time-intensive sprite optimisation.
+      to_run += ' --fast'
+    end
+
     @command.run(to_run, &block)
 
     if @announce
@@ -100,6 +106,10 @@ end
 
 Before '@announce' do
   @announce = true
+end
+
+Before '@flexo-optimise' do
+  @no_fast = true
 end
 
 After do

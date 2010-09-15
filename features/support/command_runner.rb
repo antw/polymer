@@ -26,6 +26,9 @@ module Flexo
       #
       # @param [String] command
       #   The command to be run.
+      # @param [Boolean] use_fast
+      #   When running flexo generate, appends --fast to skip optimisation
+      #   of sprites in order to speed up the features.
       #
       # @return [CommandRunner]
       #   Returns self.

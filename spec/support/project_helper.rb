@@ -145,17 +145,32 @@ module Flexo
       #   The height of the source file in pixels.
       #
       def write_source(name, width = 50, height = 20)
-        source_path = path_to_source(name)
+        write_image path_to_source(name), width, height
+      end
+
+      # Writes an image at the given path.
+      #
+      # @param [String, Pathname] path
+      #   Path where an image is to be created, relative to the
+      #   project root. If a pathname is given, it will be used
+      #   regardless of it's location.
+      # @param [Integer] width
+      #   The width of the source file in pixels.
+      # @param [Integer] height
+      #   The height of the source file in pixels.
+      #
+      def write_image(path, width = 50, height = 20)
+        path = project_dir + path unless path.kind_of?(Pathname)
 
         # Create the sources directory.
-        source_path.dirname.mkpath
+        path.dirname.mkpath
 
         Magick::Image.new(width, height) do
           self.background_color = '#CCC'
-        end.write(source_path)
+        end.write(path)
 
-        unless source_path.file?
-          raise "Source #{name} was not successfully saved"
+        unless path.file?
+          raise "Image '#{path}' was not successfully saved"
         end
       end
 

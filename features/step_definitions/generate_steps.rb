@@ -27,6 +27,10 @@ Given /^I have a "(.+)" source at (.+) which is (\d+)x(\d+)$/ do |source, dir, w
   command.write_source "#{sprite}/#{source}", w.to_i, h.to_i
 end
 
+Given /^I have a (.+) image$/ do |path|
+  command.write_image path
+end
+
 Given /^(.+) is not writable$/ do |path|
   path = command.path_to_file(path)
 

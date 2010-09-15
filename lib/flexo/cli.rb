@@ -114,7 +114,9 @@ module Flexo
           say "  optimising  #{sprite.name} ... "
           before = sprite.save_path.size
 
-          if reduction = Flexo::Optimisation.optimise_file(sprite.save_path)
+          reduction = Flexo::Optimisation.optimise_file(sprite.save_path)
+
+          if reduction > 0
             saved = '- saved %.2fkb (%.1f' %
               [reduction.to_f / 1024, before / reduction]
             say_status "\r\e[0K   optimised", "#{sprite.name} #{saved}%)", :green
@@ -150,6 +152,44 @@ module Flexo
     rescue Flexo::MissingSource, Flexo::TargetNotWritable => e
       say e.message.compress_lines, :red
       exit 1
+    end
+
+
+    # --- optimise -----------------------------------------------------------
+
+    desc 'optimise [PATH, [PATH, [...]]]', 'Optimises any PNG image given'
+
+    long_desc <<-DESC
+      Given a path to an image (or multiple images), runs Flexo's optimisers
+      on the image. Requires that the paths be images to PNG files. Image
+      paths are relative to the current working directory.
+    DESC
+
+    def optimise(*paths)
+      dir = Pathname.new(Dir.pwd)
+      paths = paths.map { |path| dir + path }
+
+      paths.each do |path|
+        fpath = path.relative_path_from(dir).to_s
+
+        # Ensure the file is a PNG.
+        unless path.to_s =~ /\.png/
+          say_status 'skipped', "#{fpath} - not a PNG", :yellow
+          next
+        end
+
+        before = path.size
+        say "  optimising  #{fpath} "
+        reduction = Flexo::Optimisation.optimise_file(path)
+
+        if reduction > 0
+          saved = '- saved %.2fkb (%.1f' %
+            [reduction.to_f / 1024, before / reduction]
+          say_status "\r\e[0K   optimised", "#{fpath} #{saved}%)", :green
+        else
+          say_status "\r\e[0K   optimised", "#{fpath} - no savings", :green
+        end
+      end
     end
 
     # --- position -----------------------------------------------------------

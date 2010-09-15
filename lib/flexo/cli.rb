@@ -118,7 +118,7 @@ module Flexo
 
           if reduction > 0
             saved = '- saved %.2fkb (%.1f' %
-              [reduction.to_f / 1024, before / reduction]
+              [reduction.to_f / 1024, (reduction.to_f / before) * 100]
             say_status "\r\e[0K   optimised", "#{sprite.name} #{saved}%)", :green
           else
             print "\r\e[0K"
@@ -184,7 +184,7 @@ module Flexo
 
         if reduction > 0
           saved = '- saved %.2fkb (%.1f' %
-            [reduction.to_f / 1024, before / reduction]
+            [reduction.to_f / 1024, (reduction.to_f / before) * 100]
           say_status "\r\e[0K   optimised", "#{fpath} #{saved}%)", :green
         else
           say_status "\r\e[0K   optimised", "#{fpath} - no savings", :green

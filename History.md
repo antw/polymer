@@ -1,5 +1,5 @@
-HEAD
-----
+v1.0.0 / HEAD (Unreleased)
+--------------------------
 
 * Montage has been renamed to Flexo and is now released under the BSD
   three-clause license.

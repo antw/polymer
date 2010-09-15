@@ -157,7 +157,7 @@ module Flexo
 
     # --- optimise -----------------------------------------------------------
 
-    desc 'optimise [PATH, [PATH, [...]]]', 'Optimises any PNG image given'
+    desc 'optimise PATHS', 'Optimises any PNG image given'
 
     long_desc <<-DESC
       Given a path to an image (or multiple images), runs Flexo's optimisers
@@ -194,7 +194,7 @@ module Flexo
 
     # --- position -----------------------------------------------------------
 
-    desc 'position [SOURCE]', 'Shows the position of a source within a sprite'
+    desc 'position SOURCE', 'Shows the position of a source within a sprite'
 
     long_desc <<-DESC
       The position task shows you the position of a source image within a
@@ -269,6 +269,11 @@ module Flexo
 
     def self.source_root
       File.expand_path(File.join(File.dirname(__FILE__), 'templates'))
+    end
+
+    # Temporary -- until the next Thor release.
+    def self.banner(task, namespace = nil, subcommand = false)
+      super.gsub(/^.*flexo/, 'flexo')
     end
 
   end # CLI

@@ -28,7 +28,7 @@ task :release => :build do
 end
 
 desc 'Builds the gem'
-task :build => :gemspec do
+task :build => [:man, :gemspec] do
   sh "mkdir -p pkg"
   sh "gem build flexo.gemspec"
   sh "mv flexo-#{Flexo::VERSION}.gem pkg"

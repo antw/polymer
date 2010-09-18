@@ -32,3 +32,4 @@ tmp
 
 ## PROJECT::SPECIFIC
 .sass-cache
+lib/flexo/man/*

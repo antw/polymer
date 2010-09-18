@@ -1,0 +1,7 @@
+flexo(1)           flexo.1
+flexo(5)           flexo.5
+flexo-describe(1)  flexo-describe.1
+flexo-init(1)      flexo-init.1
+flexo-generate(1)  flexo-generate.1
+flexo-optimise(1)  flexo-optimise.1
+flexo-position(1)  flexo-position.1

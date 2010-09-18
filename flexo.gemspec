@@ -36,6 +36,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec',    '>= 2.0.0.beta.19'
   s.add_development_dependency 'cucumber', '>= 0.8.5'
   s.add_development_dependency 'haml',     '>= 3.0.18'
+  s.add_development_dependency 'ronn',     '>= 0.7.3'
 
   # The manifest is created by the "gemspec" rake task. Do not edit it
   # directly; your changes will be wiped out when you next run the task.

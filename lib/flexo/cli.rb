@@ -16,7 +16,7 @@ module Flexo
 
     # --- init ---------------------------------------------------------------
 
-    desc 'init', 'Generates the files necessary to use Flexo'
+    desc 'init', 'Creates a new Flexo project in the current directory'
 
     long_desc <<-DESC
       In order to use Flexo, a .flexo configuration file must be created. The
@@ -64,7 +64,8 @@ module Flexo
 
     # --- generate -----------------------------------------------------------
 
-    desc 'generate [SPRITES]', 'Creates your sprites'
+    desc 'generate [SPRITES]',
+      'Creates the sprites specified by your .flexo or flexo.yml file'
 
     long_desc <<-DESC
       The generate task reads your project configuration and creates your
@@ -157,7 +158,7 @@ module Flexo
 
     # --- optimise -----------------------------------------------------------
 
-    desc 'optimise PATHS', 'Optimises any PNG image given'
+    desc 'optimise PATHS', 'Optimises PNG images at the given PATHS'
 
     long_desc <<-DESC
       Given a path to an image (or multiple images), runs Flexo's optimisers

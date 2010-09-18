@@ -53,7 +53,7 @@ task :gemspec => :validate do
     split("\n").
     sort.
     reject { |file| file =~ /^\./ }.
-    reject { |file| file =~ /^(rdoc|pkg|spec|tasks|features)/ }.
+    reject { |file| file =~ /^(rdoc|pkg|spec|tasks|features|man)/ }.
     map    { |file| "    #{file}" }.
     join("\n")
 

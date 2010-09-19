@@ -4,7 +4,7 @@ flexo(1) -- Image spriting for web applications
 SYNOPSIS
 --------
 
-`flexo` [--no-colour] [--project=path] COMMAND [ARGUMENTS]
+`flexo` [--no-colour] COMMAND [ARGUMENTS]
 
 DESCRIPTION
 -----------
@@ -27,18 +27,9 @@ OptiPNG, and PNGCrush.
 OPTIONS
 -------
 
-* **--no-colour**:
+* `--no-colour`:
   Disables the use of colour in output. This option is also available as
   `--no-color`.
-
-* **--project=_path_**:
-  In order to perform some tasks -- such as generating sprites -- Flexo
-  needs to locate your `.flexo` project file. The default behaviour is
-  to look for one in the current working directory, and to keep
-  ascending the directory structure until it finds one.
-
-  To disable this behaviour, you may supply a path to the directory
-  which contains the .flexo file with the `--project` option.
 
 COMMANDS
 --------

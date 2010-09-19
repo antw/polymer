@@ -1,0 +1,21 @@
+flexo-optimise(1) -- Optimise PNG images
+========================================
+
+SYNOPSIS
+--------
+
+`flexo optimise` PATH [PATH [PATH ...]]
+
+DESCRIPTION
+-----------
+
+Optimises the PNG images at <PATH>. Does not require you to be in a
+Flexo project directory.
+
+The `optimise` command permits you to use the optimisers supported by
+Flexo on any PNG image. This is useful for optimising non-sprite image,
+or sprites which were generated with the `--fast` option.
+
+All <PATH>s are relative to the current working directory.
+
+This command may also be run as `flexo optimize`.

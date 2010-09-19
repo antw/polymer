@@ -13,7 +13,7 @@ task :man do
 
     # Create the man page.
     sh "ronn --roff --manual='Flexo Manual' " \
-       "--organization='Flexo #{Flexo::VERSION.upcase}' " \
+       "--organization='FLEXO #{Flexo::VERSION.upcase}' " \
        "--pipe #{source} > #{destination}"
 
     # Set man pages to be left-aligned (not justified).

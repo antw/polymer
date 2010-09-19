@@ -22,22 +22,22 @@ module Flexo
     def help(command = nil)
       page_map = {
         # Main manual page.
-        nil         => 'flexo.1',
-        'flexo'     => 'flexo.1',
+        nil        => 'flexo.1',
+        'flexo'    => 'flexo.1',
 
         # Sub-commands.
-        'init'      => 'flexo-init.1',
-        'generate'  => 'flexo-generate.1',
-        'optimise'  => 'flexo-optimise.1',
-        'optimize'  => 'flexo-optimise.1',
-        'position'  => 'flexo-position.1',
+        'init'     => 'flexo-init.1',
+        'generate' => 'flexo-generate.1',
+        'optimise' => 'flexo-optimise.1',
+        'optimize' => 'flexo-optimise.1',
+        'position' => 'flexo-position.1',
 
         # Configuration format.
-        'flexo(5)'  => 'flexo.5',
-        'flexo.5'   => 'flexo.5',
-        '.flexo'    => 'flexo.5',
-        'flexo.yml' => 'flexo.5',
-        'config'    => 'flexo.5'
+        'flexo(5)' => 'flexo.5',
+        'flexo.5'  => 'flexo.5',
+        '.flexo'   => 'flexo.5',
+        'flexo.rb' => 'flexo.5',
+        'config'   => 'flexo.5'
       }
 
       if page_map.has_key?(command)

@@ -33,6 +33,7 @@ module Flexo
         'position'  => 'flexo-position.1',
 
         # Configuration format.
+        'flexo(5)'  => 'flexo.5',
         'flexo.5'   => 'flexo.5',
         '.flexo'    => 'flexo.5',
         'flexo.yml' => 'flexo.5',

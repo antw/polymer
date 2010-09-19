@@ -128,7 +128,7 @@ LICENSE file for more information.
 
 The sample sources in lib/flexo/templates/sources are courtesy of
 [Yusuke Kamiyamane][yusuke], whose extraordinary
-generocity in releasing three-thousand royalty-free icons cannot be
+generosity in releasing three-thousand royalty-free icons cannot be
 stated enough.
 
 [rdd]:       http://tom.preston-werner.com/2010/08/23/readme-driven-development.html

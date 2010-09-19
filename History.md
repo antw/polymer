@@ -20,6 +20,13 @@ v1.0.0 / HEAD (Unreleased)
   the second and third parameters. the "flexo-pos()" mixin is also
   available as an alternative to the old "sprite-name-pos()" mixins.
 
+* A new "position" command shows information about a source within a
+  sprite, and provides useful CSS for use when building your own
+  styleesheets.
+
+* Documentation of each command is now available by running "flexo help"
+  or "flexo help [COMMAND]".
+
 * The Flexo configuration no longer allows a "config.root" option and
   the library will not work correctly if this is present in your config
   file. Please move your ".flexo" file to your project root and remove
@@ -40,14 +47,14 @@ v1.0.0 / HEAD (Unreleased)
 * Jeweler has been replaced with plain rake tasks inspired by Rakegem --
   [http://github.com/mojombo/rakegem](http://github.com/mojombo/rakegem).
 
-v0.4.0 - 2010-08-18
--------------------
+v0.4.0 (18th August, 2010)
+--------------------------
 
 * You no longer need to specify a :name option in your sprite defintions
-  when supply a full output filename.
+  when supplying a full output filename.
 
-v0.3.0 - 2010-04-12
--------------------
+v0.3.0 (12th April, 2010)
+-------------------------
 
 * The "montage.yml" file has been replaced with ".montage" which should
   be located in your project root. In addition, the file is now rather
@@ -70,8 +77,8 @@ v0.3.0 - 2010-04-12
   "config.root" option in the configuration file, containing the path to
   the project root.
 
-v0.2.0 - 2010-04-08
--------------------
+v0.2.0 (8th April, 2010)
+------------------------
 
 * Running `montage` will now generate `_montage.sass` in the specified
   config.sass directory. A separate mixin will be generated for each
@@ -89,8 +96,8 @@ v0.2.0 - 2010-04-08
 
 * Sprites will be regenerated if the file has been deleted.
 
-v0.1.2 - 2010-04-06
--------------------
+v0.1.2 (6th April, 2010)
+------------------------
 
 * Sprites will only be regenerated when their definition (in
   montage.yml) has changed, or if the contents of the source files have
@@ -104,12 +111,12 @@ v0.1.2 - 2010-04-06
   source directory. This allows running `montage` immediately after
   creating the project, to see how things work.
 
-v0.1.1 - 2010-04-05
--------------------
+v0.1.1 (5th April, 2010)
+------------------------
 
 * Small fix for Ruby 1.9.1, which doesn't define String#inject.
 
-v0.1.0 - 2010-04-05
--------------------
+v0.1.0 (5th April, 2010)
+------------------------
 
 * Initial release. Supports creation of sprites and not much else.

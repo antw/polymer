@@ -23,9 +23,8 @@ Feature: Sass mixin files
     Given I have a project with config:
     """
     ---
-      config.sass: false
+      config.sass false
 
-      "public/images/sprites/:name/*.{png,jpg,jpeg,gif}":
-        to: "public/images/:name.png"
+      sprites 'public/images/sprites/:name/*' => 'public/images/:name.png'
     """
     Then a Sass mixin should not exist

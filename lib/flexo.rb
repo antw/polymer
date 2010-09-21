@@ -16,7 +16,6 @@ require 'flexo/project'
 require 'flexo/sass_generator'
 require 'flexo/source'
 require 'flexo/sprite'
-require 'flexo/sprite_definition'
 require 'flexo/version'
 
 module Flexo

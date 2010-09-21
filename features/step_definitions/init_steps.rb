@@ -36,7 +36,7 @@ end
 
 Then /^\.flexo should expect default sources in (.*)$/ do |directory|
   command.path_to_file('.flexo').read.should =~
-    compile_and_escape("#{directory}/:name/*.{png,jpg,jpeg,gif}")
+    compile_and_escape("#{directory}/:name/*")
 end
 
 Then /^\.flexo should expect default sprites to be saved in (.*)$/ do |directory|

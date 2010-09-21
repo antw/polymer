@@ -108,12 +108,10 @@ describe Flexo::SassGenerator do
     context 'with custom Sass directory path' do
       before(:each) do
         @helper.write_config <<-CONFIG
-        ---
-          config.sass: "public/sass"
+          config.sass "public/sass"
 
-          "public/images/sprites/:name/*.{png,jpg,jpeg,gif}":
-            to: "public/images/:name.png"
-
+          sprites "public/images/sprites/:name/*" =>
+            'public/images/:name.png'
         CONFIG
 
         @helper.write_source('fry/one')
@@ -128,12 +126,10 @@ describe Flexo::SassGenerator do
     context 'with a custom Sass file path' do
       before(:each) do
         @helper.write_config <<-CONFIG
-        ---
-          config.sass: "public/sass/_here.sass"
+          config.sass "public/sass/_here.sass"
 
-          "public/images/sprites/:name/*.{png,jpg,jpeg,gif}":
-            to: "public/images/:name.png"
-
+          sprites "public/images/sprites/:name/*" =>
+            "public/images/:name.png"
         CONFIG
 
         @helper.write_source('fry/one')
@@ -148,12 +144,10 @@ describe Flexo::SassGenerator do
     context 'with a custom URL setting' do
       before(:each) do
         @helper.write_config <<-CONFIG
-        ---
-          config.url: "/right/here/:name.png"
+          config.url "/right/here/:name.png"
 
-          "public/images/sprites/:name/*.{png,jpg,jpeg,gif}":
-            to: "public/images/:name.png"
-
+          sprites "public/images/sprites/:name/*" =>
+            "public/images/:name.png"
         CONFIG
 
         @helper.write_source('fry/one')
@@ -172,12 +166,10 @@ describe Flexo::SassGenerator do
     context 'with Sass disabled' do
       before(:each) do
         @helper.write_config <<-CONFIG
-        ---
-          config.sass: false
+          config.sass false
 
-          "public/images/sprites/:name/*.{png,jpg,jpeg,gif}":
-            to: "public/images/:name.png"
-
+          sprites "public/images/sprites/:name/*" =>
+            "public/images/:name.png"
         CONFIG
       end
 

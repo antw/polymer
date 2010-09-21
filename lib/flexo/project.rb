@@ -8,11 +8,18 @@ module Flexo
       :sass    => 'public/stylesheets/sass',
       :to      => "public/images/:name.png",
       :url     => "/images/:name.png",
+      :cache   => '.flexo-cache',
       :padding => 20
     }
 
     # Stores all the paths the project needs.
     Paths = Struct.new(:root, :config, :sass, :url, :cache)
+
+    # Returns the path to the project root directory.
+    #
+    # @return [Pathname]
+    #
+    attr_reader :root
 
     # Returns the Paths instance for the project.
     #
@@ -79,11 +86,35 @@ module Flexo
     #   in this directory.
     # @param [Array<Flexo::Sprite>] sprites
     #   An array of sprites which belong to the project.
+    # @param [Hash] options
+    #   Extra options for customising the behaviour of the Project.
     #
-    def self.new2(root_path, sprites)
+    # @option options [String, false] :css (false)
+    #   Sets the path -- relative to +root_path+ -- at which the CSS
+    #   file should be saved. Setting +:css+ to false will disable
+    #   generation of CSS stylesheets.
+    # @option options [String, false] :sass (false)
+    #   Sets the path -- relative to +root_path+ -- at which the Sass
+    #   mixin file should be saved. Setting +:sass+ to false will
+    #   disable generation of the mixin file.
+    #
+    def self.new2(root_path, sprites, options = {})
       allocate.instance_eval do
         @root    = root_path
         @sprites = sprites
+
+        @sass    = extract_path :sass,  options
+        @css     = extract_path :css,   options
+        @cache   = extract_path :cache, options
+
+        # TEMPORARY until Paths can be removed.
+        @paths = Paths.new(
+          root_path,                            # root
+          root_path + '.flexo',                 # config
+          @sass,                                # sass
+          options.fetch(:url, DEFAULTS[:url]),  # url
+          @cache                                # cache
+        )
 
         self
       end
@@ -102,10 +133,29 @@ module Flexo
 
     private # ================================================================
 
+    # Given the options passed to initialize, takes an option which is
+    # expected to be a hash and appends it to the @root. If the value is
+    # falsey it is returned without modification. Finally, if the option
+    # key does not exist, the default is used.
+    #
+    # @param [Symbol] key
+    #   The option key in which the value is expected.
+    # @param [Hash] options
+    #   The options hash passed to #initialize.
+    #
+    # @return [Pathname, false]
+    #
+    def extract_path(key, options)
+      value = options.fetch(key, DEFAULTS[key])
+      value.is_a?(String) ? @root + value : value
+    end
+
     # Extracts a configuration value from a configuration hash. If the value
     # exists, and is a string, it will be appended to the +root+ path.
     #
     # The configuration item will be _removed_ from the hash.
+    #
+    # TODO Remove
     #
     # @param [Hash]     config  The configuration Hash.
     # @param [Symbol]   key     The configuration key.

@@ -92,6 +92,7 @@ describe Flexo::Project do
 
   # Instance Methods =========================================================
 
+  it { should have_public_method_defined(:root) }
   it { should have_public_method_defined(:paths) }
 
   # --- sprites --------------------------------------------------------------

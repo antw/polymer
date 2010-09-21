@@ -67,7 +67,7 @@ module Flexo
       # @return [Flexo::Project]
       #
       def project
-        Project.find(project_dir)
+        DSL.load(Project.find_config(project_dir))
       end
 
       # --- Paths ------------------------------------------------------------
@@ -129,9 +129,7 @@ module Flexo
       #
       def write_simple_config(to = '.flexo')
         write_config to, <<-CONFIG
-          ---
-            "public/images/sprites/:name/*.{png,jpg,jpeg,gif}":
-              to: "public/images/:name.png"
+          sprites 'public/images/sprites/:name/*' => 'public/images/:name.png'
         CONFIG
       end
 

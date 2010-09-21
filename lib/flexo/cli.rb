@@ -73,8 +73,8 @@ module Flexo
       :desc => "Disables copying of example source files"
 
     method_option :windows, :type => :boolean, :default => false,
-      :desc => 'Create flexo.yml instead of .flexo for easier editing ' \
-               'on Windows systems.'
+      :desc => 'Create flexo.rb instead of .flexo for easier editing on ' \
+               'Windows systems.'
 
     def init
       if File.exists?('.flexo')
@@ -89,7 +89,7 @@ module Flexo
         :sources => options[:sources].gsub(/<sprites>/, options[:sprites])
       }
 
-      filename = options[:windows] ? 'flexo.yml' : '.flexo'
+      filename = options[:windows] ? 'flexo.rb' : '.flexo'
       template 'flexo.tt', project_dir + filename, config
 
       unless options['no-examples']
@@ -296,7 +296,7 @@ module Flexo
     # @return [Flexo::Project]
     #
     def find_project!
-      Flexo::Project.find(Dir.pwd)
+      Flexo::DSL.load Flexo::Project.find_config(Dir.pwd)
     rescue Flexo::MissingProject
       say <<-ERROR.compress_lines, :red
         Couldn't find a Flexo project in the current directory, or any of the

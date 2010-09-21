@@ -41,4 +41,4 @@ Feature: The init command
   Scenario: Initializing with a Windows config file
     When I run "flexo init --windows"
     Then the exit status should be 0
-      And flexo.yml should be a file
+      And flexo.rb should be a file

@@ -7,11 +7,10 @@ Feature: Setting the transparent padding between source images
   Scenario: Creating a single sprite with global custom padding
     Given I have a project with config:
       """
-      ---
-        config.padding: 50
+      config.padding 50
 
-        "public/images/sprites/:name/*.png":
-          to: "public/images/:name.png"
+      sprites 'public/images/sprites/:name/*' =>
+        'public/images/:name.png'
       """
       And I have 2 sources in public/images/sprites/fry
     When I run "flexo generate"
@@ -22,13 +21,11 @@ Feature: Setting the transparent padding between source images
   Scenario: Creating a single sprite with custom sprite padding
     Given I have a project with config:
       """
-      ---
-        "public/images/sprites/fry/*.png":
-          to: "public/images/fry.png"
-          padding: 50
+      sprite 'public/images/sprites/fry/*' =>
+        'public/images/fry.png', :padding => 50
 
-        "public/images/sprites/leela/*.png":
-          to: "public/images/leela.png"
+      sprite 'public/images/sprites/leela/*' =>
+        'public/images/leela.png'
       """
       And I have 2 sources in public/images/sprites/fry
       And I have 2 sources in public/images/sprites/leela
@@ -42,11 +39,10 @@ Feature: Setting the transparent padding between source images
   Scenario: Creating a single sprite with zero padding
     Given I have a project with config:
       """
-      ---
-        config.padding: 0
+      config.padding 0
 
-        "public/images/sprites/:name/*.png":
-          to: "public/images/:name.png"
+      sprites 'public/images/sprites/:name/*' =>
+        'public/images/:name.png'
       """
       And I have 2 sources in public/images/sprites/fry
     When I run "flexo generate"

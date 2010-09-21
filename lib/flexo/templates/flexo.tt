@@ -1,37 +1,20 @@
----
+# This file is used by the Flexo application to generate and optimise sprite
+# image files for use in web applications. You may alter any part of it in
+# order to customise the way Flexo works.
+#
+# For a detailed overview of the .flexo file syntax, run "flexo help .flexo"
 
-  config.sass: "public/stylesheets/sass"
-  config.url:  "/images/:filename"
+# --- CONFIGURATION ----------------------------------------------------------
 
-  # --------------------------------------------------------------
+# The config section allows you to set options which affect all of your
+# sprites; you may override any of these on a sprite-by-sprite basis by
+# specifying your custom value in the sprite section below.
 
-  # The sample definition below will search each sub-directory in
-  # the sources directory; a sprite will be created for each sub-
-  # directory containing the png, jpg, and gif files.
-  #
-  # All paths are relative to the project root file, unless they
-  # begin with a / in which case they are absolute. Add as many
-  # sprite definitions as you need.
+config.sass 'public/stylesheets/sass'
+config.url  '/images/:filename'
 
-  "<%= config[:sources] %>/:name/*.{png,jpg,jpeg,gif}":
-    to: "<%= config[:sprites] %>/:name.png"
+# --- SPRITES ----------------------------------------------------------------
 
-  # You can override any of the default settings on a per-sprite
-  # basis. For example... (these are the defaults)
+sprites '<%= config[:sources] %>/:name/*' => '<%= config[:sprites] %>/:name.png'
 
-  # "public/images/sprites/src/:name/*.{png,jpg,jpeg,gif}":
-  #   to: "public/images/:name.png"
-  #
-  #   # The directory in which the sprite(s) are saved relative to
-  #   # the web-root (used in Sass files to locate the image).
-  #   url: "/images/:filename"
-  #
-  #   # Puts 20 pixels of space between each source image.
-  #   padding: 20
-
-  # # Alternatively, change the default settings for all sprites:
-  #
-  # config.url: "/omicron-persei-8/sprites"
-  # config.sass: false
-
-# vim: set filetype=yaml :
+# vim: set filetype=ruby :

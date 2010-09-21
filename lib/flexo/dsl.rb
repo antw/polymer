@@ -138,7 +138,7 @@ module Flexo
 
       Project.new2(@root, @sprites.map do |definition|
         definition = _create_sprite(definition, project_config)
-      end)
+      end, project_config)
     end
 
     #######

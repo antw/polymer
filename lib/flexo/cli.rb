@@ -7,7 +7,7 @@ module Flexo
     include Thor::Actions
 
     class_option 'no-color', :type => :boolean, :default => false,
-      :desc => 'Disable colours in output'
+      :desc => 'Disable colours in output', :aliases => '--no-colour'
 
     def initialize(*args)
       super
@@ -202,6 +202,8 @@ module Flexo
       on the image. Requires that the paths be images to PNG files. Image
       paths are relative to the current working directory.
     DESC
+
+    map 'optimize' => :optimise
 
     def optimise(*paths)
       dir = Pathname.new(Dir.pwd)

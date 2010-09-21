@@ -11,6 +11,13 @@ Feature: Optimisation of non-sprite images
     Then the exit status should be 0
       And the stdout should contain "optimised  one.png"
 
+  Scenario: en-us support
+    Given I have a default project
+      And I have a one.png image
+    When I run "flexo optimize one.png"
+    Then the exit status should be 0
+      And the stdout should contain "optimised  one.png"
+
   Scenario: Skipping non-PNGs
     Given I have a default project
       And I have a one.jpg image

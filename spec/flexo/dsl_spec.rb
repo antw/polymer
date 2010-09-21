@@ -274,14 +274,13 @@ describe Flexo::DSL do
     # Sass
 
     describe 'sass' do
-      before(:each) { pending 'Awaiting Sprite#sass' }
-
-      it 'should default to /public/stylesheets/sass' do
-        dsl {}.sass.should == '/public/stylesheets/sass'
+      it 'should default to public/stylesheets/sass' do
+        dsl {}.sass.should == @helper.path_to_file('public/stylesheets/sass')
       end
 
       it 'should set a custom value' do
-        dsl { config.sass '/custom' }.sass.should == '/custom'
+        dsl { config.sass 'custom' }.sass.should == 
+          @helper.path_to_file('custom')
       end
 
       it 'should permit false' do
@@ -292,14 +291,13 @@ describe Flexo::DSL do
     # CSS
 
     describe 'css' do
-      before(:each) { pending 'Awaiting Sprite#css' }
-
       it 'should default to false' do
         dsl {}.css.should be_false
       end
 
       it 'should set a custom value' do
-        dsl { config.sass '/custom' }.css.should == '/custom'
+        dsl { config.css 'custom' }.css.should ==
+          @helper.path_to_file('custom')
       end
     end
 

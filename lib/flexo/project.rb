@@ -12,33 +12,37 @@ module Flexo
       :padding => 20
     }
 
-    # Stores all the paths the project needs.
-    Paths = Struct.new(:root, :config, :sass, :url, :cache)
-
     # Returns the path to the project root directory.
     #
     # @return [Pathname]
     #
     attr_reader :root
 
-    # Returns the Paths instance for the project.
+    # Returns the path to the Sass mixin file, or false if Sass is disabled.
     #
-    # @return [Flexo::Project::Paths]
+    # @return [Pathname, false]
     #
-    attr_reader :paths
+    attr_reader :sass
+
+    # Returns the path to the CSS file, or false if CSS generation is
+    # disabled.
+    #
+    # @return [Pathname, false]
+    #
+    attr_reader :css
+
+    # Returns the path to the cache file for this project, or false if use of
+    # the cache has been disabled.
+    #
+    # @return [Pathname, false]
+    #
+    attr_reader :cache
 
     # Returns an Array containing all the Sprites defined in the project.
     #
     # @return [Array<Flexo::Sprite>]
     #
     attr_reader :sprites
-
-    # Returns the amount of space to be used between each source image when
-    # saving sprites.
-    #
-    # @return [Integer]
-    #
-    attr_reader :padding
 
     # Creates a new Project.
     #
@@ -69,15 +73,6 @@ module Flexo
       @sass    = extract_path :sass,  options
       @css     = extract_path :css,   options
       @cache   = extract_path :cache, options
-
-      # TEMPORARY until Paths can be removed.
-      @paths = Paths.new(
-        root_path,                            # root
-        root_path + '.flexo',                 # config
-        @sass,                                # sass
-        options.fetch(:url, DEFAULTS[:url]),  # url
-        @cache                                # cache
-      )
     end
 
     # Returns a particular sprite identified by +name+.

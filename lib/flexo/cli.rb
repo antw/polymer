@@ -125,8 +125,7 @@ module Flexo
     def generate(*sprites)
       project = find_project!
 
-      cache = project.paths.cache.file? ?
-        YAML.load_file(project.paths.cache) : {}
+      cache = project.cache.file? ? YAML.load_file(project.cache) : {}
 
       # Determine which sprites we'll be working on.
       sprites = project.sprites.select do |sprite|
@@ -184,7 +183,7 @@ module Flexo
       cache.reject! { |key, _| not sprite_names.include?(key) }
 
       # Finish by writing the new cache.
-      File.open(project.paths.cache, 'w') do |cache_file|
+      File.open(project.cache, 'w') do |cache_file|
         cache_file.puts YAML.dump(cache)
       end
 

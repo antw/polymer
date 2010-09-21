@@ -16,14 +16,14 @@ module Flexo
     #   of Sass.
     #
     def self.generate(project)
-      return false unless project.paths.sass
+      return false unless project.sass
 
-      if project.paths.sass.to_s[-5..-1] == '.sass'
-        project.paths.sass.dirname.mkpath
-        save_to = project.paths.sass
+      if project.sass.to_s[-5..-1] == '.sass'
+        project.sass.dirname.mkpath
+        save_to = project.sass
       else
-        project.paths.sass.mkpath
-        save_to = project.paths.sass + '_flexo.sass'
+        project.sass.mkpath
+        save_to = project.sass + '_flexo.sass'
       end
 
       File.open(save_to, 'w') do |file|

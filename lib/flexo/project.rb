@@ -2,13 +2,13 @@ module Flexo
   # Represents a directory in which it is expected that there be a
   # configuration file, and source images.
   class Project
+
+    # Defaults used by DSL when the user doesn't provide explicit values.
     DEFAULTS = {
-      :sources => 'public/images/sprites',
-      :sprites => 'public/images',
       :sass    => 'public/stylesheets/sass',
-      :to      => "public/images/:name.png",
       :url     => "/images/:name.png",
       :cache   => '.flexo-cache',
+      :css     => false,
       :padding => 20
     }
 

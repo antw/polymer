@@ -3,6 +3,10 @@ require 'spec_helper'
 describe Flexo::Sprite do
   subject { Flexo::Sprite }
 
+  before(:each) do
+    @helper = Flexo::Spec::ProjectHelper.go!
+  end
+
   # --- initialization -------------------------------------------------------
 
   describe 'when initialized' do
@@ -37,9 +41,6 @@ describe Flexo::Sprite do
 
   describe '#source' do
     before(:each) do
-      @helper = Flexo::Spec::ProjectHelper.new
-      @helper.write_simple_config
-
       @helper.write_source('sprite_one/one', 100, 25)
       @helper.write_source('sprite_one/two', 100, 25)
 
@@ -76,9 +77,6 @@ describe Flexo::Sprite do
 
     describe 'when the sprite contains two sources' do
       before(:each) do
-        @helper = Flexo::Spec::ProjectHelper.new
-        @helper.write_simple_config
-
         @helper.write_source('sprite_one/one', 100, 25)
         @helper.write_source('sprite_one/two', 100, 25)
 
@@ -102,9 +100,6 @@ describe Flexo::Sprite do
 
   describe '#position_of' do
     before(:each) do
-      @helper = Flexo::Spec::ProjectHelper.new
-      @helper.write_simple_config
-
       @helper.write_source('sprite_one/one', 100, 25)
       @helper.write_source('sprite_one/two', 100, 25)
 
@@ -137,9 +132,6 @@ describe Flexo::Sprite do
 
   describe '#digest' do
     before(:each) do
-      @helper = Flexo::Spec::ProjectHelper.new
-      @helper.write_simple_config
-
       @helper.write_source('sprite_one/one',   100, 25)
       @helper.write_source('sprite_one/two',   100, 25)
       @helper.write_source('sprite_two/three', 100, 25)

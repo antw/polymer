@@ -6,8 +6,7 @@ describe Flexo::DSL do
   # --------------------------------------------------------------------------
 
   before(:each) do
-    @helper = Flexo::Spec::ProjectHelper.new
-    @helper.write_simple_config
+    @helper = Flexo::Spec::ProjectHelper.go!
   end
 
   # Builds a project using the DSL, with the helper directory as the root.

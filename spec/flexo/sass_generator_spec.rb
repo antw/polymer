@@ -9,12 +9,11 @@ describe Flexo::SassGenerator do
 
   describe '.generate' do
     before(:each) do
-      @helper = Flexo::Spec::ProjectHelper.new
+      @helper = Flexo::Spec::ProjectHelper.go!
     end
 
     context 'with default settings, one sprite and two sources' do
       before(:each) do
-        @helper.write_simple_config
         @helper.write_source('fry/one')
         @helper.write_source('fry/two')
 
@@ -69,7 +68,6 @@ describe Flexo::SassGenerator do
 
     context 'with default settings and two sprites' do
       before(:each) do
-        @helper.write_simple_config
         @helper.write_source('fry/one')
         @helper.write_source('leela/one')
 

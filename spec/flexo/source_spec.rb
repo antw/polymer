@@ -3,14 +3,13 @@ require 'spec_helper'
 describe Flexo::Source do
   subject { Flexo::Source }
 
-  # --- image -----------------------------------------------------------------
+  # --- image ----------------------------------------------------------------
 
   it { should have_public_method_defined(:image) }
 
   describe '#image' do
     before(:each) do
-      @helper = Flexo::Spec::ProjectHelper.new
-      @helper.write_simple_config
+      @helper = Flexo::Spec::ProjectHelper.go!
       @helper.write_source('sprite_one/one', 100, 25)
     end
 

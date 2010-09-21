@@ -10,72 +10,56 @@ describe Flexo::Project do
   it { should respond_to(:find_config) }
 
   describe '.find_config' do
-    context 'when given a project root, with .flexo present' do
-      before(:all) do
-        @helper = Flexo::Spec::ProjectHelper.new
-        @helper.touch '.flexo'
-      end
+    before(:each) do
+      @helper = Flexo::Spec::ProjectHelper.new
+    end
 
+    context 'when given a project root, with .flexo present' do
       it 'should return a path to .flexo' do
+        @helper.touch('.flexo')
+
         path = Flexo::Project.find_config(@helper.project_dir)
         path.should == @helper.path_to_file('.flexo')
       end
     end # when given a project root, with .flexo present
 
     context 'when given a project root, with flexo.rb present' do
-      before(:all) do
-        @helper = Flexo::Spec::ProjectHelper.new
-        @helper.touch 'flexo.rb'
-      end
-
       it 'should return a path to flexo.rb' do
+        @helper.touch 'flexo.rb'
+
         path = Flexo::Project.find_config(@helper.project_dir)
         path.should == @helper.path_to_file('flexo.rb')
       end
     end # when given a project root, with flexo.rb present
 
     context 'when given a project sub-dir, with .flexo in a parent' do
-      before(:all) do
-        @helper = Flexo::Spec::ProjectHelper.new
+      it 'should return a path to .flexo' do
         @helper.mkdir 'sub/sub'
         @helper.touch '.flexo'
-      end
 
-      it 'should return a path to .flexo' do
         path = Flexo::Project.find_config(@helper.project_dir + 'sub/sub')
         path.should == @helper.path_to_file('.flexo')
       end
     end # when given a project sub-dir, with .flexo in a parent
 
     context 'when given a project sub-dir, with flexo.rb in a parent' do
-      before(:all) do
-        @helper = Flexo::Spec::ProjectHelper.new
+      it 'should return a path to flexo.rb' do
         @helper.mkdir 'sub/sub'
         @helper.touch 'flexo.rb'
-      end
 
-      it 'should return a path to flexo.rb' do
         path = Flexo::Project.find_config(@helper.project_dir + 'sub/sub')
         path.should == @helper.path_to_file('flexo.rb')
       end
     end # when given a project sub-dir, with flexo.rb in a parent
 
     context 'when given a path to a file' do
-      before(:all) do
-        @helper = Flexo::Spec::ProjectHelper.new
-        @helper.touch '.flexo'
-      end
-
       it 'should return a path to the file' do
+        @helper.touch '.flexo'
         Flexo::Project.find_config(@helper.path_to_file('.flexo'))
       end
     end # when given a path to a file
 
     context 'when given an empty directory' do
-      before(:all) do
-        @helper = Flexo::Spec::ProjectHelper.new
-      end
-
       it 'should raise an error' do
         running = lambda { Flexo::Project.find_config(@helper.project_dir) }
         running.should raise_error(Flexo::MissingProject)
@@ -102,8 +86,8 @@ describe Flexo::Project do
   describe '#sprites' do
     context "when the project has one sprite with two sources" do
       before(:each) do
-        @helper = Flexo::Spec::ProjectHelper.new
-        @helper.write_simple_config
+        @helper = Flexo::Spec::ProjectHelper.go!
+
         @helper.write_source('sprite_one/one', 100, 25)
         @helper.write_source('sprite_one/two', 100, 25)
       end
@@ -119,8 +103,8 @@ describe Flexo::Project do
 
     context "when the project has two sprites with 2/1 sources" do
       before(:each) do
-        @helper = Flexo::Spec::ProjectHelper.new
-        @helper.write_simple_config
+        @helper = Flexo::Spec::ProjectHelper.go!
+
         @helper.write_source('sprite_one/one',   100, 25)
         @helper.write_source('sprite_one/two',   100, 25)
         @helper.write_source('sprite_two/three', 100, 25)

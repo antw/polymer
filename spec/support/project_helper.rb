@@ -53,6 +53,17 @@ module Flexo
         self.sprites_path = "public/images"
       end
 
+      # An alternative to ProjectHelper.new -- creates the helper, and writes
+      # the simple configuration.
+      #
+      # @see ProjectHelper#initialize.
+      #
+      def self.go!(project_dir = nil)
+        helper = new(project_dir)
+        helper.write_simple_config
+        helper
+      end
+
       def sources_path=(path)
         @sources_path = Pathname.new(path)
       end

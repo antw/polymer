@@ -140,21 +140,42 @@ module Flexo
       #   Raised when no project directory could be found.
       #
       def find(path)
+        new find_config(path)
+      end
+
+      # Given a path to a directory, +find_config+ attempts to locate a
+      # suitable configuration file by looking for a ".flexo" or "flexo.rb"
+      # file. If no such file is found in the given directory, it ascends the
+      # directory structure until one is found, or it runs out of parent
+      # directories to check.
+      #
+      # If given a path to a file, +find_config+ assumes that this file is the
+      # config, and simply returns it as a Pathname.
+      #
+      # @param [Pathname, String] path
+      #   The path to the directory or configuration file.
+      #
+      # @return [Pathname]
+      #   The path to the found configuration.
+      #
+      # @raise [Flexo::MissingProject]
+      #   Raised when +find_config+ could not find a suitable configuration
+      #   file.
+      #
+      def find_config(path)
         path, config_path = Pathname.new(path).expand_path, nil
-        return new(path) if path.file?
+        return path if path.file?
 
         path.ascend do |directory|
           if (dot_flexo = directory + '.flexo').file?
-            break config_path = dot_flexo
-          elsif (flexo_yml = directory + 'flexo.yml').file?
-            break config_path = flexo_yml
+            return dot_flexo
+          elsif (flexo_rb = directory + 'flexo.rb').file?
+            return flexo_rb
           end
         end
 
-        raise MissingProject, "Flexo couldn't find a project to work " \
-          "on at `#{path.to_s}'" unless config_path
-
-        new(config_path)
+        raise MissingProject,
+          "Flexo couldn't find a configuration file at `#{path.to_s}'"
       end
 
     end # class << self

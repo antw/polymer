@@ -182,7 +182,7 @@ module Flexo
       @sprites << options.merge(
         :name      => name,
         :sources   => Pathname.glob(sources),
-        :save_path => @root + sprite,
+        :save_path => @root + sprite
       )
     end
 

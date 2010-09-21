@@ -110,7 +110,7 @@ module Flexo
       if source.to_s =~ /:name/
         if definition.has_key?(:name)
           # Can't have a :name segment and an explicit name option.
-          raise Flexo::DuplicateName,
+          raise Flexo::DslError,
             "Sprite '#{source} => #{sprite}' has both a :name path segment " \
             "and a :name option; please use only one."
         elsif sprite !~ /:name/
@@ -173,9 +173,16 @@ module Flexo
     #
     def _define_sprite(sources, sprite, options)
       sources, sprite = @root + sources, @root + sprite
+      name = options[:name] || sprite.basename(sprite.extname).to_s
+
+      if @sprites.detect { |definition| definition[:name] == name }
+        raise DuplicateName,
+          "You tried to create a sprite whose name is `#{name}', but a " \
+          "sprite with this name has already been defined."
+      end
 
       @sprites << options.merge(
-        :name      => options[:name] || sprite.basename(sprite.extname).to_s,
+        :name      => name,
         :sources   => Pathname.glob(sources),
         :save_path => @root + sprite,
       )

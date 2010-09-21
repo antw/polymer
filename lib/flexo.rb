@@ -34,15 +34,15 @@ module Flexo
   # Raised when a sprite can't be saved due to incorrect permissions.
   TargetNotWritable = Class.new(FlexoError)
 
+  # Raised when an error happens using the DSL.
+  DslError = Class.new(FlexoError)
+
   # Raised when a sprite definition is lacking a { source => sprite } pair.
-  MissingMap = Class.new(FlexoError)
+  MissingMap = Class.new(DslError)
 
   # Raised when a sprite defintion doesn't include a name.
-  MissingName = Class.new(FlexoError)
+  MissingName = Class.new(DslError)
 
-  # Raised when a sprite defines a :name path segment, and a name option.
-  DuplicateName = Class.new(FlexoError)
-
-  # Raised when a sprite definition doesn't have a to option.
-  MissingTo = Class.new(FlexoError)
+  # Raised when sprite is defined with a name which has already been used.
+  DuplicateName = Class.new(DslError)
 end

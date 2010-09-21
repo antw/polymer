@@ -218,6 +218,23 @@ describe Flexo::DSL do
 
     # ------------------------------------------------------------------------
 
+    context 'with a sprite whose name has already been used' do
+      it 'should raise an error' do
+        @helper.touch 'src/fry/one.png'
+
+        running = lambda do
+          dsl do
+            sprite 'src/:name/*' => '1/:name'
+            sprite 'src/:name/*' => '2/:name'
+          end
+        end
+
+        running.should raise_error(Flexo::DuplicateName)
+      end
+    end # with a sprite whose name has already been used
+
+    # ------------------------------------------------------------------------
+
     context 'with a :name capture and no :name segment in the save path' do
       it 'should raise an error' do
         running = lambda { dsl { sprite 'src/:name/*' => '_' } }
@@ -230,7 +247,7 @@ describe Flexo::DSL do
     context 'with a :name capture and :name option' do
       it 'should raise an error' do
         running = lambda { dsl { sprite 'src/:name/*' => '_', :name => '_' } }
-        running.should raise_error(Flexo::DuplicateName)
+        running.should raise_error(Flexo::DslError)
       end
     end # with a :name capture and a :name option
 

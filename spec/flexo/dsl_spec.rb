@@ -218,6 +218,15 @@ describe Flexo::DSL do
 
     # ------------------------------------------------------------------------
 
+    context 'when failing to specify a sprite map' do
+      it 'should raise an error' do
+        running = lambda { dsl { sprite :padding => 0 } }
+        running.should raise_error(Flexo::MissingMap)
+      end
+    end # when failing to specify a sprite map
+
+    # ------------------------------------------------------------------------
+
     context 'with a sprite whose name has already been used' do
       it 'should raise an error' do
         @helper.touch 'src/fry/one.png'

@@ -169,8 +169,6 @@ module Flexo
     # @param [Hash] options
     #   Other options.
     #
-    # TODO Raise on duplicate name.
-    #
     def _define_sprite(sources, sprite, options)
       sources, sprite = @root + sources, @root + sprite
       name = options[:name] || sprite.basename(sprite.extname).to_s

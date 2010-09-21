@@ -220,13 +220,12 @@ module Flexo
       url.gsub!(/:name/, definition[:name])
       url.gsub!(/:filename/, definition[:save_path].basename.to_s)
 
-      Flexo::Sprite.new2(
+      Flexo::Sprite.new \
         definition[:name],
         definition[:sources],
         definition[:save_path],
         definition.fetch(:padding, project_config[:padding]),
         url
-      )
     end
 
     # Provides the DSL for the global configuration options.

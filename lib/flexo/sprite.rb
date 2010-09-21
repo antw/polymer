@@ -7,34 +7,9 @@ module Flexo
     # Creates a new Sprite instance.
     #
     # @param [String] name
-    #   The name of the sprite. Will be used as the sprite filename (with an
-    #   extension added).
-    # @param [Array(String, Pathname)] sources
-    #   The name of each source image.
-    # @param [Pathname] save_path
-    #   The location at which the sprite should be saved.
-    # @param [Flexo::Project] project
-    #   The project to which the sprite belongs.
-    # @param [Hash] options
-    #   Extra options where you wish to override project defaults.
-    #
-    def initialize(name, sources, save_path, project, options = {})
-      @name      = name
-      @save_path = save_path
-
-      @padding   = options.fetch(:padding, project.padding)
-      @url       = options.fetch(:url, project.paths.url)
-
-      @sources   = sources.map { |path| Source.new(path) }
-    end
-
-    # TEMPORARY: Creates a new Sprite instance.
-    #
-    # @param [String] name
-    #   The name of the sprite. Will be used as the sprite filename (with an
-    #   extension added).
+    #   The name of the sprite.
     # @param [Array<Pathname>] sources
-    #   The name of each source image.
+    #   An array of Pathname instances to be used as sources.
     # @param [Pathname] save_path
     #   The location at which the sprite should be saved.
     # @param [Integer] padding
@@ -43,16 +18,12 @@ module Flexo
     # @param [String] url
     #   The URL at which the sprite can be requested by a browser.
     #
-    def self.new2(name, sources, save_path, padding, url)
-      allocate.instance_eval do
-        @name      = name
-        @sources   = sources.map { |path| Source.new(path) }
-        @save_path = save_path
-        @padding   = padding
-        @url       = url
-
-        self
-      end
+    def initialize(name, sources, save_path, padding, url)
+      @name      = name
+      @sources   = sources.map { |path| Source.new(path) }
+      @save_path = save_path
+      @padding   = padding
+      @url       = url
     end
 
     # Retrieves the Flexo::Source whose name is +name+.

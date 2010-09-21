@@ -7,45 +7,27 @@ describe Flexo::Sprite do
 
   describe 'when initialized' do
     before(:all) do
-      @helper = Flexo::Spec::ProjectHelper.new
-      @helper.write_simple_config
+      @sprite = Flexo::Sprite.new('<name>', [], '<save_path>', 0, '<url>')
     end
 
     it 'should set the name' do
-      sprite = Flexo::Sprite.new('wheee', [], '_', @helper.project)
-      sprite.name.should == 'wheee'
+      @sprite.name.should == '<name>'
     end
 
     it 'should set the padding' do
-      sprite = Flexo::Sprite.new('_', [], '_', @helper.project)
-      sprite.padding.should == @helper.project.padding
+      @sprite.padding.should == 0
     end
 
     it 'should set the save_path' do
-      sprite = Flexo::Sprite.new('_', [],
-        @helper.path_to_file('bye'), @helper.project)
-
-      sprite.save_path.should == @helper.path_to_file('bye')
+      @sprite.save_path.should == '<save_path>'
     end
 
     it 'should set the url' do
-      sprite = Flexo::Sprite.new('_', [], '_', @helper.project)
-      sprite.url.should == @helper.project.paths.url
+      @sprite.url.should == '<url>'
     end
 
-    describe 'with custom options' do
-      before(:all) do
-        @sprite = Flexo::Sprite.new('wheee', [], '_', @helper.project,
-          :padding => 50, :url => '/omicron_persei_8')
-      end
-
-      it 'should set the custom padding' do
-        @sprite.padding.should == 50
-      end
-
-      it 'should set the url' do
-        @sprite.url.should == '/omicron_persei_8'
-      end
+    it 'should set the sources' do
+      @sprite.sources.should == []
     end
   end
 
@@ -78,19 +60,9 @@ describe Flexo::Sprite do
   it { should have_public_method_defined(:images) }
 
   describe '#images' do
-    before(:each) do
-      @helper = Flexo::Spec::ProjectHelper.new
-      @helper.write_simple_config
-
-      @helper.write_source('sprite_one/one', 100, 25)
-      @helper.write_source('sprite_one/two', 100, 25)
-
-      @sprite = @helper.project.sprite('sprite_one')
-    end
-
     describe 'when the sprite contains no sources' do
       before(:each) do
-        @sprite = Flexo::Sprite.new('sprite', [], 'path', @helper.project)
+        @sprite = Flexo::Sprite.new('sprite', [], 'path', 0, 'url')
       end
 
       it 'should return an array' do
@@ -103,6 +75,16 @@ describe Flexo::Sprite do
     end
 
     describe 'when the sprite contains two sources' do
+      before(:each) do
+        @helper = Flexo::Spec::ProjectHelper.new
+        @helper.write_simple_config
+
+        @helper.write_source('sprite_one/one', 100, 25)
+        @helper.write_source('sprite_one/two', 100, 25)
+
+        @sprite = @helper.project.sprite('sprite_one')
+      end
+
       it 'should return an array' do
         @sprite.images.should be_kind_of(Array)
         @sprite.images.should have(2).images

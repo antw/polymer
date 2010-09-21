@@ -9,6 +9,10 @@ v1.0.0 / HEAD (Unreleased)
   You should rename your existing ".montage" file to ".flexo", and
   ".montage\_cache" should be changed to ".flexo-cache".
 
+* The Flexo configuration file no longer uses YAML, but instead opts for
+  a simple Ruby-based DSL. See `flexo help .flexo` for full
+  documentation.
+
 * The Sass mixin has changed slightly; instead of generating separate
   mixins for each of your sprites, all of your sprites are available
   using the global "flexo()" mixin. This should be called as such:

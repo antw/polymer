@@ -136,7 +136,7 @@ module Flexo
     def to_project
       project_config = @config.to_h
 
-      Project.new2(@root, @sprites.map do |definition|
+      Project.new(@root, @sprites.map do |definition|
         definition = _create_sprite(definition, project_config)
       end, project_config)
     end

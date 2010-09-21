@@ -40,46 +40,10 @@ module Flexo
     #
     attr_reader :padding
 
-    # Creates a new Project instance.
+    # Creates a new Project.
     #
-    # Note that +new+ does no validation of the given paths: it expects them
-    # to be correct. If you're not sure of the exact paths, use +Project.find+
-    # instead.
-    #
-    # @param [String, Pathname] config_path
-    #   Path to the config file.
-    #
-    def initialize(config_path)
-      config_path = Pathname.new(config_path)
-      config      = YAML.load_file(config_path)
-      root_path   = config_path.dirname
-
-      # Sass path may be a string representing a path, or `false`.
-      sass_path = config.delete("config.sass") { DEFAULTS[:sass] }
-      sass_path = sass_path.is_a?(String) ? root_path + sass_path : sass_path
-
-      # Determine if the config path is a standard .flexo file, or a Windows
-      # flexo.yml, and adjust the cache path accordinly.
-      cache_path = config_path.to_s.gsub(/flexo(\.yml)?$/, 'flexo-cache\1')
-      cache_path = Pathname.new(cache_path)
-
-      @paths = Paths.new(
-        root_path, config_path, sass_path,
-        config.delete('config.url') { DEFAULTS[:url] },
-        cache_path
-      )
-
-      @padding = (config.delete('config.padding') || 20).to_i
-
-      # All remaining entries are sprite defintions.
-      @sprites = config.map do |path, opts|
-        Flexo::SpriteDefinition.new(self, path, opts).to_sprites
-      end.flatten
-    end
-
-    # TEMPORARY
-    #
-    # Used by the new Ruby DSL to create a project.
+    # Note that +new+ does not validation of the given paths or options; it
+    # expects them to be correct. You're probably better using +DSL.build+.
     #
     # @param [Pathname] root_path
     #   Path to the root of the Flexo project. The .flexo config should reside
@@ -98,26 +62,22 @@ module Flexo
     #   mixin file should be saved. Setting +:sass+ to false will
     #   disable generation of the mixin file.
     #
-    def self.new2(root_path, sprites, options = {})
-      allocate.instance_eval do
-        @root    = root_path
-        @sprites = sprites
+    def initialize(root_path, sprites, options = {})
+      @root    = root_path
+      @sprites = sprites
 
-        @sass    = extract_path :sass,  options
-        @css     = extract_path :css,   options
-        @cache   = extract_path :cache, options
+      @sass    = extract_path :sass,  options
+      @css     = extract_path :css,   options
+      @cache   = extract_path :cache, options
 
-        # TEMPORARY until Paths can be removed.
-        @paths = Paths.new(
-          root_path,                            # root
-          root_path + '.flexo',                 # config
-          @sass,                                # sass
-          options.fetch(:url, DEFAULTS[:url]),  # url
-          @cache                                # cache
-        )
-
-        self
-      end
+      # TEMPORARY until Paths can be removed.
+      @paths = Paths.new(
+        root_path,                            # root
+        root_path + '.flexo',                 # config
+        @sass,                                # sass
+        options.fetch(:url, DEFAULTS[:url]),  # url
+        @cache                                # cache
+      )
     end
 
     # Returns a particular sprite identified by +name+.
@@ -148,24 +108,6 @@ module Flexo
     def extract_path(key, options)
       value = options.fetch(key, DEFAULTS[key])
       value.is_a?(String) ? @root + value : value
-    end
-
-    # Extracts a configuration value from a configuration hash. If the value
-    # exists, and is a string, it will be appended to the +root+ path.
-    #
-    # The configuration item will be _removed_ from the hash.
-    #
-    # TODO Remove
-    #
-    # @param [Hash]     config  The configuration Hash.
-    # @param [Symbol]   key     The configuration key.
-    # @param [Pathname] root    The project root path.
-    #
-    # @return [Pathname, false]
-    #
-    def extract_path_from_config(config, key, root)
-      value = config.delete("config.#{key}") { DEFAULTS[key] }
-      value.is_a?(String) ? root + value : value
     end
 
     # === Class Methods ======================================================

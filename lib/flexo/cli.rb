@@ -103,7 +103,7 @@ module Flexo
     # --- generate -----------------------------------------------------------
 
     desc 'generate [SPRITES]',
-      'Creates the sprites specified by your .flexo or flexo.yml file'
+      'Creates the sprites specified by your .flexo or flexo.rb file'
 
     long_desc <<-DESC
       The generate task reads your project configuration and creates your

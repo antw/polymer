@@ -115,8 +115,8 @@ module Flexo
     class << self
 
       # Given a path to a directory, +find+ attempts to locate a suitable
-      # configuration file by looking for a ".flexo" or "flexo.yml" file. If
-      # no such file is found in the given directory, it ascends the directory
+      # configuration file by looking for a ".flexo" or "flexo.rb" file. If no
+      # such file is found in the given directory, it ascends the directory
       # structure until one is found, or it runs out of paths to check.
       #
       # If given a path to a file, +find+ assumes that this file is the config

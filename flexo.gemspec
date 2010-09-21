@@ -81,4 +81,3 @@ Gem::Specification.new do |s|
 
   s.test_files = s.files.select { |path| path =~ /^spec\/.*\.rb/ }
 end
-

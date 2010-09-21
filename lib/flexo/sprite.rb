@@ -28,6 +28,33 @@ module Flexo
       @sources   = sources.map { |path| Source.new(path) }
     end
 
+    # TEMPORARY: Creates a new Sprite instance.
+    #
+    # @param [String] name
+    #   The name of the sprite. Will be used as the sprite filename (with an
+    #   extension added).
+    # @param [Array<Pathname>] sources
+    #   The name of each source image.
+    # @param [Pathname] save_path
+    #   The location at which the sprite should be saved.
+    # @param [Integer] padding
+    #   The amount of transparent space, in pixels, to be inserted between
+    #   each source image.
+    # @param [String] url
+    #   The URL at which the sprite can be requested by a browser.
+    #
+    def self.new2(name, sources, save_path, padding, url)
+      allocate.instance_eval do
+        @name      = name
+        @sources   = sources.map { |path| Source.new(path) }
+        @save_path = save_path
+        @padding   = padding
+        @url       = url
+
+        self
+      end
+    end
+
     # Retrieves the Flexo::Source whose name is +name+.
     #
     # @return [Flexo::Source, nil]

@@ -10,6 +10,7 @@ require 'rmagick'
 require 'flexo/core_ext'
 require 'flexo/css_generator'
 require 'flexo/deviant_finder'
+require 'flexo/dsl'
 require 'flexo/optimisation'
 require 'flexo/project'
 require 'flexo/sass_generator'
@@ -33,6 +34,9 @@ module Flexo
 
   # Raised when a sprite can't be saved due to incorrect permissions.
   TargetNotWritable = Class.new(FlexoError)
+
+  # Raised when a sprite definition is lacking a { source => sprite } pair.
+  MissingMap = Class.new(FlexoError)
 
   # Raised when a sprite defintion doesn't include a name.
   MissingName = Class.new(FlexoError)

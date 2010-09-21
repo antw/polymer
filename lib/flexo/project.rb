@@ -70,6 +70,25 @@ module Flexo
       end.flatten
     end
 
+    # TEMPORARY
+    #
+    # Used by the new Ruby DSL to create a project.
+    #
+    # @param [Pathname] root_path
+    #   Path to the root of the Flexo project. The .flexo config should reside
+    #   in this directory.
+    # @param [Array<Flexo::Sprite>] sprites
+    #   An array of sprites which belong to the project.
+    #
+    def self.new2(root_path, sprites)
+      allocate.instance_eval do
+        @root    = root_path
+        @sprites = sprites
+
+        self
+      end
+    end
+
     # Returns a particular sprite identified by +name+.
     #
     # @param [String] name

@@ -140,7 +140,7 @@ module Flexo
         end
       end
 
-      return if sprites.empty? # Try to exit early. TODO Say something.
+      return if sprites.empty?
 
       # Get on with it.
       sprites.each do |sprite|

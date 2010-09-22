@@ -92,8 +92,6 @@ module Flexo
     #
     # @return [Flexo::Cache]
     #   Returns a Cache if the project uses the cache.
-    # @return [nil]
-    #   Returns nil if the cache is disabled.
     #
     def cache
       @cache ||= Flexo::Cache.new(@cachefile)

@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   # rake task. It it completely safe to edit them, but using the rake task
   # is easier.
   s.name              = 'flexo'
-  s.version           = '1.0.0.beta.1'
-  s.date              = '2010-09-15'
+  s.version           = '1.0.0.beta.2'
+  s.date              = '2010-09-22'
   s.rubyforge_project = 'flexo'
 
   # You may safely edit the section below.
@@ -51,16 +51,17 @@ Gem::Specification.new do |s|
     bin/flexo
     flexo.gemspec
     lib/flexo.rb
+    lib/flexo/cache.rb
     lib/flexo/cli.rb
     lib/flexo/core_ext.rb
     lib/flexo/css_generator.rb
     lib/flexo/deviant_finder.rb
+    lib/flexo/dsl.rb
     lib/flexo/optimisation.rb
     lib/flexo/project.rb
     lib/flexo/sass_generator.rb
     lib/flexo/source.rb
     lib/flexo/sprite.rb
-    lib/flexo/sprite_definition.rb
     lib/flexo/templates/flexo.tt
     lib/flexo/templates/sass_mixins.erb
     lib/flexo/templates/sources/one/book.png

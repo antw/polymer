@@ -43,3 +43,5 @@ Feature: The init command
     Then the exit status should be 0
       And flexo.rb should be a file
       And flexo.rb should expect the cache to be at flexo.cache
+    When I run "flexo generate --fast"
+    Then the exit status should be 0

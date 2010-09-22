@@ -31,13 +31,6 @@ module Flexo
     #
     attr_reader :css
 
-    # Returns the path to the cache file for this project, or false if use of
-    # the cache has been disabled.
-    #
-    # @return [Pathname, false]
-    #
-    attr_reader :cache
-
     # Returns an Array containing all the Sprites defined in the project.
     #
     # @return [Array<Flexo::Sprite>]
@@ -67,12 +60,12 @@ module Flexo
     #   disable generation of the mixin file.
     #
     def initialize(root_path, sprites, options = {})
-      @root    = root_path
-      @sprites = sprites
+      @root      = root_path
+      @sprites   = sprites
 
-      @sass    = extract_path :sass,  options
-      @css     = extract_path :css,   options
-      @cache   = extract_path :cache, options
+      @sass      = extract_path :sass,  options
+      @css       = extract_path :css,   options
+      @cachefile = extract_path :cache, options
     end
 
     # Returns a particular sprite identified by +name+.
@@ -92,7 +85,18 @@ module Flexo
     #   True if the cache should be used by CLI, false otherwise.
     #
     def use_cache?
-      !! @cache
+      !! @cachefile
+    end
+
+    # Returns a Cache instance for this project.
+    #
+    # @return [Flexo::Cache]
+    #   Returns a Cache if the project uses the cache.
+    # @return [nil]
+    #   Returns nil if the cache is disabled.
+    #
+    def cache
+      @cache ||= Flexo::Cache.new(@cachefile)
     end
 
     private # ================================================================

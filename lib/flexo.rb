@@ -7,6 +7,7 @@ require 'yaml'
 require 'rmagick'
 
 # On with the library...
+require 'flexo/cache'
 require 'flexo/core_ext'
 require 'flexo/css_generator'
 require 'flexo/deviant_finder'

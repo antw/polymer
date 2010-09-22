@@ -136,18 +136,14 @@ module Flexo
     def generate(*sprites)
       project = find_project!
 
-      cache = project.use_cache? && project.cache.file? ?
-        YAML.load_file(project.cache) : {}
-
       # Determine which sprites we'll be working on.
       sprites = project.sprites.select do |sprite|
         if sprites.empty? or sprites.include?(sprite.name)
           # The user specified no sprites, or this sprite was requested.
-          if (digest = sprite.digest) != cache[sprite.name] or
-                options[:force] or not sprite.save_path.file?
+          if project.cache.stale?(sprite) or options[:force]
             # Digest is different, user is forcing update or sprite file
             # has been deleted.
-            cache[sprite.name] = digest
+            project.cache.set(sprite)
           end
         end
       end
@@ -191,17 +187,11 @@ module Flexo
         end
       end
 
-      # Skip cache if it disabled.
-      return unless project.use_cache?
-
       # Clean up the cache, removing sprites which no longer exist.
-      sprite_names = project.sprites.map { |sprite| sprite.name }
-      cache.reject! { |key, _| not sprite_names.include?(key) }
+      project.cache.remove_all_except(project.sprites)
 
       # Finish by writing the new cache.
-      File.open(project.cache, 'w') do |cache_file|
-        cache_file.puts YAML.dump(cache)
-      end
+      project.cache.write
 
     rescue Flexo::MissingSource, Flexo::TargetNotWritable => e
       say e.message.compress_lines, :red

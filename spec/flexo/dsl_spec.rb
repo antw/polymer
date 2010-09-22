@@ -275,16 +275,16 @@ describe Flexo::DSL do
 
     describe 'cache' do
       it 'should default to .flexo-cache' do
-        dsl {}.cache.should == @helper.path_to_file('.flexo-cache')
+        dsl {}.cache.path.should == @helper.path_to_file('.flexo-cache')
       end
 
       it 'should set a custom value' do
-        dsl { config.cache '.cache' }.cache.should ==
+        dsl { config.cache '.cache' }.cache.path.should ==
           @helper.path_to_file('.cache')
       end
 
       it 'should permit false' do
-        dsl { config.cache false }.cache.should be_false
+        dsl { config.cache false }.cache.path.should be_false
       end
     end
 

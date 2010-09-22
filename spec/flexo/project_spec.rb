@@ -124,4 +124,13 @@ describe Flexo::Project do
 
   end
 
+  # --- cache ----------------------------------------------------------------
+
+  describe 'cache' do
+    it 'should return a instance of Flexo::Cache' do
+      @helper = Flexo::Spec::ProjectHelper.go!
+      @helper.project.cache.should be_a(Flexo::Cache)
+    end
+  end # #cache
+
 end

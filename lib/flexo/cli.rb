@@ -43,10 +43,14 @@ module Flexo
       if page_map.has_key?(command)
         root = File.expand_path('../man', __FILE__)
 
-        groff = 'groff -Wall -mtty-char -mandoc -Tascii'
-        pager = ENV['MANPAGER'] || ENV['PAGER'] || 'more'
+        if groff_available?
+          groff = 'groff -Wall -mtty-char -mandoc -Tascii'
+          pager = ENV['MANPAGER'] || ENV['PAGER'] || 'more'
 
-        Kernel.exec "#{groff} #{root}/#{page_map[command]} | #{pager}"
+          Kernel.exec "#{groff} #{root}/#{page_map[command]} | #{pager}"
+        else
+          puts File.read("#{root}/#{page_map[command]}.txt")
+        end
       else
         super
       end
@@ -305,6 +309,22 @@ module Flexo
         project here.
       ERROR
       exit 1
+    end
+
+    # Returns if the current machine has groff available.
+    #
+    # @return [Boolean]
+    #
+    def groff_available?
+      require 'rbconfig'
+
+      if RbConfig::CONFIG["host_os"] =~ /(msdos|mswin|djgpp|mingw)/
+        `which groff 2>NUL`
+      else
+        `which groff 2>/dev/null`
+      end
+
+      $? == 0
     end
 
     def self.source_root

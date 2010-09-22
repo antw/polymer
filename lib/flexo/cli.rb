@@ -90,11 +90,18 @@ module Flexo
 
       config = {
         :sprites => options[:sprites],
-        :sources => options[:sources].gsub(/<sprites>/, options[:sprites])
+        :sources => options[:sources].gsub(/<sprites>/, options[:sprites]),
+        :windows => options[:windows]
       }
 
-      filename = options[:windows] ? 'flexo.rb' : '.flexo'
-      template 'flexo.tt', project_dir + filename, config
+      filename  = options[:windows] ? 'flexo.rb' : '.flexo'
+      flexofile = project_dir + filename
+
+      template 'flexo.tt', flexofile, config
+
+      # Clean up the template.
+      contents = flexofile.read.gsub(/\n{3,}/, "\n\n")
+      flexofile.open('w') { |file| file.puts contents }
 
       unless options['no-examples']
         directory 'sources',  project_dir + config[:sources]

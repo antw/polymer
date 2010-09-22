@@ -271,6 +271,23 @@ describe Flexo::DSL do
       @helper.touch 'src/fry.png'
     end
 
+    # Cache
+
+    describe 'cache' do
+      it 'should default to .flexo-cache' do
+        dsl {}.cache.should == @helper.path_to_file('.flexo-cache')
+      end
+
+      it 'should set a custom value' do
+        dsl { config.cache '.cache' }.cache.should ==
+          @helper.path_to_file('.cache')
+      end
+
+      it 'should permit false' do
+        dsl { config.cache false }.cache.should be_false
+      end
+    end
+
     # Sass
 
     describe 'sass' do
@@ -279,7 +296,7 @@ describe Flexo::DSL do
       end
 
       it 'should set a custom value' do
-        dsl { config.sass 'custom' }.sass.should == 
+        dsl { config.sass 'custom' }.sass.should ==
           @helper.path_to_file('custom')
       end
 

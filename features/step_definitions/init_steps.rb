@@ -34,12 +34,19 @@ Then /^the fixture sources should not exist$/ do
   command.path_to_file('public/images/sprites').should_not be_directory
 end
 
-Then /^\.flexo should expect default sources in (.*)$/ do |directory|
-  command.path_to_file('.flexo').read.should =~
+flexofile = "(#{Regexp.escape('.flexo')}|#{Regexp.escape('flexo.rb')})"
+
+Then /^#{flexofile} should expect default sources in (.+)$/ do |config, directory|
+  command.path_to_file(config).read.should =~
     compile_and_escape("#{directory}/:name/*")
 end
 
-Then /^\.flexo should expect default sprites to be saved in (.*)$/ do |directory|
-  command.path_to_file('.flexo').read.should =~
+Then /^#{flexofile} should expect default sprites to be saved in (.+)$/ do |config, directory|
+  command.path_to_file(config).read.should =~
     compile_and_escape("#{directory}/:name.png")
+end
+
+Then /^#{flexofile} should expect the cache to be at (.+)$/ do |config, path|
+  command.path_to_file(config).read.should =~
+    compile_and_escape("config.cache '#{path}'")
 end

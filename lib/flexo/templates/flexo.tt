@@ -10,8 +10,14 @@
 # sprites; you may override any of these on a sprite-by-sprite basis by
 # specifying your custom value in the sprite section below.
 
+<% if config[:windows] %>
+config.cache 'flexo.cache'
+config.sass  'public/stylesheets/sass'
+config.url   '/images/:filename'
+<% else %>
 config.sass 'public/stylesheets/sass'
 config.url  '/images/:filename'
+<% end %>
 
 # --- SPRITES ----------------------------------------------------------------
 

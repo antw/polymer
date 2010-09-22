@@ -238,7 +238,7 @@ module Flexo
     # @private
     #
     class ProjectConfig
-      %w( css padding url sass ).each do |method|
+      %w( cache css padding url sass ).each do |method|
         class_eval <<-RUBY
           def #{method}(value)   # def padding(value)
             @#{method} = value   #   @padding = value
@@ -247,6 +247,7 @@ module Flexo
       end
 
       def initialize
+        @cache   = Project::DEFAULTS[:cache]
         @css     = Project::DEFAULTS[:css]
         @padding = Project::DEFAULTS[:padding]
         @url     = Project::DEFAULTS[:url]
@@ -254,8 +255,8 @@ module Flexo
       end
 
       def to_h
-        { :css => @css, :padding => @padding,
-          :url => @url, :sass    => @sass }
+        { :cache => @cache, :css  => @css, :padding => @padding,
+          :url   => @url,   :sass => @sass }
       end
     end # ProjectConfig
 

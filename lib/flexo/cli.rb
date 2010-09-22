@@ -136,7 +136,8 @@ module Flexo
     def generate(*sprites)
       project = find_project!
 
-      cache = project.cache.file? ? YAML.load_file(project.cache) : {}
+      cache = project.use_cache? && project.cache.file? ?
+        YAML.load_file(project.cache) : {}
 
       # Determine which sprites we'll be working on.
       sprites = project.sprites.select do |sprite|
@@ -151,6 +152,7 @@ module Flexo
         end
       end
 
+      # There's nothing to generate.
       return if sprites.empty?
 
       # Get on with it.
@@ -188,6 +190,9 @@ module Flexo
           say DeviantFinder.format_ui_message(sprite, deviants)
         end
       end
+
+      # Skip cache if it disabled.
+      return unless project.use_cache?
 
       # Clean up the cache, removing sprites which no longer exist.
       sprite_names = project.sprites.map { |sprite| sprite.name }

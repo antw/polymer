@@ -86,6 +86,15 @@ module Flexo
       sprites.detect { |sprite| sprite.name == name }
     end
 
+    # Returns if the cache should be used.
+    #
+    # @return [Boolean]
+    #   True if the cache should be used by CLI, false otherwise.
+    #
+    def use_cache?
+      !! @cache
+    end
+
     private # ================================================================
 
     # Given the options passed to initialize, takes an option which is

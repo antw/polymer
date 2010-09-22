@@ -36,3 +36,17 @@ Feature: The sprite cache
     When I run "flexo generate"
     Then the exit status should be 0
       And the "fry" sprite should have been re-generated
+
+  Scenario: Generating an unchanged sprite when the cache is disabled
+    Given I have a project with config:
+      """
+      config.cache false
+
+      sprites 'public/images/sprites/:name/*' =>
+        'public/images/:name.png'
+      """
+      And I have 1 source in public/images/sprites/fry
+    When I run "flexo generate"
+    When I run "flexo generate"
+    Then the exit status should be 0
+      And the "fry" sprite should have been re-generated

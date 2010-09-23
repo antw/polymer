@@ -96,7 +96,7 @@ RSpec::Core::RakeTask.new(:spec) do |spec|
 end
 
 Cucumber::Rake::Task.new(:features) do |features|
-  features.cucumber_opts = '--format pretty --tag ~@pending'
+  features.cucumber_opts = '--format progress --tag ~@pending'
 end
 
 desc 'Run RSpec examples followed by the Cucumber features'

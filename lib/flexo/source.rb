@@ -3,8 +3,11 @@ module Flexo
   #
   class Source
 
-    attr_reader :name, :path
-    alias_method :to_s, :name
+    # @return [String] The sprite name; the filename sans-extension.
+    attr_reader :name
+
+    # @return [Pathname] The path to the source file on disk.
+    attr_reader :path
 
     # Creates a new Source instance.
     #
@@ -13,11 +16,7 @@ module Flexo
     #
     def initialize(path)
       @path = Pathname.new(path)
-      @name = @path.basename.to_s.chomp(@path.extname.to_s)
-    end
-
-    def inspect # :nodoc
-      "#<Flexo::Source #{@name}>"
+      @name = @path.basename(@path.extname).to_s
     end
 
     # Returns the RMagick image instance representing the source.
@@ -25,9 +24,7 @@ module Flexo
     # @return [Magick::Image]
     #
     def image
-      raise MissingSource, "Couldn't find the source file `#{@path}'" \
-        unless @path.file?
-
+      assert_file!
       @image ||= Magick::Image.read(@path).first
     end
 
@@ -36,10 +33,22 @@ module Flexo
     # @return [String]
     #
     def digest
-      raise MissingSource, "Couldn't find the source file `#{@path}'" \
-        unless @path.file?
-
+      assert_file!
       Digest::SHA256.hexdigest(@name + Digest::SHA256.file(@path).to_s)
+    end
+
+    #######
+    private
+    #######
+
+    # Checks that the source file exists and is a file.
+    #
+    # @raise [Flexo::MissingSource]
+    #   Raised if the source file is not present, or is not a file.
+    #
+    def assert_file!
+      raise MissingSource,
+        "Couldn't find the source file `#{@path}'" unless @path.file?
     end
 
   end # Source

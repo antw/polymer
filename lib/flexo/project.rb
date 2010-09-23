@@ -1,6 +1,11 @@
 module Flexo
   # Represents a directory in which it is expected that there be a
   # configuration file, and source images.
+  #
+  # The Project class exists mostly to make CLI tasks simpler; if you're using
+  # Flexo within your own library, you may prefer to create Sprite instances
+  # without using a Project.
+  #
   class Project
 
     # Defaults used by DSL when the user doesn't provide explicit values.
@@ -18,20 +23,21 @@ module Flexo
     #
     attr_reader :root
 
-    # Returns the path to the Sass mixin file, or false if Sass is disabled.
-    #
     # @return [Pathname, false]
+    #   The path to the Sass mixin file.
+    # @return [false]
+    #   False if Sass has been disabled.
     #
     attr_reader :sass
 
-    # Returns the path to the CSS file, or false if CSS generation is
-    # disabled.
-    #
     # @return [Pathname, false]
+    #   The path to the CSS file.
+    # @return [false]
+    #   False if CSS generation has been disabled.
     #
     attr_reader :css
 
-    # Returns an Array containing all the Sprites defined in the project.
+    # An array containing all of the sprites in the project.
     #
     # @return [Array<Flexo::Sprite>]
     #
@@ -68,12 +74,13 @@ module Flexo
       @cachefile = extract_path :cache, options
     end
 
-    # Returns a particular sprite identified by +name+.
+    # Returns the sprite whose name is +name+.
     #
     # @param [String] name
     #   The name of the sprite to be retrieved.
     #
-    # @return [Flexo::Sprite]
+    # @return [Flexo::Sprite] The sprite.
+    # @return [nil]           If no such sprite exists.
     #
     def sprite(name)
       sprites.detect { |sprite| sprite.name == name }
@@ -81,8 +88,8 @@ module Flexo
 
     # Returns if the cache should be used.
     #
-    # @return [Boolean]
-    #   True if the cache should be used by CLI, false otherwise.
+    # @return [true]  If the cache should be used by CLI.
+    # @return [false] If the cache is disabled and should not be used.
     #
     def use_cache?
       !! @cachefile
@@ -91,7 +98,6 @@ module Flexo
     # Returns a Cache instance for this project.
     #
     # @return [Flexo::Cache]
-    #   Returns a Cache if the project uses the cache.
     #
     def cache
       @cache ||= Flexo::Cache.new(@cachefile)
@@ -99,17 +105,18 @@ module Flexo
 
     private # ================================================================
 
-    # Given the options passed to initialize, takes an option which is
-    # expected to be a hash and appends it to the @root. If the value is
-    # falsey it is returned without modification. Finally, if the option
-    # key does not exist, the default is used.
+    # Extracts a path, typically specified in the DSL, and converts it to
+    # an absolute Pathname (by appending it on to +@root+).
     #
     # @param [Symbol] key
     #   The option key in which the value is expected.
     # @param [Hash] options
     #   The options hash passed to #initialize.
     #
-    # @return [Pathname, false]
+    # @return [Pathname]
+    #   Returns the path appended to +@root+.
+    # @return [false, nil]
+    #   When the option value was not a string.
     #
     def extract_path(key, options)
       value = options.fetch(key, DEFAULTS[key])

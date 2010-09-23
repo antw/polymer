@@ -26,22 +26,13 @@ module Flexo
       @url       = url
     end
 
-    # Retrieves the Flexo::Source whose name is +name+.
-    #
-    # @return [Flexo::Source, nil]
+    # @return [Flexo::Source]
+    #   Returns the source whose name matches +name+.
+    # @return [nil]
     #   Returns nil if no source with +name+ exists.
     #
     def source(name)
       sources.detect { |source| source.name == name }
-    end
-
-    # Returns an array of RMagick image instances; one for each source.
-    #
-    # @return [Array<Magick::Image>]
-    #   The Image instances for the sources.
-    #
-    def images
-      sources.map { |source| source.image }
     end
 
     # Returns the y-position of a given source.
@@ -58,7 +49,7 @@ module Flexo
 
       unless self.source(name)
         raise MissingSource,
-          "Source image '#{name}' is not present in the '#{@name}' sprite"
+          "Source image `#{name}' is not present in the `#{@name}' sprite"
       end
 
       unless @positions

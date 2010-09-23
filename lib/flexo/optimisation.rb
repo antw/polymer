@@ -21,8 +21,9 @@ module Flexo
     #   Path to the file to be optimised.
     #
     # @return [Integer, false]
-    #   Returns the number of bytes by which the filesize was reduced or false
-    #   if there are no available optimisers.
+    #   Returns the number of bytes by which the filesize was reduced.
+    # @return [false]
+    #   Returns false if the current machine has no optimisers available.
     #
     def self.optimise_file(path)
       return false if optimisers.empty?

@@ -1,4 +1,4 @@
-require 'spec/support/project_helper'
+require 'support/project_helper'
 
 module Flexo::Spec
   # A wrapper around ProjectHelper which exposes most of it's methods to

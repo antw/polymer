@@ -15,11 +15,9 @@ module Flexo
     # If the given +path+ does not exist, an empty cache instance will be
     # created, and calling +write+ will create a new file at +path+.
     #
-    # If no +path+ is given, the cache will operate in-memory only and +write+
-    # is disabled.
-    #
     # @param [Pathname] path
-    #   Path to the cache file to be loaded.
+    #   Path to the cache file to be loaded. If no +path+ is given, the cache
+    #   will operate in-memory only and +write+ is disabled.
     #
     def initialize(path = nil)
       @path = path

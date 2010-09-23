@@ -54,44 +54,6 @@ describe Flexo::Sprite do
     end
   end
 
-  # --- images ---------------------------------------------------------------
-
-  it { should have_public_method_defined(:images) }
-
-  describe '#images' do
-    describe 'when the sprite contains no sources' do
-      before(:each) do
-        @sprite = Flexo::Sprite.new('sprite', [], 'path', 0, 'url')
-      end
-
-      it 'should return an array' do
-        @sprite.images.should be_kind_of(Array)
-      end
-
-      it 'should be empty' do
-        @sprite.images.should be_empty
-      end
-    end
-
-    describe 'when the sprite contains two sources' do
-      before(:each) do
-        write_source 'sprite_one/one', 100, 25
-        write_source 'sprite_one/two', 100, 25
-
-        @sprite = project.sprite('sprite_one')
-      end
-
-      it 'should return an array' do
-        @sprite.images.should be_kind_of(Array)
-        @sprite.images.should have(2).images
-      end
-
-      it 'should contain Magick::Image instances' do
-        @sprite.images.each { |i| i.should be_kind_of(Magick::Image) }
-      end
-    end
-  end
-
   # --- position_of ----------------------------------------------------------
 
   it { should have_public_method_defined(:position_of) }
@@ -107,7 +69,7 @@ describe Flexo::Sprite do
     it 'should raise a MissingSource when the given source is not present' do
       running = lambda { @sprite.position_of('__invalid__') }
       running.should raise_error(Flexo::MissingSource,
-        /'__invalid__' is not present in the 'sprite_one' sprite/)
+        /`__invalid__' is not present in the `sprite_one' sprite/)
     end
 
     it 'should return an integer' do

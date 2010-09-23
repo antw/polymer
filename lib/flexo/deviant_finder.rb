@@ -8,11 +8,13 @@ module Flexo
     # deviation in source width or fewer than 3 sources will be skipped.
     #
     # @param [Flexo::Sprite] sprite
-    #   The sprite to be checked.
+    #   The sprite whose source widths are to be checked.
     #
-    # @return [Array<String>, nil]
+    # @return [Array<String>]
     #   Returns an array of source images whose width is greater than the
-    #   standard deviation, or nil if all images are an appropriate width.
+    #   standard deviation.
+    # @return [nil]
+    #   Returns nil if all of the source images are an approriate width.
     #
     def self.find_deviants(sprite)
       # Need more than two sources to find deviants.
@@ -41,7 +43,7 @@ module Flexo
           want to consider removing these sources from the sprite in order to
           reduce the sprite filesize.
 
-          Wide sources: #{deviants.join(', ')}
+          Wide sources: #{deviants.map(&:name).join(', ')}
         MESSAGE
       end
     end
@@ -49,6 +51,14 @@ module Flexo
     private # ----------------------------------------------------------------
 
     # Knuth.
+    #
+    # @param [Array<Integer>] data
+    #   An array containing the widths of each source image.
+    #
+    # @return [Array<Integer, Integer>]
+    #   Returns a two-element array whose first element is the mean width of
+    #   the source images; the second element is the standard deviation.
+    #
     def self.standard_deviation(data)
       n, mean, m2 = 0, 0, 0
 

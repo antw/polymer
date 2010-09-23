@@ -8,7 +8,8 @@ module Flexo
   #
   class DSL
 
-    # Given a path to a file, reads and evaluates the contents.
+    # Given a path to a file, reads and evaluates the contents as a DSL
+    # definition.
     #
     # @param [Pathname] path
     #   Path to a .flexo file to be evaluated.
@@ -84,7 +85,7 @@ module Flexo
     # @param [Hash] definition
     #   A { String => String } pair, plus any additional options.
     #
-    # @option definition [Int)ger] :padding (20)
+    # @option definition [Integer] :padding (20)
     #   Sets the size of the transparent space to be inserted between each
     #   source image. Measured in pixels.
     # @option definition [String] :url ("/images/:filename")
@@ -129,7 +130,7 @@ module Flexo
 
     alias_method :sprites, :sprite
 
-    # Transforms the configuration and defined sprites into a Project.
+    # Transforms the configuration -- and defined sprites -- into a Project.
     #
     # @return [Flexo::Project]
     #
@@ -163,11 +164,18 @@ module Flexo
     # Defines a single sprite.
     #
     # @param [String] sources
-    #   The path at which we can find sources.
+    #   The path at which Flexo should look for source images. If the path
+    #   is a directory, Flexo will assume that any images within it are to
+    #   be used as sources. Relative to +@root+.
     # @param [String] sprite
-    #   The path at which the sprite is to be saved.
+    #   The path, relative to +@root+ at which the generated sprite is to
+    #   be saved.
     # @param [Hash] options
     #   Other options.
+    #
+    # @raise [Flexo::DuplicateName]
+    #   Raised when the sprite uses a name which has been taken by an
+    #   existing sprite.
     #
     def _define_sprite(sources, sprite, options)
       sources, sprite = @root + sources, @root + sprite
@@ -241,25 +249,33 @@ module Flexo
     # @private
     #
     class ProjectConfig
-      %w( cache css padding url sass ).each do |method|
+      ATTRIBUTES = %w( cache css padding url sass ).map(&:to_sym).freeze
+
+      # Define the setter methods for each attribute. The setters are
+      # sans-equals to provide a slightly more concise syntax.
+      #
+      ATTRIBUTES.each do |method|
         class_eval <<-RUBY
-          def #{method}(value)   # def padding(value)
-            @#{method} = value   #   @padding = value
-          end                    # end
+          def #{method}(value)           # def padding(value)
+            @config[:#{method}] = value  #   @config[:padding] = value
+          end                            # end
         RUBY
       end
 
+      # Creates a new ProjectConfig. Sets the default values which are used in
+      # the event that the user doesn't specify them.
+      #
       def initialize
-        @cache   = Project::DEFAULTS[:cache]
-        @css     = Project::DEFAULTS[:css]
-        @padding = Project::DEFAULTS[:padding]
-        @url     = Project::DEFAULTS[:url]
-        @sass    = Project::DEFAULTS[:sass]
+        @config = ATTRIBUTES.inject({}) do |memo, attribute|
+          memo[attribute] = Flexo::Project::DEFAULTS[attribute]
+          memo
+        end
       end
 
+      # Returns a hash containing each of the attribute values.
+      #
       def to_h
-        { :cache => @cache, :css  => @css, :padding => @padding,
-          :url   => @url,   :sass => @sass }
+        @config
       end
     end # ProjectConfig
 

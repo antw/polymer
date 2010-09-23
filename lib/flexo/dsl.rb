@@ -179,6 +179,9 @@ module Flexo
           "sprite with this name has already been defined."
       end
 
+      # Handle when a directory is given without a file-matcher.
+      sources = sources + '*' if sources.directory?
+
       @sprites << options.merge(
         :name      => name,
         :sources   => Pathname.glob(sources),

@@ -67,6 +67,33 @@ describe Flexo::DSL do
 
     # ------------------------------------------------------------------------
 
+    context 'with src, matching two sources' do
+      before(:each) do
+        touch 'src/fry.png', 'src/leela.png'
+
+        @sprites = dsl_sprites do
+          sprite 'src' => 'lurrr.png'
+        end
+
+        @sprite = @sprites.first
+      end
+
+      it 'should create a single sprite' do
+        @sprites.length.should == 1
+      end
+
+      it 'should set two sources on the sprite' do
+        @sprite.should have(2).sources
+
+        sources = @sprite.sources
+
+        sources.detect { |source| source.name == 'fry' }.should be
+        sources.detect { |source| source.name == 'leela' }.should be
+      end
+    end # with src, matching two sources
+
+    # ------------------------------------------------------------------------
+
     context 'with src/:name/*, matching two sprites and one source each' do
       before(:each) do
         touch('src/lurrr/one', 'src/ndnd/one')
@@ -97,6 +124,31 @@ describe Flexo::DSL do
         @sprites.each do |sprite|
           sprite.url.should == "/images/#{sprite.name}.png"
         end
+      end
+    end # with src/:name/*, matching two sprites and two sources each
+
+    # ------------------------------------------------------------------------
+
+    context 'with src/:name, matching two sprites and two sources each' do
+      before(:each) do
+        touch 'src/lurrr/one',
+              'src/lurrr/two',
+              'src/ndnd/one',
+              'src/ndnd/two'
+
+        @sprites = dsl_sprites do
+          sprites 'src/:name' => ':name.png'
+        end
+      end
+
+      it 'should create two sprites' do
+        @sprites.length.should == 2
+        @sprites.detect { |sprite| sprite.name == 'lurrr' }.should be
+        @sprites.detect { |sprite| sprite.name == 'ndnd'  }.should be
+      end
+
+      it 'should have two sources in each sprite' do
+        @sprites.each { |sprite| sprite.should have(2).sources }
       end
     end # with src/:name/*, matching two sprites and two sources each
 

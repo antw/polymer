@@ -94,6 +94,8 @@ module Flexo
     # @return [Boolean]
     #
     def save
+      @save_path.dirname.mkpath
+
       unless @save_path.dirname.writable?
         raise Flexo::TargetNotWritable, <<-ERROR
           Flexo can't save the #{@name} sprite in "#{@save_path.dirname.to_s}"

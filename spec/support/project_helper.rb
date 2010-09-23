@@ -65,10 +65,12 @@ module Flexo
       end
 
       def sources_path=(path)
+        @sources_path_raw = path
         @sources_path = Pathname.new(path)
       end
 
       def sprites_path=(path)
+        @sprites_path_raw = path
         @sprites_path = Pathname.new(path)
       end
 
@@ -140,7 +142,8 @@ module Flexo
       #
       def write_simple_config(to = '.flexo')
         write_config to, <<-CONFIG
-          sprites 'public/images/sprites/:name/*' => 'public/images/:name.png'
+          sprites '#{@sources_path_raw}/:name/*' =>
+                  '#{@sprites_path_raw}/:name.png'
         CONFIG
       end
 

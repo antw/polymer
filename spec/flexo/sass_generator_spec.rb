@@ -9,17 +9,17 @@ describe Flexo::SassGenerator do
 
   describe '.generate' do
     before(:each) do
-      @helper = Flexo::Spec::ProjectHelper.go!
+      use_helper!
     end
 
     context 'with default settings, one sprite and two sources' do
       before(:each) do
-        @helper.write_source('fry/one')
-        @helper.write_source('fry/two')
+        write_source 'fry/one'
+        write_source 'fry/two'
 
-        @result = Flexo::SassGenerator.generate(@helper.project)
+        @result = Flexo::SassGenerator.generate(project)
 
-        @sass = @helper.path_to_file('public/stylesheets/sass/_flexo.sass')
+        @sass = path_to_file('public/stylesheets/sass/_flexo.sass')
       end
 
       it_should_behave_like 'a Sass generator'
@@ -68,12 +68,12 @@ describe Flexo::SassGenerator do
 
     context 'with default settings and two sprites' do
       before(:each) do
-        @helper.write_source('fry/one')
-        @helper.write_source('leela/one')
+        write_source 'fry/one'
+        write_source 'leela/one'
 
-        @result = Flexo::SassGenerator.generate(@helper.project)
+        @result = Flexo::SassGenerator.generate(project)
 
-        @sass = @helper.path_to_file('public/stylesheets/sass/_flexo.sass')
+        @sass = path_to_file('public/stylesheets/sass/_flexo.sass')
       end
 
       it_should_behave_like 'a Sass generator'
@@ -105,16 +105,16 @@ describe Flexo::SassGenerator do
 
     context 'with custom Sass directory path' do
       before(:each) do
-        @helper.write_config <<-CONFIG
+        write_config <<-CONFIG
           config.sass "public/sass"
 
-          sprites "public/images/sprites/:name/*" =>
-            'public/images/:name.png'
+          sprites "sources/:name/*" => 'sprites/:name.png'
         CONFIG
 
-        @helper.write_source('fry/one')
-        @result = Flexo::SassGenerator.generate(@helper.project)
-        @sass = @helper.path_to_file('public/sass/_flexo.sass')
+        write_source 'fry/one'
+
+        @result = Flexo::SassGenerator.generate(project)
+        @sass = path_to_file('public/sass/_flexo.sass')
       end
 
       it_should_behave_like 'a Sass generator'
@@ -123,16 +123,16 @@ describe Flexo::SassGenerator do
 
     context 'with a custom Sass file path' do
       before(:each) do
-        @helper.write_config <<-CONFIG
+        write_config <<-CONFIG
           config.sass "public/sass/_here.sass"
 
-          sprites "public/images/sprites/:name/*" =>
-            "public/images/:name.png"
+          sprites "sources/:name/*" => "sprites/:name.png"
         CONFIG
 
-        @helper.write_source('fry/one')
-        @result = Flexo::SassGenerator.generate(@helper.project)
-        @sass = @helper.path_to_file('public/sass/_here.sass')
+        write_source 'fry/one'
+
+        @result = Flexo::SassGenerator.generate(project)
+        @sass = path_to_file('public/sass/_here.sass')
       end
 
       it_should_behave_like 'a Sass generator'
@@ -141,16 +141,16 @@ describe Flexo::SassGenerator do
 
     context 'with a custom URL setting' do
       before(:each) do
-        @helper.write_config <<-CONFIG
+        write_config <<-CONFIG
           config.url "/right/here/:name.png"
 
-          sprites "public/images/sprites/:name/*" =>
-            "public/images/:name.png"
+          sprites "sources/:name/*" => "sprites/:name.png"
         CONFIG
 
-        @helper.write_source('fry/one')
-        @result = Flexo::SassGenerator.generate(@helper.project)
-        @sass = @helper.path_to_file('public/stylesheets/sass/_flexo.sass')
+        write_source 'fry/one'
+
+        @result = Flexo::SassGenerator.generate(project)
+        @sass = path_to_file('public/stylesheets/sass/_flexo.sass')
       end
 
       it_should_behave_like 'a Sass generator'
@@ -163,16 +163,15 @@ describe Flexo::SassGenerator do
 
     context 'with Sass disabled' do
       before(:each) do
-        @helper.write_config <<-CONFIG
+        write_config <<-CONFIG
           config.sass false
 
-          sprites "public/images/sprites/:name/*" =>
-            "public/images/:name.png"
+          sprites "sources/:name/*" => "sprites/:name.png"
         CONFIG
       end
 
       it 'should return false' do
-        Flexo::SassGenerator.generate(@helper.project).should be_false
+        Flexo::SassGenerator.generate(project).should be_false
       end
     end # with Sass disabled
 

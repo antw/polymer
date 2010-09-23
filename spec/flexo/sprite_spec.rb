@@ -3,9 +3,7 @@ require 'spec_helper'
 describe Flexo::Sprite do
   subject { Flexo::Sprite }
 
-  before(:each) do
-    @helper = Flexo::Spec::ProjectHelper.go!
-  end
+  before(:each) { use_helper! }
 
   # --- initialization -------------------------------------------------------
 
@@ -41,10 +39,10 @@ describe Flexo::Sprite do
 
   describe '#source' do
     before(:each) do
-      @helper.write_source('sprite_one/one', 100, 25)
-      @helper.write_source('sprite_one/two', 100, 25)
+      write_source 'sprite_one/one', 100, 25
+      write_source 'sprite_one/two', 100, 25
 
-      @sprite = @helper.project.sprite('sprite_one')
+      @sprite = project.sprite('sprite_one')
     end
 
     it 'should return nil when no such source exists' do
@@ -77,10 +75,10 @@ describe Flexo::Sprite do
 
     describe 'when the sprite contains two sources' do
       before(:each) do
-        @helper.write_source('sprite_one/one', 100, 25)
-        @helper.write_source('sprite_one/two', 100, 25)
+        write_source 'sprite_one/one', 100, 25
+        write_source 'sprite_one/two', 100, 25
 
-        @sprite = @helper.project.sprite('sprite_one')
+        @sprite = project.sprite('sprite_one')
       end
 
       it 'should return an array' do
@@ -100,10 +98,10 @@ describe Flexo::Sprite do
 
   describe '#position_of' do
     before(:each) do
-      @helper.write_source('sprite_one/one', 100, 25)
-      @helper.write_source('sprite_one/two', 100, 25)
+      write_source 'sprite_one/one', 100, 25
+      write_source 'sprite_one/two', 100, 25
 
-      @sprite = @helper.project.sprite('sprite_one')
+      @sprite = project.sprite('sprite_one')
     end
 
     it 'should raise a MissingSource when the given source is not present' do
@@ -132,30 +130,29 @@ describe Flexo::Sprite do
 
   describe '#digest' do
     before(:each) do
-      @helper.write_source('sprite_one/one',   100, 25)
-      @helper.write_source('sprite_one/two',   100, 25)
-      @helper.write_source('sprite_two/three', 100, 25)
+      write_source 'sprite_one/one',   100, 25
+      write_source 'sprite_one/two',   100, 25
+      write_source 'sprite_two/three', 100, 25
     end
 
     it 'should return a string' do
-      @helper.project.sprites.first.digest.should be_a(String)
+      project.sprites.first.digest.should be_a(String)
     end
 
     context 'when changing the image for a source' do
       before(:each) do
-        @sprite_one_digest = @helper.project.sprite('sprite_one').digest
-        @sprite_two_digest = @helper.project.sprite('sprite_two').digest
-        @helper.write_source('sprite_one/one', 100, 30)
+        @sprite_one_digest = project.sprite('sprite_one').digest
+        @sprite_two_digest = project.sprite('sprite_two').digest
+
+        write_source 'sprite_one/one', 100, 30
       end
 
       it 'should return something different when it is affected' do
-        @helper.project.sprite('sprite_one').digest.should_not ==
-          @sprite_one_digest
+        project.sprite('sprite_one').digest.should_not == @sprite_one_digest
       end
 
       it 'should return the same value when unaffected' do
-        @helper.project.sprite('sprite_two').digest.should ==
-          @sprite_two_digest
+        project.sprite('sprite_two').digest.should == @sprite_two_digest
       end
     end # when changing the image for a source
   end

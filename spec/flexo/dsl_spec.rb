@@ -5,13 +5,11 @@ describe Flexo::DSL do
 
   # --------------------------------------------------------------------------
 
-  before(:each) do
-    @helper = Flexo::Spec::ProjectHelper.go!
-  end
+  before(:each) { use_helper! }
 
   # Builds a project using the DSL, with the helper directory as the root.
   def dsl(&block)
-    Flexo::DSL.build(@helper.project_dir, &block)
+    Flexo::DSL.build(project_dir, &block)
   end
 
   # Builds a project using the DSL, and returns the sprites from the project.
@@ -28,7 +26,7 @@ describe Flexo::DSL do
 
     context 'with src/*, matching two sources' do
       before(:each) do
-        @helper.touch 'src/fry.png', 'src/leela.png'
+        touch 'src/fry.png', 'src/leela.png'
 
         @sprites = dsl_sprites do
           sprite 'src/*' => 'lurrr.png'
@@ -55,7 +53,7 @@ describe Flexo::DSL do
       end
 
       it 'should set the sprite save path' do
-        @sprite.save_path.should == @helper.path_to_file('lurrr.png')
+        @sprite.save_path.should == path_to_file('lurrr.png')
       end
 
       it 'should set the padding to 20' do
@@ -71,7 +69,7 @@ describe Flexo::DSL do
 
     context 'with src/:name/*, matching two sprites and one source each' do
       before(:each) do
-        @helper.touch('src/lurrr/one', 'src/ndnd/one')
+        touch('src/lurrr/one', 'src/ndnd/one')
 
         @sprites = dsl_sprites do
           sprites 'src/:name/*' => ':name.png'
@@ -91,7 +89,7 @@ describe Flexo::DSL do
       it 'should set the sprite save paths' do
         @sprites.each do |sprite|
           sprite.save_path.should ==
-            @helper.path_to_file("#{sprite.name}.png")
+            path_to_file("#{sprite.name}.png")
         end
       end
 
@@ -106,10 +104,10 @@ describe Flexo::DSL do
 
     context 'with src/*.{png,jpg}, matching one sprite with two sources' do
       before(:each) do
-        @helper.touch 'src/one.png',
-                      'src/two.jpg',
-                      'src/three.app', # non-match
-                      'src/four'       # non-match
+        touch 'src/one.png',
+              'src/two.jpg',
+              'src/three.app', # non-match
+              'src/four'       # non-match
 
         @sprites = dsl_sprites do
           sprites 'src/*.{png,jpg}' => 'lurrr.png'
@@ -134,7 +132,7 @@ describe Flexo::DSL do
 
     context 'with a custom padding option set to 50' do
       before(:each) do
-        @helper.touch('src/lurrr')
+        touch('src/lurrr')
 
         @sprites = dsl_sprites do
           sprite 'src/*' => 'lurrr.png', :padding => 50
@@ -150,7 +148,7 @@ describe Flexo::DSL do
 
     context 'with two sprites, and a custom padding option set to 50' do
       before(:each) do
-        @helper.touch('src/lurrr/one', 'src/ndnd/one')
+        touch('src/lurrr/one', 'src/ndnd/one')
 
         @sprites = dsl_sprites do
           sprite 'src/:name/*' => ':name.png', :padding => 50
@@ -171,7 +169,7 @@ describe Flexo::DSL do
 
     context 'with a custom padding option set to false' do
       before(:each) do
-        @helper.touch('src/lurrr')
+        touch 'src/lurrr'
 
         @sprites = dsl_sprites do
           sprite 'src/*' => 'lurrr.png', :padding => false
@@ -187,7 +185,7 @@ describe Flexo::DSL do
 
     context 'with a custom URL option set to /omicron_persei_8' do
       before(:each) do
-        @helper.touch('src/lurrr')
+        touch 'src/lurrr'
 
         @sprites = dsl_sprites do
           sprite 'src/*' => 'lurrr.png', :url => '/omicron_persei_8'
@@ -203,7 +201,7 @@ describe Flexo::DSL do
 
     context 'with a custom URL option set to /omicron_persei_8/:filename' do
       before(:each) do
-        @helper.touch('src/lurrr')
+        touch 'src/lurrr'
 
         @sprites = dsl_sprites do
           sprite 'src/*' => 'lurrr.png', :url => '/omicron_persei_8/:filename'
@@ -228,7 +226,7 @@ describe Flexo::DSL do
 
     context 'with a sprite whose name has already been used' do
       it 'should raise an error' do
-        @helper.touch 'src/fry/one.png'
+        touch 'src/fry/one.png'
 
         running = lambda do
           dsl do
@@ -268,19 +266,19 @@ describe Flexo::DSL do
   describe '#config' do
 
     before(:each) do
-      @helper.touch 'src/fry.png'
+      touch 'src/fry.png'
     end
 
     # Cache
 
     describe 'cache' do
       it 'should default to .flexo-cache' do
-        dsl {}.cache.path.should == @helper.path_to_file('.flexo-cache')
+        dsl {}.cache.path.should == path_to_file('.flexo-cache')
       end
 
       it 'should set a custom value' do
         dsl { config.cache '.cache' }.cache.path.should ==
-          @helper.path_to_file('.cache')
+          path_to_file('.cache')
       end
 
       it 'should permit false' do
@@ -292,12 +290,12 @@ describe Flexo::DSL do
 
     describe 'sass' do
       it 'should default to public/stylesheets/sass' do
-        dsl {}.sass.should == @helper.path_to_file('public/stylesheets/sass')
+        dsl {}.sass.should == path_to_file('public/stylesheets/sass')
       end
 
       it 'should set a custom value' do
         dsl { config.sass 'custom' }.sass.should ==
-          @helper.path_to_file('custom')
+          path_to_file('custom')
       end
 
       it 'should permit false' do
@@ -314,7 +312,7 @@ describe Flexo::DSL do
 
       it 'should set a custom value' do
         dsl { config.css 'custom' }.css.should ==
-          @helper.path_to_file('custom')
+          path_to_file('custom')
       end
     end
 

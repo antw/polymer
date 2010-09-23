@@ -113,13 +113,7 @@ Each configuration option is prefixed with a colon rather than
 "config.", is separated from the value with " => ", and all but the
 final option should be followed with a comma.
 
-HELP
-----
-
-If your sprites don't work as you expect, try running `flexo describe`
-to see an explanation of your configuration and sprites.
-
 SEE ALSO
 --------
 
-flexo(1), flexo-describe(1), flexo-init(1)
+flexo(1), flexo-init(1)

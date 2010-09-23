@@ -50,10 +50,6 @@ COMMANDS
   Shows the position of a source within a sprite, and provides CSS which
   you can use in your own stylesheets.
 
-* [flexo describe(1)][flexo-describe(1)]:
-  Shows a human-readable summary of the sprites and settings defined in
-  `.flexo`.
-
 Detailed documentation for each of Flexo's commands can be viewed with
 the `flexo help` command. For example, to view the documentation for the
 `generate` command, run `flexo help generate`.

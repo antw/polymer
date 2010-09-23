@@ -6,7 +6,7 @@ Feature: Sass mixin files
 
   Scenario: Creating a Sass mixin with a sprite
     Given I have a default project
-      And I have 1 source in public/images/sprites/fry
+      And I have 1 source in sources/fry
     When I run "flexo generate"
     Then the exit status should be 0
       And a Sass mixin should exist
@@ -14,7 +14,7 @@ Feature: Sass mixin files
 
   Scenario: When nothing is generated
     Given I have a default project
-      And I have 1 source in public/images/sprites/fry
+      And I have 1 source in sources/fry
       And I run "flexo generate"
     When I run "flexo generate"
     Then the stdout should not contain "written  Sass"
@@ -25,6 +25,6 @@ Feature: Sass mixin files
     ---
       config.sass false
 
-      sprites 'public/images/sprites/:name/*' => 'public/images/:name.png'
+      sprites 'sources/:name/*' => 'sprites/:name.png'
     """
     Then a Sass mixin should not exist

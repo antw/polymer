@@ -6,7 +6,7 @@ Feature: Generating sprites with Flexo
 
   Scenario: Creating a sprite with two sources
     Given I have a default project
-      And I have 2 sources in public/images/sprites/fry
+      And I have 2 sources in sources/fry
     When I run "flexo generate"
     Then the exit status should be 0
       And the "fry" sprite should have been generated
@@ -14,8 +14,8 @@ Feature: Generating sprites with Flexo
 
   Scenario: Creating two sprites at once
     Given I have a default project
-      And I have 1 source in public/images/sprites/fry
-      And I have 1 source in public/images/sprites/leela
+      And I have 1 source in sources/fry
+      And I have 1 source in sources/leela
     When I run "flexo generate"
     Then the exit status should be 0
       And the "fry" sprite should have been generated
@@ -23,8 +23,8 @@ Feature: Generating sprites with Flexo
 
   Scenario: When specifying specific sprites to generate
     Given I have a default project
-      And I have 1 source in public/images/sprite/fry
-      And I have 1 source in public/images/sprite/leela
+      And I have 1 source in sources/fry
+      And I have 1 source in sources/leela
     When I run "flexo generate fry"
     Then the exit status should be 0
       And the "fry" sprite should have been generated
@@ -37,8 +37,8 @@ Feature: Generating sprites with Flexo
 
   Scenario: Generating sprites when the sprite directory is not writable
     Given I have a default project
-      And I have 1 source in public/images/sprites/fry
-      And public/images is not writable
+      And I have 1 source in sources/fry
+      And sprites is not writable
     When I run "flexo generate"
     Then the exit status should be 1
       And the stdout should contain "can't save the fry sprite"

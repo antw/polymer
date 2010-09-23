@@ -87,7 +87,8 @@ class Flexo::Spec::CucumberWorld
       path = Pathname.new(Dir.mktmpdir)
 
       @default_project = Flexo::Spec::CommandRunner.new(path)
-      @default_project.run('flexo init --no-examples')
+      @default_project.run \
+        'flexo init --no-examples --sprites sprites --sources sources'
     end
 
     FileUtils.cp_r(@default_project.project_dir.to_s + '/.', to)

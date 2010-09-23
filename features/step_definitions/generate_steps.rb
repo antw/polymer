@@ -33,6 +33,7 @@ end
 
 Given /^(.+) is not writable$/ do |path|
   path = command.path_to_file(path)
+  path.mkpath unless path.file?
 
   # Keep track of the file's original attribtues so they can be restored.
   chmods[path] ||= path.stat.mode

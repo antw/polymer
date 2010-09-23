@@ -49,8 +49,8 @@ module Flexo
         self.class.cleanup! unless @project_dir
         self.project_dir.mkpath
 
-        self.sources_path = "public/images/sprites"
-        self.sprites_path = "public/images"
+        self.sources_path = "sources"
+        self.sprites_path = "sprites"
       end
 
       # An alternative to ProjectHelper.new -- creates the helper, and writes

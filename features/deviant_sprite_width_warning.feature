@@ -7,9 +7,9 @@ Feature: Warning about sprites with wildly varying widths
 
   Scenario: Generating a sprite with a very wide source
     Given I have a default project
-      And I have 4 sources in public/images/sprites/fry
-      And I have a "five" source at public/images/sprites/fry which is 300x1
-      And I have a "six" source at public/images/sprites/fry which is 300x1
+      And I have 4 sources in sources/fry
+      And I have a "five" source at sources/fry which is 300x1
+      And I have a "six" source at sources/fry which is 300x1
     When I run "flexo generate"
     Then the output should contain:
       """

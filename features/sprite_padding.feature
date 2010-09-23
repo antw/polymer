@@ -9,10 +9,9 @@ Feature: Setting the transparent padding between source images
       """
       config.padding 50
 
-      sprites 'public/images/sprites/:name/*' =>
-        'public/images/:name.png'
+      sprites 'sources/:name/*' => 'sprites/:name.png'
       """
-      And I have 2 sources in public/images/sprites/fry
+      And I have 2 sources in sources/fry
     When I run "flexo generate"
     Then the exit status should be 0
       And the "fry" sprite should have been generated
@@ -21,14 +20,11 @@ Feature: Setting the transparent padding between source images
   Scenario: Creating a single sprite with custom sprite padding
     Given I have a project with config:
       """
-      sprite 'public/images/sprites/fry/*' =>
-        'public/images/fry.png', :padding => 50
-
-      sprite 'public/images/sprites/leela/*' =>
-        'public/images/leela.png'
+      sprite 'sources/fry/*'   => 'sprites/fry.png', :padding => 50
+      sprite 'sources/leela/*' => 'sprites/leela.png'
       """
-      And I have 2 sources in public/images/sprites/fry
-      And I have 2 sources in public/images/sprites/leela
+      And I have 2 sources in sources/fry
+      And I have 2 sources in sources/leela
     When I run "flexo generate"
     Then the exit status should be 0
       And the "fry" sprite should have been generated
@@ -41,10 +37,9 @@ Feature: Setting the transparent padding between source images
       """
       config.padding 0
 
-      sprites 'public/images/sprites/:name/*' =>
-        'public/images/:name.png'
+      sprites 'sources/:name/*' => 'sprites/:name.png'
       """
-      And I have 2 sources in public/images/sprites/fry
+      And I have 2 sources in sources/fry
     When I run "flexo generate"
     Then the exit status should be 0
       And the "fry" sprite should have been generated

@@ -44,7 +44,7 @@ end
 
 desc 'Create a fresh gemspec'
 task :gemspec => :validate do
-  gemspec_file = File.expand_path('../../flexo.gemspec', __FILE__)
+  gemspec_file = File.expand_path('../flexo.gemspec', __FILE__)
 
   # Read spec file and split out the manifest section.
   spec = File.read(gemspec_file)
@@ -61,9 +61,13 @@ task :gemspec => :validate do
     split("\n").
     sort.
     reject { |file| file =~ /^\./ }.
-    reject { |file| file =~ /^(rdoc|pkg|spec|tasks|features|man)/ }.
-    map    { |file| "    #{file}" }.
-    join("\n")
+    reject { |file| file =~ /^(rdoc|pkg|spec|tasks|features|man)/ }
+
+  # Add man pages.
+  files += Dir['lib/flexo/man/*']
+
+  # Format list for the gemspec.
+  files = files.map { |file| "    #{file}" }.join("\n")
 
   # Piece file back together and write.
   manifest = "  s.files = %w[\n#{files}\n  ]\n"
@@ -112,7 +116,7 @@ task :man do
   source_dir = Pathname.new('man')
   dest_dir   = Pathname.new('lib/flexo/man')
 
-  dest_dir.rmtree
+  dest_dir.rmtree if dest_dir.directory?
   dest_dir.mkpath
 
   Pathname.glob(source_dir + '*.ronn').each do |source|

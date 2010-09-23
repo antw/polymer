@@ -75,6 +75,18 @@ Gem::Specification.new do |s|
     lib/flexo/templates/sources/two/wand-hat.png
     lib/flexo/templates/sources/two/wooden-box-label.png
     lib/flexo/version.rb
+    lib/flexo/man/flexo-generate.1
+    lib/flexo/man/flexo-generate.1.txt
+    lib/flexo/man/flexo-init.1
+    lib/flexo/man/flexo-init.1.txt
+    lib/flexo/man/flexo-optimise.1
+    lib/flexo/man/flexo-optimise.1.txt
+    lib/flexo/man/flexo-position.1
+    lib/flexo/man/flexo-position.1.txt
+    lib/flexo/man/flexo.1
+    lib/flexo/man/flexo.1.txt
+    lib/flexo/man/flexo.5
+    lib/flexo/man/flexo.5.txt
   ]
   # = MANIFEST =
 

@@ -21,9 +21,7 @@ Gem::Specification.new do |s|
   s.summary      = 'Creates sprites for web applications'
   s.description  = 'Flexo simplifies the creation of sprite images for ' \
                    'web applications, while also generating nifty Sass ' \
-                   'mixins. CSS files are available for non-Sass users,' \
-                   'along with a directory-watcher and Rack middleware ' \
-                   'to make development a breeze.'
+                   'mixins. CSS files are available for non-Sass users.'
 
   s.rdoc_options     = ['--charset=UTF-8']
   s.extra_rdoc_files = %w[History.md LICENSE README.md]

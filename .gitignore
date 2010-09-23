@@ -36,3 +36,4 @@ lib/flexo/man/*
 man/*.html
 man/*.markdown
 !man/index.html
+pages

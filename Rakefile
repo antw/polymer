@@ -136,6 +136,30 @@ task :man do
   end
 end
 
+desc 'Builds HTML for Github Pages, then publishes'
+task :pages do
+  # Cheers to rtomayko/ronn/Rakefile
+  sh "ronn -5 -s toc --markdown -w man/*.ronn"
+
+  puts '-' * 50
+  puts 'Rebuilding pages ...'
+
+  verbose(false) do
+    rm_rf 'pages'
+    push_url = `git remote show origin`.lines.grep(/Push.*URL/).first[/git@.*/]
+    sh 'git fetch -q origin'
+    sh 'rev=$(git rev-parse origin/gh-pages)'
+    sh 'git clone -q -b gh-pages . pages'
+    cd 'pages'
+    sh 'git reset --hard $rev'
+    sh 'rm -f flexo*.html index.html'
+    sh 'cp -rp ../man/flexo*.html ../man/index.txt ../man/index.html ./'
+    sh 'git add -u flexo*.html index.html index.txt'
+    sh 'git commit -m "rebuild manual"'
+    sh 'git push #{push_url} gh-pages'
+  end
+end
+
 # --- YARD -------------------------------------------------------------------
 
 begin

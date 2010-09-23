@@ -91,6 +91,10 @@ Rubinius.
 Contributing
 ------------
 
+A Bundler Gemfile is provided to simplify installing Flexo's
+dependencies. Running `bundle install` will install everything needed to
+contribute. Bundler is not used in the Flexo library itself.
+
 * Fork the project, taking care not to get any in your eyes.
 
 * Make your feature addition or bug fix.

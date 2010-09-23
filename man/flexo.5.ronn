@@ -61,6 +61,13 @@ defaults if you choose not to define them.
     separate each source, and may be set to 0 if no padding is desired.
     Default: 20.
 
+  * `config.cache` "_string_" or _false_:
+    Since optimising sprites can take some time, Flexo maintains a cache
+    of each sprite, only generating and optimising those which have
+    changed. This cache is typically stored in your project root as
+    ".flexo-cache". You may specify an alternate path here, or provide
+    _false_ if you want to disable the cache entirely (not recommended).
+
 DEFINING SPRITES
 ----------------
 

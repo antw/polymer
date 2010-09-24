@@ -156,7 +156,7 @@ task :pages do
     sh 'git reset --hard $rev'
     sh 'rm -f polymer*.html index.html'
     sh 'cp -rp ../man/polymer*.html ../man/index.html ./'
-    sh 'git add -u polymer*.html index.html'
+    sh 'git add *.html'
     sh 'git commit -m "Rebuild manual."'
     sh "git push #{push_url} gh-pages"
   end

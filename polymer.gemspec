@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.platform     = Gem::Platform::RUBY
   s.authors      = ['Anthony Williams']
   s.email        = ['hi@antw.me']
-  s.homepage     = 'http:/github.com/antw/polymer'
+  s.homepage     = 'http://github.com/antw/polymer'
   s.summary      = 'Creates sprites for web applications'
   s.description  = 'Polymer simplifies the creation of sprite images for ' \
                    'web applications, while also generating nifty Sass ' \

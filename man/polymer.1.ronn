@@ -37,7 +37,7 @@ COMMANDS
 * [polymer init(1)][polymer-init(1)]:
   Creates a new Polymer project in the current directory.
 
-* [polymer generate(1)][polymer-generate(1)]:
+* [polymer bond(1)][polymer-bond(1)]:
   Creates the sprites specified by your `.polymer` or `polymer.rb` file,
   optimises the images, and creates any requested CSS or Sass files.
 
@@ -52,7 +52,7 @@ COMMANDS
 
 Detailed documentation for each of Polymer's commands can be viewed with
 the `polymer help` command. For example, to view the documentation for
-the `generate` command, run `polymer help generate`.
+the `bond` command, run `polymer help bond`.
 
 SEE ALSO
 --------

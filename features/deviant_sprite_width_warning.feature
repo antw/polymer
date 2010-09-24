@@ -1,4 +1,4 @@
-@polymer-generate
+@polymer-bond
 Feature: Warning about sprites with wildly varying widths
 
   Since sprites are as wide as their widest source
@@ -10,7 +10,7 @@ Feature: Warning about sprites with wildly varying widths
       And I have 4 sources in sources/fry
       And I have a "five" source at sources/fry which is 300x1
       And I have a "six" source at sources/fry which is 300x1
-    When I run "polymer generate"
+    When I run "polymer bond"
     Then the output should contain:
       """
       Your "fry" sprite contains one or more source images which deviate significantly

@@ -1,4 +1,4 @@
-@polymer-generate
+@polymer-bond
 Feature: Sass mixin files
 
   In order to make Polymer awesome
@@ -7,7 +7,7 @@ Feature: Sass mixin files
   Scenario: Creating a Sass mixin with a sprite
     Given I have a default project
       And I have 1 source in sources/fry
-    When I run "polymer generate"
+    When I run "polymer bond"
     Then the exit status should be 0
       And a Sass mixin should exist
       And the stdout should contain "written  Sass"
@@ -15,8 +15,8 @@ Feature: Sass mixin files
   Scenario: When nothing is generated
     Given I have a default project
       And I have 1 source in sources/fry
-      And I run "polymer generate"
-    When I run "polymer generate"
+      And I run "polymer bond"
+    When I run "polymer bond"
     Then the stdout should not contain "written  Sass"
 
   Scenario: Disabling Sass in the config file

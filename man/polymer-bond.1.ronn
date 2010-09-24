@@ -1,10 +1,10 @@
-polymer-generate(1) -- Create sprite images defined in your .polymer file
-=========================================================================
+polymer-bond(1) -- Create sprite images defined in your .polymer file
+=====================================================================
 
 SYNOPSIS
 --------
 
-`polymer generate` [--force] [--fast] [--config=POLYMER\_CONFIG]
+`polymer bond` [--force] [--fast] [--config=POLYMER\_CONFIG]
 
 DESCRIPTION
 -----------
@@ -18,7 +18,7 @@ Sass and CSS is then generated according to the settings defined in your
 polymer(5) configuration.
 
 Polymer keeps track of the contents of each sprite with a
-`.polymer-cache` file so that subsequent runs of `polymer generate` will
+`.polymer-cache` file so that subsequent runs of `polymer bond` will
 only re-generate (and re-optimise) those sprites whose sources have
 changed. See the _POLYMER CACHE_ section -- below -- for more
 information.

@@ -43,5 +43,5 @@ Feature: The init command
     Then the exit status should be 0
       And polymer.rb should be a file
       And polymer.rb should expect the cache to be at polymer.cache
-    When I run "polymer generate --fast"
+    When I run "polymer bond --fast"
     Then the exit status should be 0

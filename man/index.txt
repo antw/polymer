@@ -1,6 +1,6 @@
 polymer(1)           polymer.1
 polymer(5)           polymer.5
 polymer-init(1)      polymer-init.1
-polymer-generate(1)  polymer-generate.1
+polymer-bond(1)      polymer-bond.1
 polymer-optimise(1)  polymer-optimise.1
 polymer-position(1)  polymer-position.1

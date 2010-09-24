@@ -14,6 +14,92 @@ module Polymer
       self.shell = Thor::Shell::Basic.new if options['no-color']
     end
 
+    # --- bond ---------------------------------------------------------------
+
+    desc 'bond [SPRITES]',
+      'Creates the sprites specified by your .polymer or polymer.rb file'
+
+    long_desc <<-DESC
+      The bond task reads your project configuration and creates your shiny
+      new sprites. If enabled, CSS and/or SCSS will also be written so as to
+      make working with your sprites a little easier.
+
+      You may specify exactly which sprites you want generated, otherwise
+      Polymer will generate all sprites defined in your config file. Any
+      sprite which has not changed since you last ran this command will not be
+      re-generated unless you pass the --force option.
+    DESC
+
+    method_option :force, :type => :boolean, :default => false,
+      :desc => 'Re-generates sprites whose sources have not changed'
+
+    method_option :fast, :type => :boolean, :default => false,
+      :desc => "Skip optimisation of images after they are generated"
+
+    def bond(*sprites)
+      project = find_project!
+
+      # Determine which sprites we'll be working on.
+      sprites = project.sprites.select do |sprite|
+        if sprites.empty? or sprites.include?(sprite.name)
+          # The user specified no sprites, or this sprite was requested.
+          if project.cache.stale?(sprite) or options[:force]
+            # Digest is different, user is forcing update or sprite file
+            # has been deleted.
+            project.cache.set(sprite)
+          end
+        end
+      end
+
+      # There's nothing to generate.
+      return if sprites.empty?
+
+      # Get on with it.
+      sprites.each do |sprite|
+        next unless sprite.save
+
+        say_status('generated', sprite.name, :green)
+
+        unless options[:fast]
+          say "  optimising  #{sprite.name} ... "
+          before = sprite.save_path.size
+
+          reduction = Polymer::Optimisation.optimise_file(sprite.save_path)
+
+          if reduction > 0
+            saved = '- saved %.2fkb (%.1f' %
+              [reduction.to_f / 1024, (reduction.to_f / before) * 100]
+            say_status "\r\e[0K   optimised", "#{sprite.name} #{saved}%)", :green
+          else
+            print "\r\e[0K"
+          end
+        end
+      end
+
+      # Stylesheets.
+      if SassGenerator.generate(project)
+        say_status('written', 'Sass mixin', :green)
+      end
+
+      #process Processors::CSS,        project
+
+      # Find sprites with deviant-width sources.
+      sprites.each do |sprite|
+        if deviants = DeviantFinder.find_deviants(sprite)
+          say DeviantFinder.format_ui_message(sprite, deviants)
+        end
+      end
+
+      # Clean up the cache, removing sprites which no longer exist.
+      project.cache.remove_all_except(project.sprites)
+
+      # Finish by writing the new cache.
+      project.cache.write
+
+    rescue Polymer::MissingSource, Polymer::TargetNotWritable => e
+      say e.message.compress_lines, :red
+      exit 1
+    end
 
     # --- help ---------------------------------------------------------------
 
@@ -27,7 +113,7 @@ module Polymer
 
         # Sub-commands.
         'init'     => 'polymer-init.1',
-        'generate' => 'polymer-generate.1',
+        'bond'     => 'polymer-bond.1',
         'optimise' => 'polymer-optimise.1',
         'optimize' => 'polymer-optimise.1',
         'position' => 'polymer-position.1',
@@ -110,94 +196,6 @@ module Polymer
       say_status '', '-------------------------'
       say_status '', 'Your project was created!'
     end
-
-    # --- generate -----------------------------------------------------------
-
-    desc 'generate [SPRITES]',
-      'Creates the sprites specified by your .polymer or polymer.rb file'
-
-    long_desc <<-DESC
-      The generate task reads your project configuration and creates your
-      shiny new sprites. If enabled, CSS and/or SCSS will also be written so
-      as to make working with your sprites a little easier.
-
-      You may specify exactly which sprites you want generated, otherwise
-      Polymer will generate all sprites defined in your config file. Any
-      sprite which has not changed since you last ran this command will not be
-      re-generated unless you pass the --force option.
-    DESC
-
-    method_option :force, :type => :boolean, :default => false,
-      :desc => 'Re-generates sprites whose sources have not changed'
-
-    method_option :fast, :type => :boolean, :default => false,
-      :desc => "Skip optimisation of images after they are generated"
-
-    def generate(*sprites)
-      project = find_project!
-
-      # Determine which sprites we'll be working on.
-      sprites = project.sprites.select do |sprite|
-        if sprites.empty? or sprites.include?(sprite.name)
-          # The user specified no sprites, or this sprite was requested.
-          if project.cache.stale?(sprite) or options[:force]
-            # Digest is different, user is forcing update or sprite file
-            # has been deleted.
-            project.cache.set(sprite)
-          end
-        end
-      end
-
-      # There's nothing to generate.
-      return if sprites.empty?
-
-      # Get on with it.
-      sprites.each do |sprite|
-        next unless sprite.save
-
-        say_status('generated', sprite.name, :green)
-
-        unless options[:fast]
-          say "  optimising  #{sprite.name} ... "
-          before = sprite.save_path.size
-
-          reduction = Polymer::Optimisation.optimise_file(sprite.save_path)
-
-          if reduction > 0
-            saved = '- saved %.2fkb (%.1f' %
-              [reduction.to_f / 1024, (reduction.to_f / before) * 100]
-            say_status "\r\e[0K   optimised", "#{sprite.name} #{saved}%)", :green
-          else
-            print "\r\e[0K"
-          end
-        end
-      end
-
-      # Stylesheets.
-      if SassGenerator.generate(project)
-        say_status('written', 'Sass mixin', :green)
-      end
-
-      #process Processors::CSS,        project
-
-      # Find sprites with deviant-width sources.
-      sprites.each do |sprite|
-        if deviants = DeviantFinder.find_deviants(sprite)
-          say DeviantFinder.format_ui_message(sprite, deviants)
-        end
-      end
-
-      # Clean up the cache, removing sprites which no longer exist.
-      project.cache.remove_all_except(project.sprites)
-
-      # Finish by writing the new cache.
-      project.cache.write
-
-    rescue Polymer::MissingSource, Polymer::TargetNotWritable => e
-      say e.message.compress_lines, :red
-      exit 1
-    end
-
 
     # --- optimise -----------------------------------------------------------
 

@@ -1,4 +1,4 @@
-@flexo-generate
+@polymer-generate
 Feature: The sprite cache
 
   Since optimising sprites can take a while
@@ -8,9 +8,9 @@ Feature: The sprite cache
     Given I have a default project
       And I have 2 sources in sources/fry
       And I have 1 source in sources/leela
-    When I run "flexo generate"
+    When I run "polymer generate"
       And I have a "one" source at sources/fry which is 100x25
-    When I run "flexo generate"
+    When I run "polymer generate"
     Then the exit status should be 0
       And the "fry" sprite should have been re-generated
       And the "leela" sprite should not have been re-generated
@@ -21,9 +21,9 @@ Feature: The sprite cache
     Given I have a default project
       And I have 2 sources in sources/fry
       And I have 1 source in sources/leela
-    When I run "flexo generate"
+    When I run "polymer generate"
       And I have a "one" source at sources/fry which is 100x25
-    When I run "flexo generate --force"
+    When I run "polymer generate --force"
     Then the exit status should be 0
       And the "fry" sprite should have been re-generated
       And the "leela" sprite should have been re-generated
@@ -31,9 +31,9 @@ Feature: The sprite cache
   Scenario: Generating an unchanged sprite which has been deleted
     Given I have a default project
       And I have 1 source in sources/fry
-    When I run "flexo generate"
+    When I run "polymer generate"
       And I delete the file sprites/fry.png
-    When I run "flexo generate"
+    When I run "polymer generate"
     Then the exit status should be 0
       And the "fry" sprite should have been re-generated
 
@@ -45,7 +45,7 @@ Feature: The sprite cache
       sprites 'sources/:name/*' => 'sprites/:name.png'
       """
       And I have 1 source in sources/fry
-    When I run "flexo generate"
-    When I run "flexo generate"
+    When I run "polymer generate"
+    When I run "polymer generate"
     Then the exit status should be 0
       And the "fry" sprite should have been re-generated

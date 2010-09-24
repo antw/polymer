@@ -1,12 +1,12 @@
 require 'rbconfig'
 require 'tempfile'
 
-module Flexo
+module Polymer
   module Spec
-    # Runs flexo commands in a subprocess and reports back on their exit
+    # Runs polymer commands in a subprocess and reports back on their exit
     # status and output.
     #
-    # See spec/flexo/commands/*_spec.rb.
+    # See spec/polymer/commands/*_spec.rb.
     #
     class CommandRunner < ProjectHelper
 
@@ -14,9 +14,9 @@ module Flexo
       RUBY = Pathname.new(Config::CONFIG['bindir']) +
                           Config::CONFIG['ruby_install_name']
 
-      # Path to the flexo executable.
+      # Path to the polymer executable.
       EXECUTABLE = Pathname.new(__FILE__).dirname.
-                      expand_path + '../../bin/flexo'
+                      expand_path + '../../bin/polymer'
 
       attr_reader :status, :stderr, :stdout
 
@@ -27,14 +27,14 @@ module Flexo
       # @param [String] command
       #   The command to be run.
       # @param [Boolean] use_fast
-      #   When running flexo generate, appends --fast to skip optimisation
+      #   When running polymer generate, appends --fast to skip optimisation
       #   of sprites in order to speed up the features.
       #
       # @return [CommandRunner]
       #   Returns self.
       #
       def run(command, &block)
-        if command =~ /^flexo(.*)$/
+        if command =~ /^polymer(.*)$/
           # Load Rubygems when on <1.9 (there has to be a better way to do
           # this, surely)
           rubygems = RUBY_VERSION < '1.9' ? ' -rubygems' : ''
@@ -100,4 +100,4 @@ module Flexo
 
     end # CommandRunner
   end # Spec
-end # Flexo
+end # Polymer

@@ -1,13 +1,13 @@
-@flexo-generate
+@polymer-generate
 Feature: Sass mixin files
 
-  In order to make Flexo awesome
+  In order to make Polymer awesome
   It should generate Sass mixins
 
   Scenario: Creating a Sass mixin with a sprite
     Given I have a default project
       And I have 1 source in sources/fry
-    When I run "flexo generate"
+    When I run "polymer generate"
     Then the exit status should be 0
       And a Sass mixin should exist
       And the stdout should contain "written  Sass"
@@ -15,8 +15,8 @@ Feature: Sass mixin files
   Scenario: When nothing is generated
     Given I have a default project
       And I have 1 source in sources/fry
-      And I run "flexo generate"
-    When I run "flexo generate"
+      And I run "polymer generate"
+    When I run "polymer generate"
     Then the stdout should not contain "written  Sass"
 
   Scenario: Disabling Sass in the config file

@@ -1,0 +1,61 @@
+polymer(1) -- Image spriting for web applications
+=================================================
+
+SYNOPSIS
+--------
+
+`polymer` [--no-colour] COMMAND [ARGUMENTS]
+
+DESCRIPTION
+-----------
+
+`Polymer` is a tool for creating sprite images which combine many smaller
+sources into a single larger image. Spriting allows you to reduce the
+number of HTTP requests required to load a web page, and as such can
+result in reduced load times.
+
+Polymer also creates the necessary CSS to position the sprite within an
+HTML element so that only the desired source appears. Those writing
+their website or application in Ruby can make use of Polymer's Sass
+builder which creates a Sass mixin, further simplifying the use of your
+sprites.
+
+In order to reduce the amount of data transferred to clients loading
+your pages, Polymer optimises the sprites it generates using PNGOUT,
+OptiPNG, and PNGCrush.
+
+OPTIONS
+-------
+
+* `--no-colour`:
+  Disables the use of colour in output. This option is also available as
+  `--no-color`.
+
+COMMANDS
+--------
+
+* [polymer init(1)][polymer-init(1)]:
+  Creates a new Polymer project in the current directory.
+
+* [polymer generate(1)][polymer-generate(1)]:
+  Creates the sprites specified by your `.polymer` or `polymer.rb` file,
+  optimises the images, and creates any requested CSS or Sass files.
+
+* [polymer optimise(1)][polymer-optimise(1)]:
+  Given paths to PNG files as arguments, optimises them to reduce the
+  filesize as much as possible without compromising quality. Also
+  available as `polymer optimize`.
+
+* [polymer position(1)][polymer-position(1)]:
+  Shows the position of a source within a sprite, and provides CSS which
+  you can use in your own stylesheets.
+
+Detailed documentation for each of Polymer's commands can be viewed with
+the `polymer help` command. For example, to view the documentation for
+the `generate` command, run `polymer help generate`.
+
+SEE ALSO
+--------
+
+polymer(5) (`polymer help .polymer`) provides a description of the
+`.polymer` configuration file format.

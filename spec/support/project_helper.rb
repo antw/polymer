@@ -1,7 +1,7 @@
 require 'rbconfig'
 require 'tempfile'
 
-module Flexo
+module Polymer
   module Spec
     # Provides useful functionality for dealing with temporary project
     # directories when running tests.
@@ -77,7 +77,7 @@ module Flexo
       # Returns a project instance representing the contents of the test
       # directory.
       #
-      # @return [Flexo::Project]
+      # @return [Polymer::Project]
       #
       def project
         DSL.load(Project.find_config(project_dir))
@@ -114,7 +114,7 @@ module Flexo
 
       # --- File Writers -----------------------------------------------------
 
-      # Writes .flexo file in the project root with the given contents.
+      # Writes .polymer file in the project root with the given contents.
       #
       # @param [String] to
       #   The path at which to save the config file. Or: The file contents if
@@ -125,7 +125,7 @@ module Flexo
       def write_config(to, contents = nil)
         if contents.nil?
           # Sigh; if only 1.9 was more popular...
-          contents, to = to, '.flexo'
+          contents, to = to, '.polymer'
         else
           (project_dir + to).dirname.mkpath
         end
@@ -140,7 +140,7 @@ module Flexo
       # @param [String] to
       #   The path at which to save the config file.
       #
-      def write_simple_config(to = '.flexo')
+      def write_simple_config(to = '.polymer')
         write_config to, <<-CONFIG
           sprites '#{@sources_path_raw}/:name/*' =>
                   '#{@sprites_path_raw}/:name.png'
@@ -209,4 +209,4 @@ module Flexo
 
     end # ProjectHelper
   end # Spec
-end # Flexo
+end # Polymer

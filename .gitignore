@@ -32,7 +32,7 @@ tmp
 
 ## PROJECT::SPECIFIC
 .sass-cache
-lib/flexo/man/*
+lib/polymer/man/*
 man/*.html
 man/*.markdown
 !man/index.html

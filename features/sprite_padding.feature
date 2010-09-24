@@ -1,4 +1,4 @@
-@flexo-generate
+@polymer-generate
 Feature: Setting the transparent padding between source images
 
   In order to make sprites more useable where the size of an element is large
@@ -12,7 +12,7 @@ Feature: Setting the transparent padding between source images
       sprites 'sources/:name/*' => 'sprites/:name.png'
       """
       And I have 2 sources in sources/fry
-    When I run "flexo generate"
+    When I run "polymer generate"
     Then the exit status should be 0
       And the "fry" sprite should have been generated
       And the "fry" sprite should be 50x90
@@ -25,7 +25,7 @@ Feature: Setting the transparent padding between source images
       """
       And I have 2 sources in sources/fry
       And I have 2 sources in sources/leela
-    When I run "flexo generate"
+    When I run "polymer generate"
     Then the exit status should be 0
       And the "fry" sprite should have been generated
       And the "leela" sprite should have been generated
@@ -40,7 +40,7 @@ Feature: Setting the transparent padding between source images
       sprites 'sources/:name/*' => 'sprites/:name.png'
       """
       And I have 2 sources in sources/fry
-    When I run "flexo generate"
+    When I run "polymer generate"
     Then the exit status should be 0
       And the "fry" sprite should have been generated
       And the "fry" sprite should be 50x40

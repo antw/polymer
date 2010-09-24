@@ -1,48 +1,48 @@
 v1.0.0 / HEAD (Unreleased)
 --------------------------
 
-* Montage has been renamed to Flexo and is now released under the BSD
+* Montage has been renamed to Polymer and is now released under the BSD
   three-clause license.
 
-* The Flexo configuration must now be located at the project root and
-  should be named either ".flexo" or, for Windows users, "flexo.yml".
-  You should rename your existing ".montage" file to ".flexo", and
-  ".montage\_cache" should be changed to ".flexo-cache".
+* The Polymer configuration must now be located at the project root and
+  should be named either ".polymer" or, for Windows users, "polymer.yml".
+  You should rename your existing ".montage" file to ".polymer", and
+  ".montage\_cache" should be changed to ".polymer-cache".
 
-* The Flexo configuration file no longer uses YAML, but instead opts for
-  a simple Ruby-based DSL. See `flexo help .flexo` for full
+* The Polymer configuration file no longer uses YAML, but instead opts
+  for a simple Ruby-based DSL. See `polymer help .polymer` for full
   documentation.
 
 * The Sass mixin has changed slightly; instead of generating separate
   mixins for each of your sprites, all of your sprites are available
-  using the global "flexo()" mixin. This should be called as such:
+  using the global "polymer()" mixin. This should be called as such:
 
       .my_selector
-        +flexo("sprite_name/source_name")
+        +polymer("sprite_name/source_name")
 
   Mixins still permit you to supply an optional x-offset and y-offset as
-  the second and third parameters. the "flexo-pos()" mixin is also
+  the second and third parameters. the "polymer-pos()" mixin is also
   available as an alternative to the old "sprite-name-pos()" mixins.
 
 * A new "position" command shows information about a source within a
   sprite, and provides useful CSS for use when building your own
   styleesheets.
 
-* Documentation of each command is now available by running "flexo help"
-  or "flexo help [COMMAND]".
+* Documentation of each command is now available by running `polymer
+  help` or `polymer help [COMMAND]`.
 
-* The Flexo configuration no longer allows a "config.root" option and
+* The Polymer configuration no longer allows a "config.root" option and
   the library will not work correctly if this is present in your config
-  file. Please move your ".flexo" file to your project root and remove
+  file. Please move your ".polymer" file to your project root and remove
   this option.
 
 * The library internals have been substantially changed with Thor now
   being used to handle all CLI commands.
 
-* When creating a new Flexo project, you may suppress the copying of
+* When creating a new Polymer project, you may suppress the copying of
   example sources by passing the --no-examples option.
 
-* The flexo init command no longer uses Highline to prompt for your
+* The polymer init command no longer uses Highline to prompt for your
   preferred paths to your source and output files. If you need to change
   the defaults you may instead use the --source and --sprites options.
 

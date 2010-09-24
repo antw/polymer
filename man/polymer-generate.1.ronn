@@ -1,0 +1,63 @@
+polymer-generate(1) -- Create sprite images defined in your .polymer file
+=========================================================================
+
+SYNOPSIS
+--------
+
+`polymer generate` [--force] [--fast] [--config=POLYMER\_CONFIG]
+
+DESCRIPTION
+-----------
+
+Generate the sprites defined in your polymer(5) file. After each sprite is
+generated, the sprites are optimised using whichever available PNG
+optimisers you have installed (PNGOUT, OptiPNG, and PNGCrush) in order
+to reduce the filesize as much as possible.
+
+Sass and CSS is then generated according to the settings defined in your
+polymer(5) configuration.
+
+Polymer keeps track of the contents of each sprite with a
+`.polymer-cache` file so that subsequent runs of `polymer generate` will
+only re-generate (and re-optimise) those sprites whose sources have
+changed. See the _POLYMER CACHE_ section -- below -- for more
+information.
+
+OPTIONS
+-------
+
+* `--force`:
+  Something something something dark side: re-generate sprites even if
+  the sources have not changed since last time.
+
+* `--fast`:
+  Skips optimisation of generated sprites. Useful when you want to
+  quickly preview changes without waiting for the optimisers to run.
+
+* `--config=<path>`:
+  In order to perform some tasks -- such as generating sprites -- Polymer
+  needs to locate your `.polymer` project file. The default behaviour is
+  to look for one in the current working directory, and to keep
+  ascending the directory structure until it finds one.
+
+  To disable this behaviour, you may supply a path to the config file by
+  using the `--config` option.
+
+POLYMER CACHE
+-------------
+
+Since optimising sprites can be a lengthy process (very large sprites
+may take minutes), Polymer keeps track of the contents of each sprite
+with a `.polymer-cache` file.
+
+Polymer will re-generate an existing sprite in the following cases:
+
+  1. the contents of a source file is changed; or,
+  2. a new source file is added, or an existing one deleted; or,
+  3. the generated sprite file is missing; or,
+  4. you pass the `--force` option.
+
+SEE ALSO
+--------
+
+polymer(5)

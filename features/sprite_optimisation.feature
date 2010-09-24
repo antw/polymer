@@ -1,4 +1,4 @@
-@flexo-generate @flexo-optimise
+@polymer-generate @polymer-optimise
 Feature: Optimising sprites after generation
 
   In order to reduce the payload sent to users of application
@@ -7,7 +7,7 @@ Feature: Optimising sprites after generation
   Scenario: Optimising when generating new sprites
     Given I have a default project
       And I have 1 source in sources/fry
-    When I run "flexo generate"
+    When I run "polymer generate"
     Then the exit status should be 0
       And the "fry" sprite should have been optimised
 
@@ -15,9 +15,9 @@ Feature: Optimising sprites after generation
     Given I have a default project
       And I have 1 source in sources/fry
       And I have 1 source in sources/leela
-      And I run "flexo generate"
+      And I run "polymer generate"
       And I have a "one" source at sources/fry which is 100x25
-    When I run "flexo generate"
+    When I run "polymer generate"
     Then the exit status should be 0
       And the "fry" sprite should have been optimised
       And the "leela" sprite should not have been optimised
@@ -25,13 +25,13 @@ Feature: Optimising sprites after generation
   Scenario: Optimising generated sprites with --force
     Given I have a default project
       And I have 1 source in sources/fry
-      And I run "flexo generate"
-    When I run "flexo generate --force"
+      And I run "polymer generate"
+    When I run "polymer generate --force"
     Then the "fry" sprite should have been optimised
 
   Scenario: Skipping optimisation of generated sprites with --fast
     Given I have a default project
       And I have 1 source in sources/fry
-      And I run "flexo generate"
-    When I run "flexo generate --fast"
+      And I run "polymer generate"
+    When I run "polymer generate --fast"
     Then the "fry" sprite should not have been optimised

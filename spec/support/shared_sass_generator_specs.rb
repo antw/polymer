@@ -13,12 +13,12 @@ shared_examples_for 'a Sass generator' do
   end
 end
 
-module Flexo::Spec
+module Polymer::Spec
   module Sass
     # Creates CSS using a given Sass file.
     #
     # @param [Pathname] import
-    #   Path to the Flexo Sass file which should be imported.
+    #   Path to the Polymer Sass file which should be imported.
     # @param [String] inc
     #   String representing an include declaration which should be applied
     #   to the CSS selector.
@@ -32,4 +32,4 @@ module Flexo::Spec
       SASS
     end
   end # Sass
-end # Flexo::Spec
+end # Polymer::Spec

@@ -1,27 +1,27 @@
-@flexo-optimise
+@polymer-optimise
 Feature: Optimisation of non-sprite images
 
   In order optimise other PNG images I have in my project
-  I want to be able to use Flexo's optimisation on them
+  I want to be able to use Polymer's optimisation on them
 
   Scenario: Optimising an image
     Given I have a default project
       And I have a one.png image
-    When I run "flexo optimise one.png"
+    When I run "polymer optimise one.png"
     Then the exit status should be 0
       And the stdout should contain "optimised  one.png"
 
   Scenario: en-us support
     Given I have a default project
       And I have a one.png image
-    When I run "flexo optimize one.png"
+    When I run "polymer optimize one.png"
     Then the exit status should be 0
       And the stdout should contain "optimised  one.png"
 
   Scenario: Skipping non-PNGs
     Given I have a default project
       And I have a one.jpg image
-    When I run "flexo optimise one.jpg"
+    When I run "polymer optimise one.jpg"
     Then the exit status should be 0
       And the stdout should contain "skipped  one.jpg"
 
@@ -29,7 +29,7 @@ Feature: Optimisation of non-sprite images
     Given I have a default project
       And I have a one.png image
       And I have a two.png image
-    When I run "flexo optimise one.png two.png"
+    When I run "polymer optimise one.png two.png"
     Then the exit status should be 0
       And the stdout should contain "optimised  one.png"
       And the stdout should contain "optimised  two.png"
@@ -38,13 +38,13 @@ Feature: Optimisation of non-sprite images
     Given I have a default project
       And I have a one.png image
       And I have a two.png image
-    When I run "flexo optimise *.png"
+    When I run "polymer optimise *.png"
     Then the exit status should be 0
       And the stdout should contain "optimised  one.png"
       And the stdout should contain "optimised  two.png"
 
   Scenario: Optimising an image without a project
     Given I have a one.png image
-    When I run "flexo optimise one.png"
+    When I run "polymer optimise one.png"
     Then the exit status should be 0
       And the stdout should contain "optimised  one.png"

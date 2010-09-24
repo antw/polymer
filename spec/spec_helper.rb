@@ -6,15 +6,15 @@ require 'tmpdir'
 require 'rubygems'
 require 'rspec/core'
 
-require 'flexo'
+require 'polymer'
 require 'sass'
 
 # Spec libraries.
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
 RSpec.configure do |config|
-  config.after(:suite) { Flexo::Spec::ProjectHelper.cleanup! }
+  config.after(:suite) { Polymer::Spec::ProjectHelper.cleanup! }
 
-  config.include Flexo::Spec::Helper
-  config.include Flexo::Spec::Sass
+  config.include Polymer::Spec::Helper
+  config.include Polymer::Spec::Sass
 end

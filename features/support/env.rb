@@ -4,7 +4,7 @@ require 'forwardable'
 $LOAD_PATH.unshift File.expand_path('../../../spec', __FILE__)
 
 # Loading the spec helper loads all of the test support files, and
-# also the Flexo library itself.
+# also the Polymer library itself.
 require 'spec_helper'
 
 # Cucumber helpers.
@@ -12,12 +12,12 @@ require File.expand_path('../command_runner', __FILE__)
 
 # This Cucumber world wraps around the CommandRunner in order to provide
 # some useful helper method.
-class Flexo::Spec::CucumberWorld
+class Polymer::Spec::CucumberWorld
   extend Forwardable
 
-  # Path to the flexo executable.
+  # Path to the polymer executable.
   EXECUTABLE = Pathname.new(__FILE__).dirname.
-                  expand_path + '../../bin/flexo'
+                  expand_path + '../../bin/polymer'
 
   # The CommandRunner instance used by the world to run commands.
   attr_reader :command
@@ -29,7 +29,7 @@ class Flexo::Spec::CucumberWorld
   def_delegators :command, :status, :stdout, :stderr
 
   def initialize
-    @command = Flexo::Spec::CommandRunner.new
+    @command = Polymer::Spec::CommandRunner.new
     @chmods  = {}
   end
 
@@ -44,8 +44,8 @@ class Flexo::Spec::CucumberWorld
   #   Returns true if the command exited with zero status, false if non-zero.
   #
   def run(to_run, &block)
-    if ! @no_fast and to_run =~ /flexo generate/ and to_run !~ /--fast/
-      # When possible, run flexo generate with the --fast option to skip
+    if ! @no_fast and to_run =~ /polymer generate/ and to_run !~ /--fast/
+      # When possible, run polymer generate with the --fast option to skip
       # time-intensive sprite optimisation.
       to_run += ' --fast'
     end
@@ -86,9 +86,9 @@ class Flexo::Spec::CucumberWorld
     unless defined? @default_project
       path = Pathname.new(Dir.mktmpdir)
 
-      @default_project = Flexo::Spec::CommandRunner.new(path)
+      @default_project = Polymer::Spec::CommandRunner.new(path)
       @default_project.run \
-        'flexo init --no-examples --sprites sprites --sources sources'
+        'polymer init --no-examples --sprites sprites --sources sources'
     end
 
     FileUtils.cp_r(@default_project.project_dir.to_s + '/.', to)
@@ -99,17 +99,17 @@ class Flexo::Spec::CucumberWorld
     @default_project
   end
 
-end # Flexo::Spec::CucumberWorld
+end # Polymer::Spec::CucumberWorld
 
 World do
-  Flexo::Spec::CucumberWorld.new
+  Polymer::Spec::CucumberWorld.new
 end
 
 Before '@announce' do
   @announce = true
 end
 
-Before '@flexo-optimise' do
+Before '@polymer-optimise' do
   @no_fast = true
 end
 
@@ -120,8 +120,8 @@ end
 
 # Always clean up temporary project directories once finished.
 at_exit do
-  Flexo::Spec::ProjectHelper.cleanup!
+  Polymer::Spec::ProjectHelper.cleanup!
 
-  default_project = Flexo::Spec::CucumberWorld.default_project
+  default_project = Polymer::Spec::CucumberWorld.default_project
   default_project and default_project.cleanup!
 end

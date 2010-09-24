@@ -68,9 +68,9 @@ Then /^the "(.+)" sprite should be (\d+)x(\d+)$/ do |sprite, w, h|
 end
 
 Then /^a Sass mixin should exist$/ do
-  command.path_to_file('public/stylesheets/sass/_flexo.sass').should be_file
+  command.path_to_file('public/stylesheets/sass/_polymer.sass').should be_file
 end
 
 Then /^a Sass mixin should not exist$/ do
-  command.path_to_file('public/stylesheets/sass/_flexo.sass').should_not be_file
+  command.path_to_file('public/stylesheets/sass/_polymer.sass').should_not be_file
 end

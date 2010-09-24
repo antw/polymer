@@ -1,13 +1,13 @@
 # Steps ----------------------------------------------------------------------
 
-When /^I run "flexo init" with:$/ do |settings|
+When /^I run "polymer init" with:$/ do |settings|
   settings = settings.split("\n").inject({}) do |hash, line|
     key, value = line.split(':').map { |v| v.strip }
     hash[key] = value
     hash
   end
 
-  run('flexo init') do |stdin|
+  run('polymer init') do |stdin|
     stdin.puts settings.fetch('sprites', "\n")
     stdin.puts settings.fetch('sources', "\n")
   end
@@ -34,19 +34,19 @@ Then /^the fixture sources should not exist$/ do
   command.path_to_file('public/images/sprites').should_not be_directory
 end
 
-flexofile = "(#{Regexp.escape('.flexo')}|#{Regexp.escape('flexo.rb')})"
+polymerfile = "(#{Regexp.escape('.polymer')}|#{Regexp.escape('polymer.rb')})"
 
-Then /^#{flexofile} should expect default sources in (.+)$/ do |config, directory|
+Then /^#{polymerfile} should expect default sources in (.+)$/ do |config, directory|
   command.path_to_file(config).read.should =~
     compile_and_escape("#{directory}/:name/*")
 end
 
-Then /^#{flexofile} should expect default sprites to be saved in (.+)$/ do |config, directory|
+Then /^#{polymerfile} should expect default sprites to be saved in (.+)$/ do |config, directory|
   command.path_to_file(config).read.should =~
     compile_and_escape("#{directory}/:name.png")
 end
 
-Then /^#{flexofile} should expect the cache to be at (.+)$/ do |config, path|
+Then /^#{polymerfile} should expect the cache to be at (.+)$/ do |config, path|
   command.path_to_file(config).read.should =~
     compile_and_escape("config.cache '#{path}'")
 end

@@ -1,6 +1,6 @@
 require 'support/project_helper'
 
-module Flexo::Spec
+module Polymer::Spec
   # A wrapper around ProjectHelper which exposes most of it's methods to
   # RSpec, so we don't constantly have to use +@helper.something+ ...
   module Helper
@@ -21,7 +21,7 @@ module Flexo::Spec
     #   expected.
     #
     def use_helper!(options = DEFAULTS)
-      @helper = Flexo::Spec::ProjectHelper.new
+      @helper = Polymer::Spec::ProjectHelper.new
 
       @helper.sources_path = options[:sources]
       @helper.sprites_path = options[:sprites]
@@ -31,7 +31,7 @@ module Flexo::Spec
       @helper
     end
 
-    (Flexo::Spec::ProjectHelper.public_instance_methods -
+    (Polymer::Spec::ProjectHelper.public_instance_methods -
      Object.public_instance_methods).each do |method|
 
       if method.to_s =~ /=$/
@@ -51,4 +51,4 @@ module Flexo::Spec
     end
 
   end # Helper
-end # Flexo::Spec
+end # Polymer::Spec

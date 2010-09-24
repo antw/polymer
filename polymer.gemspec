@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   # rake task. It it completely safe to edit them, but using the rake task
   # is easier.
   s.name              = 'polymer'
-  s.version           = '1.0.0.beta.2'
-  s.date              = '2010-09-22'
+  s.version           = '1.0.0.beta.3'
+  s.date              = '2010-09-24'
   s.rubyforge_project = 'polymer'
 
   # You may safely edit the section below.
@@ -47,7 +47,6 @@ Gem::Specification.new do |s|
     README.md
     Rakefile
     bin/polymer
-    polymer.gemspec
     lib/polymer.rb
     lib/polymer/cache.rb
     lib/polymer/cli.rb
@@ -75,8 +74,9 @@ Gem::Specification.new do |s|
     lib/polymer/templates/sources/two/wand-hat.png
     lib/polymer/templates/sources/two/wooden-box-label.png
     lib/polymer/version.rb
-    lib/polymer/man/polymer-generate.1
-    lib/polymer/man/polymer-generate.1.txt
+    polymer.gemspec
+    lib/polymer/man/polymer-bond.1
+    lib/polymer/man/polymer-bond.1.txt
     lib/polymer/man/polymer-init.1
     lib/polymer/man/polymer-init.1.txt
     lib/polymer/man/polymer-optimise.1

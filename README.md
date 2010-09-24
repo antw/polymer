@@ -177,12 +177,12 @@ GETTING HELP
 Polymer comes complete with some manpages which document the various
 commands:
 
-* [polymer(1)][polymer-1] -- `polymer help`
-* [polymer(5)][polymer-5] -- `polymer help .polymer`
-* [polymer-init(1)][polymer-init] -- `polymer help init`
-* [polymer-bond(1)][polymer-bond] -- `polymer help bond`
-* [polymer-optimise(1)][polymer-optimise] -- `polymer help optimise`
-* [polymer-position(1)][polymer-position] -- `polymer help position`
+* **[polymer(1)][polymer-1]** -- `polymer help`
+* **[polymer(5)][polymer-5]** -- `polymer help .polymer`
+* **[polymer-init(1)][polymer-init]** -- `polymer help init`
+* **[polymer-bond(1)][polymer-bond]** -- `polymer help bond`
+* **[polymer-optimise(1)][polymer-optimise]** -- `polymer help optimise`
+* **[polymer-position(1)][polymer-position]** -- `polymer help position`
 
 If you've encountered a bug, or Polymer isn't behaving as you expect,
 please [file an issue report][issues].

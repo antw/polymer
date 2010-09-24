@@ -139,7 +139,9 @@ end
 desc 'Builds HTML for Github Pages, then publishes'
 task :pages do
   # Cheers to rtomayko/ronn/Rakefile
-  sh "ronn -5 -s toc --markdown -w man/*.ronn"
+  sh "ronn -5 --manual='Polymer Manual' " \
+     "--organization='POLYMER #{Polymer::VERSION.upcase}' " \
+     "-s toc -w man/*.ronn"
 
   puts '-' * 50
   puts 'Rebuilding pages ...'
@@ -153,10 +155,10 @@ task :pages do
     cd 'pages'
     sh 'git reset --hard $rev'
     sh 'rm -f polymer*.html index.html'
-    sh 'cp -rp ../man/polymer*.html ../man/index.txt ../man/index.html ./'
-    sh 'git add -u polymer*.html index.html index.txt'
-    sh 'git commit -m "rebuild manual"'
-    sh 'git push #{push_url} gh-pages'
+    sh 'cp -rp ../man/polymer*.html ../man/index.html ./'
+    sh 'git add -u polymer*.html index.html'
+    sh 'git commit -m "Rebuild manual."'
+    sh "git push #{push_url} gh-pages"
   end
 end
 
@@ -181,3 +183,4 @@ desc 'Open an irb session preloaded with Polymer'
 task :console do
   sh 'irb -I ./lib -rubygems -r ./lib/polymer.rb'
 end
+

@@ -16,9 +16,9 @@ describe Polymer::Cache do
 
     # Write a cache file.
     path_to_file('.polymer-cache').open('w') do |file|
-      file.puts YAML.dump(:sprites => {
-        'fry' => project.sprite('fry').digest
-      })
+      file.puts YAML.dump(Polymer::Cache::EMPTY_CACHE.merge(
+        :sprites => { 'fry' => project.sprite('fry').digest }
+      ))
     end
 
     # Write a fake sprite.

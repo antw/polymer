@@ -4,6 +4,12 @@ module Polymer
   # the cache was last generated.
   class Cache
 
+    # The highest cache version supported by Cache.
+    CACHE_VERSION = 2
+
+    # The default cache.
+    EMPTY_CACHE = { :cache_version => 2, :sprites => {} }
+
     # Returns the path to the cache file.
     #
     # @return [Pathname]
@@ -25,7 +31,7 @@ module Polymer
       if @path and @path.file?
         @cache = YAML.load_file @path
       else
-        @cache = { :cache_version => 2, :sprites => {} }
+        @cache = EMPTY_CACHE
       end
     end
 

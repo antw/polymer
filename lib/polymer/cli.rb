@@ -108,22 +108,22 @@ module Polymer
     def help(command = nil)
       page_map = {
         # Main manual page.
-        nil        => 'polymer.1',
+         nil         => 'polymer.1',
         'polymer'    => 'polymer.1',
 
         # Sub-commands.
-        'init'     => 'polymer-init.1',
-        'bond'     => 'polymer-bond.1',
-        'optimise' => 'polymer-optimise.1',
-        'optimize' => 'polymer-optimise.1',
-        'position' => 'polymer-position.1',
+        'init'       => 'polymer-init.1',
+        'bond'       => 'polymer-bond.1',
+        'optimise'   => 'polymer-optimise.1',
+        'optimize'   => 'polymer-optimise.1',
+        'position'   => 'polymer-position.1',
 
         # Configuration format.
         'polymer(5)' => 'polymer.5',
         'polymer.5'  => 'polymer.5',
         '.polymer'   => 'polymer.5',
         'polymer.rb' => 'polymer.5',
-        'config'   => 'polymer.5'
+        'config'     => 'polymer.5'
       }
 
       if page_map.has_key?(command)

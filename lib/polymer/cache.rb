@@ -30,6 +30,7 @@ module Polymer
 
       if @path and @path.file?
         @cache = YAML.load_file @path
+        @cache = EMPTY_CACHE if @cache[:cache_version] < CACHE_VERSION
       else
         @cache = EMPTY_CACHE
       end

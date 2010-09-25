@@ -66,6 +66,21 @@ describe Polymer::Cache do
         @cache.stale?(sprite).should be_true
       end
     end
+
+    context 'when given an outdated cache' do
+      it 'should be true' do
+        # Write a cache file.
+        path_to_file('.polymer-cache').open('w') do |file|
+          file.puts YAML.dump(Polymer::Cache::EMPTY_CACHE.merge(
+            :sprites => { 'fry' => project.sprite('fry').digest },
+            :cache_version => Polymer::Cache::CACHE_VERSION - 1
+          ))
+        end
+
+        cache = Polymer::Cache.new(path_to_file('.polymer-cache'))
+        cache.stale?(sprite).should be_true
+      end
+    end
   end # #stale?
 
   # --- write ----------------------------------------------------------------

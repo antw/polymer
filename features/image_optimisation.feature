@@ -43,6 +43,17 @@ Feature: Optimisation of non-sprite images
       And the stdout should contain "optimised  one.png"
       And the stdout should contain "optimised  two.png"
 
+  Scenario: Optimising images with a directory
+      Given I have a default project
+      And I have a images/one.png image
+      And I have a images/two.png image
+      And I have a images/other/three.png image
+    When I run "polymer optimise images"
+    Then the exit status should be 0
+      And the stdout should contain "optimised  images/one.png"
+      And the stdout should contain "optimised  images/two.png"
+      And the stdout should contain "optimised  images/other/three.png"
+
   Scenario: Optimising an image without a project
     Given I have a one.png image
     When I run "polymer optimise one.png"

@@ -211,7 +211,13 @@ module Polymer
 
     def optimise(*paths)
       dir = Pathname.new(Dir.pwd)
-      paths = paths.map { |path| dir + path }
+
+      paths = paths.map do |path|
+        path = dir + path
+        # If given a directory, append a glob which recursively looks
+        # for PNG files, otherwise use the path literally.
+        path.directory? ? Pathname.glob(path + '**' + '*.png') : path
+      end.flatten
 
       paths.each do |path|
         fpath = path.relative_path_from(dir).to_s

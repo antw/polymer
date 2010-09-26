@@ -15,7 +15,7 @@ module Polymer
       # --- Class methods ----------------------------------------------------
 
       def self.project_dir
-        @project_dir ||= Pathname.new(Dir.mktmpdir)
+        @project_dir ||= Pathname.new(Dir.mktmpdir).realpath
       end
 
       def project_dir
@@ -205,6 +205,12 @@ module Polymer
           (project_dir + path).dirname.mkpath
           FileUtils.touch(project_dir + path)
         end
+      end
+
+      # Evaluates the given block within the project directory.
+      #
+      def in_project_dir
+        Dir.chdir(project_dir) { yield }
       end
 
     end # ProjectHelper

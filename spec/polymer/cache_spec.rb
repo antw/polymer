@@ -17,7 +17,9 @@ describe Polymer::Cache do
     # Write a cache file.
     path_to_file('.polymer-cache').open('w') do |file|
       file.puts YAML.dump(Polymer::Cache::EMPTY_CACHE.merge(
-        :sprites => { 'fry' => project.sprite('fry').digest }
+        :sprites => { 'fry' => project.sprite('fry').digest },
+        :paths   => { 'sources/fry/one.png' =>
+          Digest::SHA256.file(path_to_source('fry/one')).to_s }
       ))
     end
 
@@ -33,42 +35,32 @@ describe Polymer::Cache do
   it { should have_public_method_defined(:fresh?) }
 
   describe '#stale?' do
-    context 'when given a sprite which does not exist on disk' do
-      it 'should return true' do
+    context 'when given a Sprite' do
+      it 'should be false when the sources are unchanged' do
+        @cache.stale?(sprite).should be_false
+      end
+
+      it 'should be true when the Sprite does not exist on disk' do
         path_to_sprite('fry').unlink
         @cache.stale?(sprite).should be_true
       end
-    end
 
-    context 'when given a sprite whose sources are unchanged' do
-      it 'should return false' do
-        @cache.stale?(sprite).should be_false
-      end
-    end
-
-    context 'when given a sprite with a deleted source' do
-      it 'should return true' do
+      it 'should be true when a source has been deleted' do
         path_to_source('fry/one').unlink
         @cache.stale?(sprite).should be_true
       end
-    end
 
-    context 'when given a sprite with a new source' do
-      it 'should be true' do
-        write_source('fry/three')
+      it 'should be true when a source has been added' do
+        write_source 'fry/three'
         @cache.stale?(sprite).should be_true
       end
-    end
 
-    context 'when given a sprite with a changed source' do
-      it 'should be true' do
-        write_source('fry/one', 100)
+      it 'should be true when a source has been changed' do
+        write_source 'fry/one', 100
         @cache.stale?(sprite).should be_true
       end
-    end
 
-    context 'when given an outdated cache' do
-      it 'should be true' do
+      it 'should be true when given an outdated cache' do
         # Write a cache file.
         path_to_file('.polymer-cache').open('w') do |file|
           file.puts YAML.dump(Polymer::Cache::EMPTY_CACHE.merge(
@@ -80,7 +72,69 @@ describe Polymer::Cache do
         cache = Polymer::Cache.new(path_to_file('.polymer-cache'))
         cache.stale?(sprite).should be_true
       end
-    end
+    end # when given a Sprite
+
+    context 'when given a Pathname' do
+      before(:each) do
+        @full_path = path_to_source 'fry/one'
+        @pathname  = Pathname.new('sources/fry/one.png')
+      end
+
+      context 'when the cache is backed by a file' do
+        it 'should be true when the file does not exist' do
+          @full_path.unlink
+          in_project_dir { @cache.stale?(@pathname).should be_true }
+        end
+
+        it 'should be true when the file digest has changed' do
+          write_source 'fry/one', 100
+
+          in_project_dir do
+            @cache.stale?(@pathname).should be_true
+          end
+        end
+
+        it 'should be false if the file digest is unchanged' do
+          in_project_dir do
+            @cache.stale?(@pathname).should be_false
+          end
+        end
+
+        it 'should be false if given a different path to an unchanged file' do
+          in_project_dir do
+            @cache.stale?(@pathname + 'something/..').should be_false
+          end
+        end
+      end # when the cache is backed by a file
+
+      context 'when the cache is temporary' do
+        before(:each) do
+          @cache = Polymer::Cache.new
+          in_project_dir { @cache.set(@pathname) }
+        end
+
+        it 'should be true when the file digest has changed' do
+          write_source 'fry/one', 100
+
+          in_project_dir do
+            @cache.stale?(@pathname).should be_true
+          end
+        end
+
+        it 'should be false if the file digest is unchanged' do
+          in_project_dir do
+            @cache.stale?(@pathname).should be_false
+          end
+        end
+
+        it 'should be false if given a different path to an unchanged file' do
+          in_project_dir do
+            @cache.stale?(@pathname + 'something/..').should be_false
+          end
+        end
+      end # when the cache is temporary
+
+    end # when given a Pathname
   end # #stale?
 
   # --- write ----------------------------------------------------------------
@@ -114,11 +168,26 @@ describe Polymer::Cache do
   it { should have_public_method_defined(:set) }
 
   describe '#set' do
-    it 'should set the new sprite digest' do
-      path_to_source('fry/one').unlink
+    context 'when given a Sprite' do
+      it 'should set the new sprite digest' do
+        path_to_source('fry/one').unlink
 
-      @cache.set(sprite)
-      @cache.stale?(sprite).should be_false
+        @cache.set(sprite)
+        @cache.stale?(sprite).should be_false
+      end
+    end
+
+    context 'when given a Pathname' do
+      it 'should set the new file digest' do
+        write_source 'fry/one', 100
+
+        path = Pathname.new('sources/fry/one.png')
+
+        in_project_dir do
+          @cache.set(path)
+          @cache.stale?(path).should be_false
+        end
+      end
     end
   end # #set
 
@@ -130,6 +199,15 @@ describe Polymer::Cache do
     it 'should remove the cache entry' do
       @cache.remove(sprite)
       @cache.stale?(sprite).should be_true
+    end
+
+    it 'should remove the path entry' do
+      path = Pathname.new('sources/fry/one.png')
+
+      in_project_dir do
+        @cache.remove(path)
+        @cache.stale?(path).should be_true
+      end
     end
   end # #remove
 

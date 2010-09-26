@@ -5,10 +5,14 @@ module Polymer
   class Cache
 
     # The highest cache version supported by Cache.
-    CACHE_VERSION = 2
+    CACHE_VERSION = 3
 
     # The default cache.
-    EMPTY_CACHE = { :cache_version => 2, :sprites => {} }
+    EMPTY_CACHE = {
+      :cache_version => CACHE_VERSION,
+      :sprites       => {},
+      :paths         => {}
+    }
 
     # Returns the path to the cache file.
     #
@@ -38,44 +42,45 @@ module Polymer
 
     # Checks whether the given +sprite+ is different to the cached version.
     #
-    # @param [Polymer::Sprite] sprite
-    #   The sprite whose "freshness" is to be checked.
+    # @param [Polymer::Sprite] thing
+    #   The sprite or path whose "freshness" is to be checked.
     #
     # @return [Boolean]
     #
-    def stale?(sprite)
-      not fresh?(sprite)
+    def stale?(thing)
+      not fresh?(thing)
     end
 
-    # Checks whether the given +sprite+ is identical to the cached version.
+    # Checks whether the given +thing+ is identical to the cached version.
     #
-    # @param [Polymer::Sprite] sprite
-    #   The sprite whose "freshness" is to be checked.
+    # @param [Polymer::Sprite, Pathname] thing
+    #   The sprite or path whose "freshness" is to be checked.
     #
     # @return [Boolean]
     #
-    def fresh?(sprite)
-      sprite.save_path.file? and
-        @cache[:sprites].has_key?(sprite.name) and
-        @cache[:sprites][sprite.name] == sprite.digest
+    def fresh?(thing)
+      return false if thing.is_a?(Sprite)   and not thing.save_path.file?
+      return false if thing.is_a?(Pathname) and not thing.cleanpath.file?
+
+      @cache[section(thing)][key(thing)] == digest(thing)
     end
 
-    # Updates the cached value of +sprite+.
+    # Updates the cached value of +thing+.
     #
-    # @param [Polymer::Sprite] sprite
-    #   The sprite whose digest is to be stored in the cache.
+    # @param [Polymer::Sprite, Pathname] thing
+    #   The sprite or Pathname whose digest is to be stored in the cache.
     #
-    def set(sprite)
-      @cache[:sprites][sprite.name] = sprite.digest
+    def set(thing)
+      @cache[section(thing)][key(thing)] = digest(thing)
     end
 
     # Removes a +sprite+'s cached values.
     #
-    # @param [Polymer::Sprite] sprite
-    #   The sprite whose digest is to be removed from the cache.
+    # @param [Polymer::Sprite, Pathname] thing
+    #   The sprite or Pathname whose digest is to be removed from the cache.
     #
-    def remove(sprite)
-      @cache[:sprites].delete(sprite.name)
+    def remove(thing)
+      @cache[section(thing)].delete(key(thing))
     end
 
     # Removes all sprite cache entries, except those in +retain+.
@@ -107,6 +112,42 @@ module Polymer
       end
 
       true
+    end
+
+    #######
+    private
+    #######
+
+    # @return [Symbol]
+    #   Returns the cache section (:sprites or :paths) for the given object.
+    def section(thing)
+      thing.is_a?(Pathname) ? :paths : :sprites
+    end
+
+    # @return [String]
+    #   Returns the key which represents the given Sprite or Pathname in the
+    #   cache file.
+    def key(thing)
+      if thing.is_a?(Pathname)
+        if @path
+          # Store Pathnames as relative to the cache.
+          Pathname.pwd.join(thing).relative_path_from(@path.dirname).to_s
+        else
+          thing.cleanpath.to_s
+        end
+      else
+        thing.name.to_s
+      end
+    end
+
+    # @return [String]
+    #   Returns the SHA256 digest of the given Pathname or Sprite.
+    def digest(thing)
+      if thing.is_a?(Pathname)
+        Digest::SHA256.file(thing.cleanpath).to_s
+      else
+        thing.digest
+      end
     end
 
   end # Cache

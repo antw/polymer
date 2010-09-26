@@ -83,16 +83,22 @@ module Polymer
       @cache[section(thing)].delete(key(thing))
     end
 
-    # Removes all sprite cache entries, except those in +retain+.
+    # Removes any sprites no longer present in a project, and any cached
+    # images which cannot be located.
     #
-    # @param [Array<Polymer::Cache>] retain
-    #   An array of cache entries which are _not_ to be removed.
+    # @param [Flexo::Project] project
     #
-    def remove_all_except(retain)
-      names = retain.map { |sprite| sprite.name }
+    def clean!(project)
+      return false unless @path
+
+      @cache[:paths].delete_if do |key, _|
+        not @path.dirname.join(key).file?
+      end
+
+      sprite_keys = project.sprites.map { |sprite| key(sprite) }
 
       @cache[:sprites].delete_if do |key, _|
-        not names.include?(key)
+        not sprite_keys.include?(key)
       end
     end
 

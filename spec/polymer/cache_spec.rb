@@ -17,9 +17,16 @@ describe Polymer::Cache do
     # Write a cache file.
     path_to_file('.polymer-cache').open('w') do |file|
       file.puts YAML.dump(Polymer::Cache::EMPTY_CACHE.merge(
-        :sprites => { 'fry' => project.sprite('fry').digest },
-        :paths   => { 'sources/fry/one.png' =>
-          Digest::SHA256.file(path_to_source('fry/one')).to_s }
+        :sprites  => {
+          'fry'   => project.sprite('fry').digest,
+          'leela' => project.sprite('leela').digest
+        },
+        :paths    => {
+          'sources/fry/one.png' =>
+            Digest::SHA256.file(path_to_source('fry/one')).to_s,
+          'sources/leela/one.png' =>
+            Digest::SHA256.file(path_to_source('leela/one')).to_s
+        }
       ))
     end
 
@@ -211,16 +218,34 @@ describe Polymer::Cache do
     end
   end # #remove
 
-  # --- remove_all_except ----------------------------------------------------
+  # --- clean! ---------------------------------------------------------------
 
-  it { should have_public_method_defined(:remove_all_except) }
+  it { should have_public_method_defined(:clean!) }
 
-  describe '#remove_all_except' do
-    it 'should remove excluded cache entries' do
-      @cache.remove_all_except([sprite('fry')])
+  describe '#clean!' do
+    before(:each) do
+      @old_sprite = sprite('leela')
+      path_to_source('leela/one').unlink
+    end
+
+    it 'should remove deleted sprites' do
+      @cache.clean! project
 
       @cache.stale?(sprite('fry')).should be_false
-      @cache.stale?(sprite('leela')).should be_true
+      @cache.stale?(@old_sprite).should be_true
+    end
+
+    it 'should remove deleted images' do
+      @cache.clean! project
+
+      in_project_dir do
+        @cache.stale?(Pathname.new('sources/fry/one.png')).should be_false
+        @cache.stale?(Pathname.new('sources/leela/one.png')).should be_true
+      end
+    end
+
+    it 'should return false if no path is set' do
+      Polymer::Cache.new.clean!(project).should be_false
     end
   end
 

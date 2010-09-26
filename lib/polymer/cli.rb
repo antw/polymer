@@ -91,7 +91,7 @@ module Polymer
       end
 
       # Clean up the cache, removing sprites which no longer exist.
-      project.cache.remove_all_except(project.sprites)
+      project.cache.clean!(project)
 
       # Finish by writing the new cache.
       project.cache.write

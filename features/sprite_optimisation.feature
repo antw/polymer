@@ -35,3 +35,11 @@ Feature: Optimising sprites after generation
       And I run "polymer bond"
     When I run "polymer bond --fast"
     Then the "fry" sprite should not have been optimised
+
+  Scenario: Skipping polymer-optimise on an already-optimised sprite
+    Given I have a default project
+      And I have 1 source in sources/fry
+    When I run "polymer bond"
+    When I run "polymer optimise sprites/fry.png"
+    Then the exit status should be 0
+      And the stdout should not contain "optimised  sprites/fry.png"

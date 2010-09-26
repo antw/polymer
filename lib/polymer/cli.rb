@@ -73,6 +73,10 @@ module Polymer
           else
             print "\r\e[0K"
           end
+
+          # Store the cached image so that running polymer-optimise skips
+          # this image.
+          project.cache.set(sprite.save_path.relative_path_from(project.root))
         end
       end
 
@@ -207,39 +211,60 @@ module Polymer
       paths are relative to the current working directory.
     DESC
 
+    method_option :force, :type => :boolean, :default => false,
+      :desc => "Re-optimise images which haven't changed since last the " \
+               "time they were optimised; has no effect unless in a " \
+               "project directory."
+
     map 'optimize' => :optimise
 
     def optimise(*paths)
       dir = Pathname.new(Dir.pwd)
 
+      # Try to use the project cache.
+      begin
+        project = find_project
+        cache   = project.cache
+      rescue Polymer::MissingProject
+        project, cache = nil, Polymer::Cache.new
+      end
+
       paths = paths.map do |path|
         path = dir + path
         # If given a directory, append a glob which recursively looks
         # for PNG files, otherwise use the path literally.
-        path.directory? ? Pathname.glob(path + '**' + '*.png') : path
+        path.directory? ? Pathname.glob(path + '**' + '*.png') : path.cleanpath
       end.flatten
 
       paths.each do |path|
-        fpath = path.relative_path_from(dir).to_s
+        relative = path.relative_path_from(dir)
+
+        # Can we skip?
+        next unless options[:force] or cache.stale?(relative)
 
         # Ensure the file is a PNG.
         unless path.to_s =~ /\.png/
-          say_status 'skipped', "#{fpath} - not a PNG", :yellow
+          say_status 'skipped', "#{relative} - not a PNG", :yellow
           next
         end
 
         before = path.size
-        say "  optimising  #{fpath} "
+        say "  optimising  #{relative} "
         reduction = Polymer::Optimisation.optimise_file(path)
 
         if reduction > 0
           saved = '- saved %.2fkb (%.1f' %
             [reduction.to_f / 1024, (reduction.to_f / before) * 100]
-          say_status "\r\e[0K   optimised", "#{fpath} #{saved}%)", :green
+          say_status "\r\e[0K   optimised", "#{relative} #{saved}%)", :green
         else
-          say_status "\r\e[0K   optimised", "#{fpath} - no savings", :green
+          say_status "\r\e[0K   optimised", "#{relative} - no savings", :green
         end
+
+        cache.set(relative)
       end
+
+      cache.clean!(project) if project
+      cache.write
     end
 
     # --- position -----------------------------------------------------------
@@ -307,7 +332,7 @@ module Polymer
     # @return [Polymer::Project]
     #
     def find_project!
-      Polymer::DSL.load Polymer::Project.find_config(Dir.pwd)
+      find_project
     rescue Polymer::MissingProject
       say <<-ERROR.compress_lines, :red
         Couldn't find a Polymer project in the current directory, or any of
@@ -316,6 +341,15 @@ module Polymer
       ERROR
       exit 1
     end
+
+    # Trys to find a project, and raises if one is not available.
+    #
+    # @return [Polymer::Project]
+    #
+    def find_project
+      Polymer::DSL.load Polymer::Project.find_config(Dir.pwd)
+    end
+
 
     # Returns if the current machine has groff available.
     #

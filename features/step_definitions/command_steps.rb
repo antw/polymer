@@ -11,6 +11,13 @@ When /^I delete the file (.*)$/ do |path|
   command.path_to_file(path).unlink
 end
 
+When /^I change directory to (.+)$/ do |path|
+  path = path.chomp!('/')
+  @previous_directory = Dir.pwd unless @previous_directory
+  command.mkdir(path)
+  Dir.chdir command.project_dir + path
+end
+
 # Results --------------------------------------------------------------------
 
 Then /^the output should contain "(.+)"$/ do |partial_output|

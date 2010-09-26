@@ -116,6 +116,9 @@ end
 After do
   # Restore the attributes of any files which changed.
   chmods.each { |path, mode| Pathname.new(path).chmod(mode) }
+
+  # If we changed directory, change back.
+  Dir.chdir(@previous_directory) if @previous_directory
 end
 
 # Always clean up temporary project directories once finished.

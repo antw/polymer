@@ -6,6 +6,13 @@ SYNOPSIS
 
 `polymer optimise` PATH [PATH [PATH ...]]
 
+OPTIONS
+-------
+
+* `--force`:
+  Something something something dark side: re-optimise images even if
+  they haven't changed since last time they were optimised.
+
 DESCRIPTION
 -----------
 

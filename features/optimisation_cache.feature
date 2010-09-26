@@ -11,8 +11,8 @@ Feature: The optimisation cache
       And I run "polymer optimise one.png"
     When I run "polymer optimise one.png two.png"
     Then the exit status should be 0
-      And the stdout should contain "optimised  two.png"
-      And the stdout should not contain "optimised  one.png"
+      And "two.png" should have been optimised
+      And "one.png" should not have been optimised
 
   Scenario: Forcing optimisation
     Given I have a default project
@@ -20,13 +20,12 @@ Feature: The optimisation cache
       And I run "polymer optimise one.png"
     When I run "polymer optimise one.png --force"
     Then the exit status should be 0
-      And the stdout should contain "optimised  one.png"
+      And "one.png" should have been optimised
 
   Scenario: Directory agnosticism
     Given I have a default project
       And I have a one.png image
       And I run "polymer optimise one.png"
-      And I change directory to sprites/
-    When I run "polymer optimise one.png"
+    When I run "polymer optimise ../one.png" in sprites/
     Then the exit status should be 0
-      And the stdout should not contain "optimised  one.png"
+      And "one.png" should not have been optimised

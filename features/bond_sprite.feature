@@ -9,7 +9,7 @@ Feature: Generating sprites with Polymer
       And I have 2 sources in sources/fry
     When I run "polymer bond"
     Then the exit status should be 0
-      And the "fry" sprite should have been generated
+      And "fry" should have been generated
       And the "fry" sprite should be 50x60
 
   Scenario: Creating two sprites at once
@@ -18,8 +18,8 @@ Feature: Generating sprites with Polymer
       And I have 1 source in sources/leela
     When I run "polymer bond"
     Then the exit status should be 0
-      And the "fry" sprite should have been generated
-      And the "leela" sprite should have been generated
+      And "fry" should have been generated
+      And "leela" should have been generated
 
   Scenario: When specifying specific sprites to generate
     Given I have a default project
@@ -27,8 +27,8 @@ Feature: Generating sprites with Polymer
       And I have 1 source in sources/leela
     When I run "polymer bond fry"
     Then the exit status should be 0
-      And the "fry" sprite should have been generated
-      And the "leela" sprite should not have been generated
+      And "fry" should have been generated
+      And "leela" should not have been generated
 
   Scenario: Generating sprites in a non-project directory
     When I run "polymer bond"

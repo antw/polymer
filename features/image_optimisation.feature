@@ -9,14 +9,14 @@ Feature: Optimisation of non-sprite images
       And I have a one.png image
     When I run "polymer optimise one.png"
     Then the exit status should be 0
-      And the stdout should contain "optimised  one.png"
+      And "one.png" should have been optimised
 
   Scenario: en-us support
     Given I have a default project
       And I have a one.png image
     When I run "polymer optimize one.png"
     Then the exit status should be 0
-      And the stdout should contain "optimised  one.png"
+      And "one.png" should have been optimised
 
   Scenario: Skipping non-PNGs
     Given I have a default project
@@ -31,8 +31,8 @@ Feature: Optimisation of non-sprite images
       And I have a two.png image
     When I run "polymer optimise one.png two.png"
     Then the exit status should be 0
-      And the stdout should contain "optimised  one.png"
-      And the stdout should contain "optimised  two.png"
+      And "one.png" should have been optimised
+      And "two.png" should have been optimised
 
   Scenario: Optimising images with a glob
     Given I have a default project
@@ -40,8 +40,8 @@ Feature: Optimisation of non-sprite images
       And I have a two.png image
     When I run "polymer optimise *.png"
     Then the exit status should be 0
-      And the stdout should contain "optimised  one.png"
-      And the stdout should contain "optimised  two.png"
+      And "one.png" should have been optimised
+      And "two.png" should have been optimised
 
   Scenario: Optimising images with a directory
       Given I have a default project
@@ -50,12 +50,12 @@ Feature: Optimisation of non-sprite images
       And I have a images/other/three.png image
     When I run "polymer optimise images"
     Then the exit status should be 0
-      And the stdout should contain "optimised  images/one.png"
-      And the stdout should contain "optimised  images/two.png"
-      And the stdout should contain "optimised  images/other/three.png"
+      And "images/one.png" should have been optimised
+      And "images/two.png" should have been optimised
+      And "images/other/three.png" should have been optimised
 
   Scenario: Optimising an image without a project
     Given I have a one.png image
     When I run "polymer optimise one.png"
     Then the exit status should be 0
-      And the stdout should contain "optimised  one.png"
+      And "one.png" should have been optimised

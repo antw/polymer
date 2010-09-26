@@ -7,15 +7,12 @@ When /^I run "(.+)"$/ do |command|
   run(command)
 end
 
-When /^I delete the file (.*)$/ do |path|
-  command.path_to_file(path).unlink
+When /^I run "(.+)" in (.+)$/ do |command, dir|
+  run(command, dir)
 end
 
-When /^I change directory to (.+)$/ do |path|
-  path = path.chomp!('/')
-  @previous_directory = Dir.pwd unless @previous_directory
-  command.mkdir(path)
-  Dir.chdir command.project_dir + path
+When /^I delete the file (.*)$/ do |path|
+  command.path_to_file(path).unlink
 end
 
 # Results --------------------------------------------------------------------

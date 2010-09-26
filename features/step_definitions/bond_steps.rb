@@ -42,20 +42,20 @@ end
 
 # Results --------------------------------------------------------------------
 
-Then /^the "(.*)" sprite should have been (?:re-)?generated$/ do |sprite|
+Then /^"(.*)" should have been (?:re-)?generated$/ do |sprite|
   Then %[the "#{sprite}" sprite should exist]
   Then %[the stdout should contain "generated  #{sprite}"]
 end
 
-Then /^the "(.*)" sprite should not have been (?:re-)?generated$/ do |sprite|
+Then /^"(.*)" should not have been (?:re-)?generated$/ do |sprite|
   Then %[the stdout should not contain "generated  #{sprite}"]
 end
 
-Then /^the "(.*)" sprite should have been optimised$/ do |sprite|
+Then /^"(.*)" should have been optimised$/ do |sprite|
   Then %[the stdout should contain "optimised  #{sprite}"]
 end
 
-Then /^the "(.*)" sprite should not have been optimised$/ do |sprite|
+Then /^"(.*)" should not have been optimised$/ do |sprite|
   Then %[the stdout should not contain "optimised  #{sprite}"]
 end
 

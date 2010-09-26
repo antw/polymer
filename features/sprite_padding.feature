@@ -14,7 +14,7 @@ Feature: Setting the transparent padding between source images
       And I have 2 sources in sources/fry
     When I run "polymer bond"
     Then the exit status should be 0
-      And the "fry" sprite should have been generated
+      And "fry" should have been generated
       And the "fry" sprite should be 50x90
 
   Scenario: Creating a single sprite with custom sprite padding
@@ -27,8 +27,8 @@ Feature: Setting the transparent padding between source images
       And I have 2 sources in sources/leela
     When I run "polymer bond"
     Then the exit status should be 0
-      And the "fry" sprite should have been generated
-      And the "leela" sprite should have been generated
+      And "fry" should have been generated
+      And "leela" should have been generated
       And the "fry" sprite should be 50x90
       And the "leela" sprite should be 50x60
 
@@ -42,5 +42,5 @@ Feature: Setting the transparent padding between source images
       And I have 2 sources in sources/fry
     When I run "polymer bond"
     Then the exit status should be 0
-      And the "fry" sprite should have been generated
+      And "fry" should have been generated
       And the "fry" sprite should be 50x40

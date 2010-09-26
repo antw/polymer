@@ -209,8 +209,12 @@ module Polymer
 
       # Evaluates the given block within the project directory.
       #
-      def in_project_dir
-        Dir.chdir(project_dir) { yield }
+      # @param [String] dir
+      #   An optional sub-directory in which to run the command.
+      #
+      def in_project_dir(dir = '')
+        project_dir.join(dir).mkpath unless dir.empty?
+        Dir.chdir(project_dir + dir) { yield }
       end
 
     end # ProjectHelper

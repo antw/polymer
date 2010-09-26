@@ -37,20 +37,22 @@ class Polymer::Spec::CucumberWorld
   #
   # @param [String] to_run
   #   The command to be run, exactly as it would be on the command line.
+  # @param [String] dir
+  #   An optional sub-directory in which to run the command.
   # @param [Block] block
   #   Yields the stdin.
   #
   # @return [Boolean]
   #   Returns true if the command exited with zero status, false if non-zero.
   #
-  def run(to_run, &block)
+  def run(to_run, dir = '', &block)
     if ! @no_fast and to_run =~ /polymer generate/ and to_run !~ /--fast/
       # When possible, run polymer generate with the --fast option to skip
       # time-intensive sprite optimisation.
       to_run += ' --fast'
     end
 
-    @command.run(to_run, &block)
+    @command.run(to_run, dir, &block)
 
     if @announce
       puts
@@ -116,9 +118,6 @@ end
 After do
   # Restore the attributes of any files which changed.
   chmods.each { |path, mode| Pathname.new(path).chmod(mode) }
-
-  # If we changed directory, change back.
-  Dir.chdir(@previous_directory) if @previous_directory
 end
 
 # Always clean up temporary project directories once finished.

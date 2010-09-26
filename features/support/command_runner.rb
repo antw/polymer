@@ -26,14 +26,13 @@ module Polymer
       #
       # @param [String] command
       #   The command to be run.
-      # @param [Boolean] use_fast
-      #   When running polymer generate, appends --fast to skip optimisation
-      #   of sprites in order to speed up the features.
+      # @param [String] dir
+      #   An optional sub-directory in which to run the command.
       #
       # @return [CommandRunner]
       #   Returns self.
       #
-      def run(command, &block)
+      def run(command, dir = '', &block)
         if command =~ /^polymer(.*)$/
           # Load Rubygems when on <1.9 (there has to be a better way to do
           # this, surely)
@@ -41,7 +40,7 @@ module Polymer
           command  = "#{RUBY}#{rubygems} #{EXECUTABLE}#{$1} --no-color"
         end
 
-        in_project_dir do
+        in_project_dir(dir) do
           if RUBY_VERSION < '1.9'
             # Sigh.
             stderr_file = Tempfile.new('stderr')
@@ -89,13 +88,6 @@ module Polymer
       def dimensions_of(name)
         info = Magick::Image.ping path_to_sprite(name)
         [info.first.columns, info.first.rows]
-      end
-
-      private # --------------------------------------------------------------
-
-      # Temporarily switches to the test directory for running commands.
-      def in_project_dir(&blk)
-        Dir.chdir(project_dir, &blk)
       end
 
     end # CommandRunner

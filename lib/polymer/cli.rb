@@ -61,21 +61,10 @@ module Polymer
         say_status('generated', sprite.name, :green)
 
         unless options[:fast]
-          say "  optimising  #{sprite.name} ... "
-          before = sprite.save_path.size
+          run_optimisation(sprite.save_path, sprite.name)
 
-          reduction = Polymer::Optimisation.optimise_file(sprite.save_path)
-
-          if reduction > 0
-            saved = '- saved %.2fkb (%.1f' %
-              [reduction.to_f / 1024, (reduction.to_f / before) * 100]
-            say_status "\r\e[0K   optimised", "#{sprite.name} #{saved}%)", :green
-          else
-            print "\r\e[0K"
-          end
-
-          # Store the cached image so that running polymer-optimise skips
-          # this image.
+          # Store the cached image so that running polymer-optimise
+          # skips this image.
           project.cache.set(sprite.save_path.relative_path_from(project.root))
         end
       end
@@ -239,28 +228,10 @@ module Polymer
       paths.each do |path|
         relative = path.relative_path_from(dir)
 
-        # Can we skip?
-        next unless options[:force] or cache.stale?(relative)
-
-        # Ensure the file is a PNG.
-        unless path.to_s =~ /\.png/
-          say_status 'skipped', "#{relative} - not a PNG", :yellow
-          next
+        if options[:force] or cache.stale?(relative)
+          run_optimisation(path, relative)
+          cache.set(relative)
         end
-
-        before = path.size
-        say "  optimising  #{relative} "
-        reduction = Polymer::Optimisation.optimise_file(path)
-
-        if reduction > 0
-          saved = '- saved %.2fkb (%.1f' %
-            [reduction.to_f / 1024, (reduction.to_f / before) * 100]
-          say_status "\r\e[0K   optimised", "#{relative} #{saved}%)", :green
-        else
-          say_status "\r\e[0K   optimised", "#{relative} - no savings", :green
-        end
-
-        cache.set(relative)
       end
 
       cache.clean!(project) if project
@@ -350,6 +321,34 @@ module Polymer
       Polymer::DSL.load Polymer::Project.find_config(Dir.pwd)
     end
 
+    # Runs optimisation on a given +path+.
+    #
+    # @param [Pathname] path
+    #   Path to the file to optimise.
+    # @param [String] name
+    #   The name of the "thing" being optimised. This is the value shown to
+    #   the user, and allows removal of the path prefix, or use of a sprite
+    #   name.
+    #
+    def run_optimisation(path, name)
+      # Ensure the file is a PNG.
+      unless path.to_s =~ /\.png/
+        say_status 'skipped', "#{name} - not a PNG", :yellow
+        return
+      end
+
+      before = path.size
+      say "  optimising  #{name} "
+      reduction = Polymer::Optimisation.optimise_file(path)
+
+      if reduction > 0
+        saved = '- saved %.2fkb (%.1f' %
+          [reduction.to_f / 1024, (reduction.to_f / before) * 100]
+        say_status "\r\e[0K   optimised", "#{name} #{saved}%)", :green
+      else
+        say_status "\r\e[0K   optimised", "#{name} - no savings", :green
+      end
+    end
 
     # Returns if the current machine has groff available.
     #

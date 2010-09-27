@@ -162,8 +162,8 @@ to match any sub-directory:</p>
 </code></pre>
 
 <p>In this case, Polymer will look inside the "sources/" directory for
-sub-directories. The contents of sub-directory will be used to create
-individual sprites where the final sprite name is the same as the
+sub-directories. The contents of each sub-directory will be used to
+create individual sprites where the final sprite name is the same as the
 directory name. For example, given the following directory structure...</p>
 
 <pre><code>sources/
@@ -191,6 +191,8 @@ specify any of the global settings with the exception of "sass" and
 <p>Each configuration option is prefixed with a colon rather than
 "config.", is separated from the value with " => ", and all but the
 final option should be followed with a comma.</p>
+
+<p>You may use <code>sprite</code> as many times as you need.</p>
 
 <h2 id="SEE-ALSO">SEE ALSO</h2>
 

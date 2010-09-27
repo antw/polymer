@@ -201,7 +201,7 @@ module Polymer
     DESC
 
     method_option :force, :type => :boolean, :default => false,
-      :desc => "Re-optimise images which haven't changed since last the " \
+      :desc => "Re-optimise images which haven't changed since the last " \
                "time they were optimised; has no effect unless in a " \
                "project directory."
 

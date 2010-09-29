@@ -35,7 +35,7 @@ describe Polymer::SassGenerator do
           sass_to_css(@sass, 'polymer("fry/one")').should \
             include('background: url(/images/fry.png) 0px 0px no-repeat')
 
-          sass_to_css(@sass, 'polymer-pos("fry/one")').should \
+          sass_to_css(@sass, 'polymer-position("fry/one")').should \
             include('background-position: 0px 0px')
         end
 
@@ -43,7 +43,7 @@ describe Polymer::SassGenerator do
           sass_to_css(@sass, 'polymer("fry/two")').should \
             include('background: url(/images/fry.png) 0px -40px no-repeat')
 
-          sass_to_css(@sass, 'polymer-pos("fry/two")').should \
+          sass_to_css(@sass, 'polymer-position("fry/two")').should \
             include('background-position: 0px -40px')
         end
 
@@ -51,7 +51,7 @@ describe Polymer::SassGenerator do
           sass_to_css(@sass, 'polymer("fry/one", 5px)').should \
             include('background: url(/images/fry.png) 5px 0px no-repeat')
 
-          sass_to_css(@sass, 'polymer-pos("fry/one", 5px)').should \
+          sass_to_css(@sass, 'polymer-position("fry/one", 5px)').should \
             include('background-position: 5px 0px')
         end
 
@@ -60,7 +60,7 @@ describe Polymer::SassGenerator do
           sass_to_css(@sass, 'polymer("fry/two", 0px, -10px)').should \
             include('background: url(/images/fry.png) 0px -50px no-repeat')
 
-          sass_to_css(@sass, 'polymer-pos("fry/two", 0px, -10px)').should \
+          sass_to_css(@sass, 'polymer-position("fry/two", 0px, -10px)').should \
             include('background-position: 0px -50px')
         end
       end # the generated mixins
@@ -89,7 +89,7 @@ describe Polymer::SassGenerator do
           sass_to_css(@sass, 'polymer("fry/one")').should \
             include('background: url(/images/fry.png) 0px 0px no-repeat')
 
-          sass_to_css(@sass, 'polymer-pos("fry/one")').should \
+          sass_to_css(@sass, 'polymer-position("fry/one")').should \
             include('background-position: 0px 0px')
         end
 
@@ -97,7 +97,7 @@ describe Polymer::SassGenerator do
           sass_to_css(@sass, 'polymer("leela/one")').should \
             include('background: url(/images/leela.png) 0px 0px no-repeat')
 
-          sass_to_css(@sass, 'polymer-pos("leela/one")').should \
+          sass_to_css(@sass, 'polymer-position("leela/one")').should \
             include('background-position: 0px 0px')
         end
       end # the generated mixins

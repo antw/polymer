@@ -21,8 +21,15 @@ v1.0.0 / HEAD (Unreleased)
         +polymer("sprite_name/source_name")
 
   Mixins still permit you to supply an optional x-offset and y-offset as
-  the second and third parameters. the "polymer-pos()" mixin is also
-  available as an alternative to the old "sprite-name-pos()" mixins.
+  the second and third parameters. the "polymer-position()" mixin is
+  also available as an alternative to the old "sprite-name-pos()"
+  mixins.
+
+* The "polymer-pos" Sass mixin, which sets only the background position
+  of a source, without including the background-image property, has been
+  renamed to "polymer-position".
+
+* The "generate" command is now "bond": `$ polymer bond`
 
 * A new "position" command shows information about a source within a
   sprite, and provides useful CSS for use when building your own

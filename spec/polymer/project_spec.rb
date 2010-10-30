@@ -127,6 +127,23 @@ describe Polymer::Project do
 
   end
 
+  # --- tmpdir ---------------------------------------------------------------
+
+  it { should have_public_method_defined(:tmpdir) }
+
+  describe '#tmpdir' do
+    before(:each) { use_helper! }
+    after(:each)  { FileUtils.remove_entry_secure(project.tmpdir) }
+
+    it 'should return a Pathname' do
+      project.tmpdir.should be_a(Pathname)
+    end
+
+    it 'should be a directory' do
+      project.tmpdir.should be_directory
+    end
+  end
+
   # --- cache ----------------------------------------------------------------
 
   describe 'cache' do

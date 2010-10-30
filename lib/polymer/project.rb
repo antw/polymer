@@ -103,6 +103,17 @@ module Polymer
       @cache ||= Polymer::Cache.new(@cachefile)
     end
 
+    # Returns a path to a temporary directory which may be used by this
+    # project.
+    #
+    # The temporary directory will be created if it does not already exist.
+    #
+    # @return [Pathname] Path to the temporary directory.
+    #
+    def tmpdir
+      @tmpdir ||= Pathname.new(Dir.mktmpdir).tap { |p| p.mkpath }
+    end
+
     private # ================================================================
 
     # Extracts a path, typically specified in the DSL, and converts it to

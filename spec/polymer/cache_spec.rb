@@ -10,16 +10,24 @@ describe Polymer::Cache do
   before(:each) do
     use_helper!
 
+    write_config <<-CONFIG
+      sprite 'sources/fry/*'    => 'sprites/fry.png'
+      sprite 'sources/leela/*'  => 'sprites/leela.png'
+      sprite 'sources/bender/*' => :data_uri, :name => 'bender'
+    CONFIG
+
     write_source 'fry/one'
     write_source 'fry/two'
     write_source 'leela/one'
+    write_source 'bender/one'
 
     # Write a cache file.
     path_to_file('.polymer-cache').open('w') do |file|
       file.puts YAML.dump(Polymer::Cache::EMPTY_CACHE.merge(
         :sprites  => {
-          'fry'   => project.sprite('fry').digest,
-          'leela' => project.sprite('leela').digest
+          'fry'    => project.sprite('fry').digest,
+          'leela'  => project.sprite('leela').digest,
+          'bender' => project.sprite('bender').digest
         },
         :paths    => {
           'sources/fry/one.png' =>
@@ -32,6 +40,7 @@ describe Polymer::Cache do
 
     # Write a fake sprite.
     touch(path_to_sprite('fry'))
+    touch(path_to_sprite('bender'))
 
     @cache = Polymer::Cache.new(project)
   end
@@ -50,6 +59,11 @@ describe Polymer::Cache do
       it 'should be true when the Sprite does not exist on disk' do
         path_to_sprite('fry').unlink
         @cache.stale?(sprite).should be_true
+      end
+
+      it 'should be false when a data URI Sprite does not exist on disk' do
+        path_to_sprite('bender').unlink
+        @cache.stale?(sprite('bender')).should be_false
       end
 
       it 'should be true when a source has been deleted' do

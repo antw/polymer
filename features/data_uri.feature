@@ -27,5 +27,7 @@ Feature: Using Data URIs instead of a file
       And I have 1 source in sources/fry
       And I have 1 source in sources/leela
     When I run "polymer bond"
+    Then the exit status should be 0
+    Then the stdout should contain "written  Sass"
     Then the Sass file should contain a data URI for "fry"
       And the Sass file should contain a data URI for "leela"

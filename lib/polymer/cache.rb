@@ -64,7 +64,13 @@ module Polymer
     # @return [Boolean]
     #
     def fresh?(thing)
-      return false if thing.is_a?(Sprite)   and not thing.save_path.file?
+      if thing.is_a?(Sprite) and not thing.save_path.file?
+        # If this is a data URI sprite a non-existent file is normal.
+        if ! @project || ! @project.data_uri_sprites.include?(thing)
+          return false
+        end
+      end
+
       return false if thing.is_a?(Pathname) and not thing.cleanpath.file?
 
       @cache[section(thing)][key(thing)] == digest(thing)

@@ -27,14 +27,24 @@ module Polymer
         save_to = project.sass + '_polymer.sass'
       end
 
+      # We need to keep track of any existing data URI values since, if the
+      # sprite is unchanged, we won't have access to it.
+      existing_data_uris = extract_existing_data_uris(
+        save_to, project.data_uri_sprites)
+
       data_uris = project.data_uri_sprites.inject({}) do |memo, sprite|
-        data = [sprite.save_path.read].pack('m')
+        if sprite.save_path.file?
+          data = [sprite.save_path.read].pack('m')
 
-        # Ruby < 1.9 doesn't support pack('m0'),
-        # so we have to do it manually.
-        data.gsub!(/\n/, '')
+          # Ruby < 1.9 doesn't support pack('m0'),
+          # so we have to do it manually.
+          data.gsub!(/\n/, '')
 
-        memo[sprite.name] = "data:image/png;base64,#{data}"
+          memo[sprite.name] = "data:image/png;base64,#{data}"
+        else
+          memo[sprite.name] = existing_data_uris[sprite.name]
+        end
+
         memo
       end
 
@@ -44,6 +54,23 @@ module Polymer
 
       true
     end # self.generate
+
+    # Given a path to a Sass file, extracts the existing data URI strings.
+    #
+    def self.extract_existing_data_uris(path, sprites)
+      return {} unless path.file?
+
+      sass = path.read.split("\n")
+
+      sprites.inject({}) do |memo, sprite|
+        if index = sass.index(".#{sprite.name}_data")
+          # The data is contained on the line following the selector.
+          memo[sprite.name] = sass[index + 1].scan(/url\((.+)\)/).first.first
+        end
+
+        memo
+      end
+    end
 
   end # SassGenerator
 end # Polymer

@@ -49,3 +49,19 @@ Feature: The sprite cache
     When I run "polymer bond"
     Then the exit status should be 0
       And "fry" should have been re-generated
+
+  Scenario: Generating two data URI sprites, one of which is unchanged
+    Given I have a project with config:
+      """
+      sprites 'sources/:name/*' => :data_uri
+      """
+      And I have 2 sources in sources/fry
+      And I have 1 source in sources/leela
+    When I run "polymer bond"
+      And I have a "one" source at sources/fry which is 100x25
+    When I run "polymer bond"
+    Then the exit status should be 0
+      And the stdout should contain "generated  fry"
+      And the stdout should not contain "generated  leela"
+      And the Sass file should contain a data URI for "fry"
+      And the Sass file should contain a data URI for "leela"

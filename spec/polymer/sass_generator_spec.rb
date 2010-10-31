@@ -177,9 +177,9 @@ describe Polymer::SassGenerator do
 
         # Data URI sprites are written to a temporary path. Place an empty
         # file there.
-        sprite_path = @project.sprites.first.save_path
-        sprite_path.dirname.mkpath
-        sprite_path.open('w') { |f| f.puts("a" * 128) }
+        @sprite_path = @project.sprites.first.save_path
+        @sprite_path.dirname.mkpath
+        @sprite_path.open('w') { |f| f.puts("a" * 128) }
 
         @result = Polymer::SassGenerator.generate(@project)
         @sass = path_to_file('public/stylesheets/sass/_polymer.sass')
@@ -215,6 +215,13 @@ describe Polymer::SassGenerator do
 
         sass_to_css(@sass, 'polymer("fry/two")').should \
           include('background-position: 0px -40px')
+      end
+
+      it 'should keep track of existing URIs' do
+        @sprite_path.unlink
+
+        lambda { Polymer::SassGenerator.generate(project) }.should_not \
+          change { @sass.read }
       end
     end # with a data URI sprite
 

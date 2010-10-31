@@ -80,6 +80,14 @@ module Polymer
       Digest::SHA256.hexdigest(sources.map { |source| source.digest }.join)
     end
 
+    # A sprite is equal to another sprite if the names are the same.
+    #
+    # @return [Boolean]
+    #
+    def ==(other)
+      other.respond_to?(:name) and other.name == name
+    end
+
     # Saves the composited sprite to disk.
     #
     # In the event that the sprite has no sources, +save+ will return false

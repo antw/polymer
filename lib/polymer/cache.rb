@@ -90,7 +90,7 @@ module Polymer
     # Removes any sprites no longer present in a project, and any cached
     # images which cannot be located.
     #
-    # @param [Flexo::Project] project
+    # @param [Polymer::Project] project
     #
     def clean!(project)
       return false unless @path

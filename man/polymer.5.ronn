@@ -108,6 +108,13 @@ directory name. For example, given the following directory structure...
 will contain "book" and "calculator", while two.png will contain
 "magnet" and "television".
 
+You may instead prefer to set the save path to :data\_uri; Polymer will
+place the sprite contents into your CSS file. This reduces the number of
+HTTP requests requires to load your pages at the expense of slightly
+greater data transfer.
+
+    sprites "sources/:name/*" => :data_uri
+
 There may be cases where you need to customise an individual sprite and
 you don't want to change the global setting; `sprite` allows you to
 specify any of the global settings with the exception of "sass" and

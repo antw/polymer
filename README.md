@@ -132,6 +132,13 @@ With the latest versions of the Haml library, you may use SCSS instead:
 You can disable creation of the Sass mixin file by setting `config.sass
 false` in the ".polymer" file.
 
+Sass users can make use of data URIs; the sprite contents will, instead
+of being written to disk, be inlined into your CSS files. This reduces
+the number of HTTP requests required to load your pages, but results in
+slightly more data having to be transferred to your users. See
+[polymer(5)][polymer-5] for instructions.
+
+
 ### CSS Stylesheets
 
 ... are not yet implemented. Hold tight; these should be around before

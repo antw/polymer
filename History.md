@@ -25,6 +25,17 @@ v1.0.0 / HEAD (Unreleased)
   also available as an alternative to the old "sprite-name-pos()"
   mixins.
 
+* Sprites can now be included "inline" in your Sass files by setting the
+  sprite path to :data\_uri in your .polymer file. This further reduces
+  the number of HTTP requests required at the expense of slightly
+  greater data transfer.
+
+  Polymer adds the data URI to the Sass file by using a selector (such
+  as ".my\_sprite\_data"), and then uses Sass' @extend feature so that
+  the data is only added to the CSS file once. Your own Sass files do
+  not need to be modified to make use of this feature; the @polymer
+  mixin suffices.
+
 * The "polymer-pos" Sass mixin, which sets only the background position
   of a source, without including the background-image property, has been
   renamed to "polymer-position".

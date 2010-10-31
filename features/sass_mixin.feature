@@ -22,9 +22,7 @@ Feature: Sass mixin files
   Scenario: Disabling Sass in the config file
     Given I have a project with config:
     """
-    ---
-      config.sass false
-
-      sprites 'sources/:name/*' => 'sprites/:name.png'
+    config.sass false
+    sprites 'sources/:name/*' => 'sprites/:name.png'
     """
     Then a Sass mixin should not exist

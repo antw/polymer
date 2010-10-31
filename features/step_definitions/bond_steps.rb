@@ -74,3 +74,13 @@ end
 Then /^a Sass mixin should not exist$/ do
   command.path_to_file('public/stylesheets/sass/_polymer.sass').should_not be_file
 end
+
+Then /^the Sass file should contain a data URI for "(.+)"$/ do |sprite|
+  content = command.path_to_file('public/stylesheets/sass/_polymer.sass').read
+  content.should =~ /.#{Regexp.escape(sprite)}_data/
+end
+
+Then /^the Sass file should not contain a data URI for "(.+)"$/ do |sprite|
+  content = command.path_to_file('public/stylesheets/sass/_polymer.sass').read
+  content.should_not =~ /.#{Regexp.escape(sprite)}_data/
+end

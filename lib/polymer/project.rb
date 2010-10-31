@@ -43,6 +43,13 @@ module Polymer
     #
     attr_reader :sprites
 
+    # Returns a subset of +sprites+ containing sprites which are to be written
+    # as a data URI in a Sass file.
+    #
+    # @return [Array<Polymer::Sprite>]
+    #
+    attr_reader :data_uri_sprites
+
     # Creates a new Project.
     #
     # Note that +new+ does not validation of the given paths or options; it
@@ -72,6 +79,14 @@ module Polymer
       @sass      = extract_path :sass,  options
       @css       = extract_path :css,   options
       @cachefile = extract_path :cache, options
+
+      # Sprites which are to be saved as a data URI need to have a save
+      # path explicitly set.
+      @data_uri_sprites = @sprites.select do |sprite|
+        if sprite.save_path == :data_uri
+          sprite.save_path = tmpdir.join("#{sprite.name.to_s}.png")
+        end
+      end
     end
 
     # Returns the sprite whose name is +name+.
@@ -80,7 +95,7 @@ module Polymer
     #   The name of the sprite to be retrieved.
     #
     # @return [Polymer::Sprite] The sprite.
-    # @return [nil]           If no such sprite exists.
+    # @return [nil]             If no such sprite exists.
     #
     def sprite(name)
       sprites.detect { |sprite| sprite.name == name }

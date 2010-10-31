@@ -2,6 +2,11 @@
 // command provided by the polymer gem. Don't edit this file directly;
 // change the polymer.rb configuration file, then re-run 'polymer'.
 
+<% project.data_uri_sprites.each do |sprite| %>
+.<%= sprite.name %>_data
+  background: url(<%= data_uris[sprite.name] %>) 0 0 no-repeat
+<% end %>
+
 @mixin polymer($source, $x-offset: 0px, $y-offset: 0px)
 <% project.sprites.each_with_index do |sprite, sprite_index| %>
 <% sprite.sources.each_with_index do |source, source_index| %>
@@ -10,8 +15,13 @@
 <% else %>
   @else if $source == "<%= sprite.name %>/<%= source.name %>"
 <% end %>
+<% if project.data_uri_sprites.include?(sprite) %>
+    @extend .<%= sprite.name %>_data
+    @include polymer-position($source, $x-offset, $y-offset)
+<% else %>
     $y-offset: $y-offset - <%= sprite.position_of(source) %>px
     background: url(<%= sprite.url %>) $x-offset $y-offset no-repeat
+<% end %>
 <% end %>
 <% end %>
 

@@ -77,6 +77,29 @@ describe Polymer::Project do
     end # when given an invalid path
   end
 
+  context 'when initialized with a sprite which uses a data URI' do
+    before(:all) do
+      @data_sprite = Polymer::Sprite.new('data', [], :data_uri, 0, '')
+      @non_data_sprite = Polymer::Sprite.new('non_data', [], '', 0, '')
+      @project = Polymer::Project.new('', [@data_sprite, @non_data_sprite])
+    end
+
+    it 'should set the sprite save path' do
+      save_path = @data_sprite.save_path
+
+      save_path.should be_a(Pathname)
+      save_path.to_s.should =~ /^#{Regexp.escape(@project.tmpdir.to_s)}/
+    end
+
+    it 'should add the sprite to the #data_uri_sprites array' do
+      @project.data_uri_sprites.should include(@data_sprite)
+    end
+
+    it 'should not add non-data URI sprites to the #data_uri_sprites array' do
+      @project.data_uri_sprites.should_not include(@non_data_sprite)
+    end
+  end
+
   # Instance Methods =========================================================
 
   it { should have_public_method_defined(:root) }
@@ -124,7 +147,6 @@ describe Polymer::Project do
         project.sprite('sprite_two').should have(1).sources
       end
     end # when the project has one sprite with two sources
-
   end
 
   # --- tmpdir ---------------------------------------------------------------

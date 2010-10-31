@@ -114,7 +114,7 @@ module Polymer
           raise Polymer::DslError,
             "Sprite '#{source} => #{sprite}' has both a :name path segment " \
             "and a :name option; please use only one."
-        elsif sprite !~ /:name/
+        elsif sprite != :data_uri and sprite !~ /:name/
           raise Polymer::MissingName,
             "Sprite '#{source} => #{sprite}' requires a :name segment in " \
             "the sprite path."
@@ -138,7 +138,7 @@ module Polymer
       project_config = @config.to_h
 
       Project.new(@root, @sprites.map do |definition|
-        definition = _create_sprite(definition, project_config)
+        _create_sprite(definition, project_config)
       end, project_config)
     end
 
@@ -178,7 +178,9 @@ module Polymer
     #   existing sprite.
     #
     def _define_sprite(sources, sprite, options)
-      sources, sprite = @root + sources, @root + sprite
+      sources = @root + sources
+      sprite  = @root + sprite unless sprite == :data_uri
+
       name = options[:name] || sprite.basename(sprite.extname).to_s
 
       if @sprites.detect { |definition| definition[:name] == name }
@@ -193,7 +195,7 @@ module Polymer
       @sprites << options.merge(
         :name      => name,
         :sources   => Pathname.glob(sources),
-        :save_path => @root + sprite
+        :save_path => sprite
       )
     end
 
@@ -216,7 +218,8 @@ module Polymer
         sprite_opts[:name] = entry.basename.to_s # Use directory as the name
 
         source_path = "#{leading}#{sprite_opts[:name]}#{trailing}"
-        sprite_path = sprite.gsub(/:name/, sprite_opts[:name])
+        sprite_path = (sprite == :data_uri) ?
+          :data_uri : sprite.gsub(/:name/, sprite_opts[:name])
 
         _define_sprite(source_path, sprite_path, sprite_opts)
       end
@@ -232,16 +235,23 @@ module Polymer
     # @return [Polymer::Sprite]
     #
     def _create_sprite(definition, project_config)
-      url = definition.fetch(:url, project_config[:url]).dup
-      url.gsub!(/:name/, definition[:name])
-      url.gsub!(/:filename/, definition[:save_path].basename.to_s)
+      if definition[:save_path] == :data_uri and not project_config[:sass]
+        raise DslError, "The `#{definition[:name]}' sprite wants to use a " \
+                        "data URI, but you have disabled Sass"
+      end
+
+      unless definition[:save_path] == :data_uri
+        url = definition.fetch(:url, project_config[:url]).dup
+        url.gsub!(/:name/, definition[:name])
+        url.gsub!(/:filename/, definition[:save_path].basename.to_s)
+      end
 
       Polymer::Sprite.new \
         definition[:name],
         definition[:sources],
         definition[:save_path],
         definition.fetch(:padding, project_config[:padding]),
-        url
+        url || ''
     end
 
     # Provides the DSL for the global configuration options.

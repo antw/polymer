@@ -27,6 +27,12 @@ module Polymer
         save_to = project.sass + '_polymer.sass'
       end
 
+      data_uris = project.data_uri_sprites.inject({}) do |memo, sprite|
+        data = [sprite.save_path.read].pack('m').strip
+        memo[sprite.name] = "data:image/png;base64,#{data}"
+        memo
+      end
+
       File.open(save_to, 'w') do |file|
         file.puts ERB.new(File.read(TEMPLATE), nil, '<>').result(binding)
       end

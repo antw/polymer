@@ -161,6 +161,63 @@ describe Polymer::SassGenerator do
       end
     end # with a custom URL setting
 
+    context 'with a data URI sprite' do
+      before(:each) do
+        write_config <<-CONFIG
+          sprites "sources/:name/*" => :data_uri
+        CONFIG
+
+        write_source 'fry/one'
+        write_source 'fry/two'
+
+        # We use @project here since each call to +project+ creates a new
+        # project instance, which results in the temporary path used by
+        # data URI sprites being changed.
+        @project = project
+
+        # Data URI sprites are written to a temporary path. Place an empty
+        # file there.
+        sprite_path = @project.sprites.first.save_path
+        sprite_path.dirname.mkpath
+        sprite_path.open('w') { |f| f.puts "abcdef" }
+
+        @result = Polymer::SassGenerator.generate(@project)
+        @sass = path_to_file('public/stylesheets/sass/_polymer.sass')
+      end
+
+      after(:each) do
+        directory = @project.sprites.first.save_path.dirname
+        FileUtils.remove_entry_secure(directory) if directory.directory?
+      end
+
+      it_should_behave_like 'a Sass generator'
+
+      it 'should not set an image URL' do
+        sass_to_css(@sass, 'polymer("fry/one")').should_not \
+          include('background: url(/images/fry.png)')
+      end
+
+      it 'should add the contents of the sprite as base64' do
+        data = ['abcdef'].pack('m').strip
+
+        sass_to_css(@sass, 'polymer("fry/one")').should_not \
+          include("background: url(data:image/png;base64,#{data})")
+      end
+
+      it 'should add the selector to the data class selector' do
+        sass_to_css(@sass, 'polymer("fry/one")').should \
+          include(".fry_data, .rule")
+      end
+
+      it 'should correctly position the sprite' do
+        sass_to_css(@sass, 'polymer("fry/one")').should \
+          include('background-position: 0px 0px')
+
+        sass_to_css(@sass, 'polymer("fry/two")').should \
+          include('background-position: 0px -40px')
+      end
+    end # with a data URI sprite
+
     context 'with Sass disabled' do
       before(:each) do
         write_config <<-CONFIG

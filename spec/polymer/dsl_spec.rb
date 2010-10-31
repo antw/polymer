@@ -309,6 +309,21 @@ describe Polymer::DSL do
       end
     end # with a :name capture and a :name option
 
+    # ------------------------------------------------------------------------
+
+    context 'with a :data_uri path and Sass disabled' do
+      it 'should raise an error' do
+        running = lambda {
+          dsl do
+            config.sass false
+            sprite 'src/*' => :data_uri, :name => :test
+          end
+        }
+
+        running.should raise_error(Polymer::DslError)
+      end
+    end # with a :name capture and a :name option
+
   end # #sprite
 
   # --- config ---------------------------------------------------------------

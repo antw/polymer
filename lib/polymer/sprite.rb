@@ -2,7 +2,8 @@ module Polymer
   # Represents a collection of images which will be used to make a sprite.
   #
   class Sprite
-    attr_reader :name, :save_path, :url, :padding, :sources
+    attr_reader   :name, :url, :padding, :sources
+    attr_accessor :save_path
 
     # Creates a new Sprite instance.
     #
@@ -10,8 +11,10 @@ module Polymer
     #   The name of the sprite.
     # @param [Array<Pathname>] sources
     #   An array of Pathname instances to be used as sources.
-    # @param [Pathname] save_path
-    #   The location at which the sprite should be saved.
+    # @param [Pathname, Symbol] save_path
+    #   The location at which the sprite should be saved. When being used with
+    #   a Project, this may instead be :data_uri; adding the sprite to the
+    #   project will set the correct path.
     # @param [Integer] padding
     #   The amount of transparent space, in pixels, to be inserted between
     #   each source image.

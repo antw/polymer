@@ -33,7 +33,7 @@ describe Polymer::Cache do
     # Write a fake sprite.
     touch(path_to_sprite('fry'))
 
-    @cache = Polymer::Cache.new(path_to_file('.polymer-cache'))
+    @cache = Polymer::Cache.new(project)
   end
 
   # --- stale? ---------------------------------------------------------------
@@ -76,7 +76,7 @@ describe Polymer::Cache do
           ))
         end
 
-        cache = Polymer::Cache.new(path_to_file('.polymer-cache'))
+        cache = Polymer::Cache.new(project)
         cache.stale?(sprite).should be_true
       end
     end # when given a Sprite
@@ -163,7 +163,7 @@ describe Polymer::Cache do
       end
     end
 
-    context 'when created without a path' do
+    context 'when created without a project' do
       it 'should return false' do
         Polymer::Cache.new.write.should be_false
       end
@@ -229,14 +229,14 @@ describe Polymer::Cache do
     end
 
     it 'should remove deleted sprites' do
-      @cache.clean! project
+      @cache.clean!
 
       @cache.stale?(sprite('fry')).should be_false
       @cache.stale?(@old_sprite).should be_true
     end
 
     it 'should remove deleted images' do
-      @cache.clean! project
+      @cache.clean!
 
       in_project_dir do
         @cache.stale?(Pathname.new('sources/fry/one.png')).should be_false
@@ -251,7 +251,7 @@ describe Polymer::Cache do
         FileUtils.touch(non_subtree)
         @cache.set(non_subtree)
         @cache.stale?(non_subtree).should be_false
-        @cache.clean! project
+        @cache.clean!
         @cache.stale?(non_subtree).should be_true
       ensure
         FileUtils.remove_entry_secure(non_subtree.dirname)
@@ -259,7 +259,7 @@ describe Polymer::Cache do
     end
 
     it 'should return false if no path is set' do
-      Polymer::Cache.new.clean!(project).should be_false
+      Polymer::Cache.new.clean!.should be_false
     end
   end
 

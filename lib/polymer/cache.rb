@@ -26,15 +26,16 @@ module Polymer
 
     # Creates a new Cache.
     #
-    # If the given +path+ does not exist, an empty cache instance will be
-    # created, and calling +write+ will create a new file at +path+.
+    # If the project's +cache+ method returns a path which does not exist, the
+    # path -- and parent directories -- will be created.
     #
-    # @param [Pathname] path
-    #   Path to the cache file to be loaded. If no +path+ is given, the cache
-    #   will operate in-memory only and +write+ is disabled.
+    # @param [Polymer::Project] project
+    #   The project whose cache file is to be loaded. If no +project+ is
+    #   given, the cache will operate in-memory only and +write+ is disabled.
     #
-    def initialize(path = nil)
-      @path = path
+    def initialize(project = nil)
+      @project = project
+      @path    = project && project.cachefile
 
       if @path and @path.file?
         @cache = YAML.load_file @path
@@ -87,12 +88,10 @@ module Polymer
       @cache[section(thing)].delete(key(thing))
     end
 
-    # Removes any sprites no longer present in a project, and any cached
+    # Removes any sprites no longer present in the project, and any cached
     # images which cannot be located.
     #
-    # @param [Polymer::Project] project
-    #
-    def clean!(project)
+    def clean!
       return false unless @path
 
       @cache[:paths].delete_if do |key, _|
@@ -101,7 +100,7 @@ module Polymer
         key[0..2] == NON_SUBTREE
       end
 
-      sprite_keys = project.sprites.map { |sprite| key(sprite) }
+      sprite_keys = @project.sprites.map { |sprite| key(sprite) }
 
       @cache[:sprites].delete_if do |key, _|
         not sprite_keys.include?(key)
@@ -118,6 +117,8 @@ module Polymer
     #
     def write
       return false unless @path
+
+      clean!
 
       @path.open('w') do |file|
         file.puts YAML.dump(@cache)

@@ -30,12 +30,19 @@ module Polymer
     #
     attr_reader :sass
 
-    # @return [Pathname, false]
+    # @return [Pathname]
     #   The path to the CSS file.
     # @return [false]
     #   False if CSS generation has been disabled.
     #
     attr_reader :css
+
+    # @return [Pathname]
+    #   Returns the path to the project cache file.
+    # @return [false]
+    #   Returns false if the project cache is disabled.
+    #
+    attr_reader :cachefile
 
     # An array containing all of the sprites in the project.
     #
@@ -115,7 +122,7 @@ module Polymer
     # @return [Polymer::Cache]
     #
     def cache
-      @cache ||= Polymer::Cache.new(@cachefile)
+      @cache ||= Polymer::Cache.new(self)
     end
 
     # Returns a path to a temporary directory which may be used by this

@@ -83,9 +83,6 @@ module Polymer
         end
       end
 
-      # Clean up the cache, removing sprites which no longer exist.
-      project.cache.clean!(project)
-
       # Finish by writing the new cache.
       project.cache.write
 
@@ -234,7 +231,7 @@ module Polymer
         end
       end
 
-      cache.clean!(project) if project
+      cache.clean! if project
       cache.write
     end
 

@@ -28,7 +28,12 @@ module Polymer
       end
 
       data_uris = project.data_uri_sprites.inject({}) do |memo, sprite|
-        data = [sprite.save_path.read].pack('m').strip
+        data = [sprite.save_path.read].pack('m')
+
+        # Ruby < 1.9 doesn't support pack('m0'),
+        # so we have to do it manually.
+        data.gsub!(/\n/, '')
+
         memo[sprite.name] = "data:image/png;base64,#{data}"
         memo
       end

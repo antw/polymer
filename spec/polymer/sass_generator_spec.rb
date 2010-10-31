@@ -179,7 +179,7 @@ describe Polymer::SassGenerator do
         # file there.
         sprite_path = @project.sprites.first.save_path
         sprite_path.dirname.mkpath
-        sprite_path.open('w') { |f| f.puts "abcdef" }
+        sprite_path.open('w') { |f| f.puts("a" * 128) }
 
         @result = Polymer::SassGenerator.generate(@project)
         @sass = path_to_file('public/stylesheets/sass/_polymer.sass')
@@ -198,9 +198,9 @@ describe Polymer::SassGenerator do
       end
 
       it 'should add the contents of the sprite as base64' do
-        data = ['abcdef'].pack('m').strip
+        data = [('a' * 128) + "\n"].pack('m').gsub(/\n/, '')
 
-        sass_to_css(@sass, 'polymer("fry/one")').should_not \
+        sass_to_css(@sass, 'polymer("fry/one")').should \
           include("background: url(data:image/png;base64,#{data})")
       end
 

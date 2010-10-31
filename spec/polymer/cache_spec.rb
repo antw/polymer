@@ -244,6 +244,20 @@ describe Polymer::Cache do
       end
     end
 
+    it 'should remove paths which are not in a subtree' do
+      non_subtree = Pathname.new(Dir.mktmpdir) + 'a_file'
+
+      begin
+        FileUtils.touch(non_subtree)
+        @cache.set(non_subtree)
+        @cache.stale?(non_subtree).should be_false
+        @cache.clean! project
+        @cache.stale?(non_subtree).should be_true
+      ensure
+        FileUtils.remove_entry_secure(non_subtree.dirname)
+      end
+    end
+
     it 'should return false if no path is set' do
       Polymer::Cache.new.clean!(project).should be_false
     end

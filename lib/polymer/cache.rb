@@ -14,6 +14,10 @@ module Polymer
       :paths         => {}
     }
 
+    # If the first three characters of a path match this, the path isn't
+    # in a subtree of the project.
+    NON_SUBTREE = '../'.freeze
+
     # Returns the path to the cache file.
     #
     # @return [Pathname]
@@ -92,7 +96,9 @@ module Polymer
       return false unless @path
 
       @cache[:paths].delete_if do |key, _|
-        not @path.dirname.join(key).file?
+        not @path.dirname.join(key).file? or
+        # Remove any path to a file not in a subtree (:data_uri images).
+        key[0..2] == NON_SUBTREE
       end
 
       sprite_keys = project.sprites.map { |sprite| key(sprite) }

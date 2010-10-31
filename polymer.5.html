@@ -179,6 +179,14 @@ directory name. For example, given the following directory structure...</p>
 will contain "book" and "calculator", while two.png will contain
 "magnet" and "television".</p>
 
+<p>You may instead prefer to set the save path to :data_uri; Polymer will
+place the sprite contents into your CSS file. This reduces the number of
+HTTP requests requires to load your pages at the expense of slightly
+greater data transfer.</p>
+
+<pre><code>sprites "sources/:name/*" =&gt; :data_uri
+</code></pre>
+
 <p>There may be cases where you need to customise an individual sprite and
 you don't want to change the global setting; <code>sprite</code> allows you to
 specify any of the global settings with the exception of "sass" and
@@ -200,8 +208,8 @@ final option should be followed with a comma.</p>
 
 
   <ol class='man-decor man-foot man foot'>
-    <li class='tl'>POLYMER 1.0.0.BETA.4</li>
-    <li class='tc'>September 2010</li>
+    <li class='tl'>POLYMER 1.0.0.BETA.5</li>
+    <li class='tc'>October 2010</li>
     <li class='tr'>.polymer(5)</li>
   </ol>
 

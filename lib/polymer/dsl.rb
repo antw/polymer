@@ -250,7 +250,7 @@ module Polymer
         definition[:name],
         definition[:sources],
         definition[:save_path],
-        definition.fetch(:padding, project_config[:padding]),
+        definition.fetch(:padding, project_config[:padding]) || 0,
         url || ''
     end
 

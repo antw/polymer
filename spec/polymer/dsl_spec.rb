@@ -395,6 +395,15 @@ describe Polymer::DSL do
         sprites.first.padding.should == 20
       end
 
+      it 'should acceppt false' do
+        sprites = dsl_sprites do
+          config.padding false
+          sprite 'src/*' => '_'
+        end
+
+        sprites.first.padding.should == 0
+      end
+
       it 'should cascade custom values to the sprites' do
         sprites = dsl_sprites do
           config.padding 50

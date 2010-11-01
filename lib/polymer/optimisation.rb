@@ -20,7 +20,7 @@ module Polymer
     # @param [Pathname] path
     #   Path to the file to be optimised.
     #
-    # @return [Integer, false]
+    # @return [Integer]
     #   Returns the number of bytes by which the filesize was reduced.
     # @return [false]
     #   Returns false if the current machine has no optimisers available.

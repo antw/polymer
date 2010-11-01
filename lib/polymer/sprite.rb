@@ -44,8 +44,10 @@ module Polymer
     #   The name of the source whose position is to be returned, or the
     #   Polymer::Source instance itself.
     #
-    # @return [Integer, Source]
+    # @return [Integer]
     #   The vertical position of the source image.
+    # @return [nil]
+    #   nil is returned if no sprite identified by +name+ exists.
     #
     def position_of(name)
       name = name.name if name.is_a?(Polymer::Source)

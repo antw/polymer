@@ -23,7 +23,7 @@ module Polymer
     #
     attr_reader :root
 
-    # @return [Pathname, false]
+    # @return [Pathname]
     #   The path to the Sass mixin file.
     # @return [false]
     #   False if Sass has been disabled.

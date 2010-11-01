@@ -86,6 +86,11 @@ module Polymer
       # Finish by writing the new cache.
       project.cache.write
 
+      # Clean up temporary directories from data URI sprites.
+      if project.data_uri_sprites.any?
+        FileUtils.remove_entry_secure(project.tmpdir)
+      end
+
     rescue Polymer::MissingSource, Polymer::TargetNotWritable => e
       say e.message.compress_lines, :red
       exit 1

@@ -130,8 +130,13 @@ module Polymer
           (project_dir + to).dirname.mkpath
         end
 
+        # Unindent by removing leading whitespace.
+        if space = contents.match(/\A(\s+)/)
+          contents.gsub!(/^\s{#{space[1].length}}/, '')
+        end
+
         File.open(project_dir + to, 'w') do |file|
-          file.puts contents.unindent
+          file.puts contents
         end
       end
 

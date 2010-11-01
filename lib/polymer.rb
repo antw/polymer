@@ -8,7 +8,6 @@ require 'rmagick'
 
 # On with the library...
 require 'polymer/cache'
-require 'polymer/core_ext'
 require 'polymer/css_generator'
 require 'polymer/deviant_finder'
 require 'polymer/dsl'
@@ -46,4 +45,14 @@ module Polymer
 
   # Raised when sprite is defined with a name which has already been used.
   DuplicateName = Class.new(DslError)
+
+  # A utility method; given a string, removes leading and trailing whitespace
+  # from each line, then joins all the lines into one.
+  #
+  # @param  [String] str A string
+  # @return [String]
+  #
+  def self.compress_lines(str)
+    str.split($/).map { |line| line.strip }.join(' ')
+  end
 end

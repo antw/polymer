@@ -37,7 +37,7 @@ module Polymer
     # Print a warning if the sprite contains wide sources.
     def self.format_ui_message(sprite, deviants)
       if deviants
-        <<-MESSAGE.compress_lines
+        Polymer.compress_lines(<<-MESSAGE)
           Your "#{sprite.name}" sprite contains one or more source images
           which deviate significantly from the average source width. You might
           want to consider removing these sources from the sprite in order to

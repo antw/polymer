@@ -92,7 +92,7 @@ module Polymer
       end
 
     rescue Polymer::MissingSource, Polymer::TargetNotWritable => e
-      say e.message.compress_lines, :red
+      say Polymer.compress_lines(e.message), :red
       exit 1
     end
 
@@ -307,7 +307,7 @@ module Polymer
     def find_project!
       find_project
     rescue Polymer::MissingProject
-      say <<-ERROR.compress_lines, :red
+      say Polymer.compress_lines(<<-ERROR), :red
         Couldn't find a Polymer project in the current directory, or any of
         the parent directories. Run "polymer init" if you want to create a new
         project here.

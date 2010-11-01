@@ -19,18 +19,12 @@ module Polymer
     def self.generate(project)
       return false unless project.sass
 
-      if project.sass.to_s[-5..-1] == '.sass'
-        project.sass.dirname.mkpath
-        save_to = project.sass
-      else
-        project.sass.mkpath
-        save_to = project.sass + '_polymer.sass'
-      end
+      project.sass.dirname.mkpath
 
       # We need to keep track of any existing data URI values since, if the
       # sprite is unchanged, we won't have access to it.
       existing_data_uris = extract_existing_data_uris(
-        save_to, project.data_uri_sprites)
+        project.sass, project.data_uri_sprites)
 
       data_uris = project.data_uri_sprites.inject({}) do |memo, sprite|
         if sprite.save_path.file?
@@ -48,7 +42,7 @@ module Polymer
         memo
       end
 
-      File.open(save_to, 'w') do |file|
+      File.open(project.sass, 'w') do |file|
         file.puts ERB.new(File.read(TEMPLATE), nil, '<>').result(binding)
       end
 

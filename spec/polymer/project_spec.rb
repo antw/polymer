@@ -100,6 +100,28 @@ describe Polymer::Project do
     end
   end
 
+  describe 'when initialized with a path to a Sass directory' do
+    before(:all) do
+      @path = Pathname.new('.').expand_path
+      @project = Polymer::Project.new('', [], :sass => @path)
+    end
+
+    it 'should set the Sass path' do
+      @project.sass.should == @path + '_polymer.sass'
+    end
+  end
+
+  describe 'when initialized with a path to a Sass file' do
+    before(:all) do
+      @path = Pathname.new('.').expand_path + 'something.sass'
+      @project = Polymer::Project.new('', [], :sass => @path)
+    end
+
+    it 'should set the Sass path' do
+      @project.sass.should == @path
+    end
+  end
+
   # Instance Methods =========================================================
 
   it { should have_public_method_defined(:root) }

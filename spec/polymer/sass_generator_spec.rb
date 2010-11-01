@@ -103,42 +103,6 @@ describe Polymer::SassGenerator do
       end # the generated mixins
     end # with default settings and two sprites
 
-    context 'with custom Sass directory path' do
-      before(:each) do
-        write_config <<-CONFIG
-          config.sass "public/sass"
-
-          sprites "sources/:name/*" => 'sprites/:name.png'
-        CONFIG
-
-        write_source 'fry/one'
-
-        @result = Polymer::SassGenerator.generate(project)
-        @sass = path_to_file('public/sass/_polymer.sass')
-      end
-
-      it_should_behave_like 'a Sass generator'
-
-    end # with a custom Sass directory path
-
-    context 'with a custom Sass file path' do
-      before(:each) do
-        write_config <<-CONFIG
-          config.sass "public/sass/_here.sass"
-
-          sprites "sources/:name/*" => "sprites/:name.png"
-        CONFIG
-
-        write_source 'fry/one'
-
-        @result = Polymer::SassGenerator.generate(project)
-        @sass = path_to_file('public/sass/_here.sass')
-      end
-
-      it_should_behave_like 'a Sass generator'
-
-    end # with a custom Sass file path
-
     context 'with a custom URL setting' do
       before(:each) do
         write_config <<-CONFIG

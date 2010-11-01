@@ -357,12 +357,13 @@ describe Polymer::DSL do
 
     describe 'sass' do
       it 'should default to public/stylesheets/sass' do
-        dsl {}.sass.should == path_to_file('public/stylesheets/sass')
+        dsl {}.sass.should ==
+          path_to_file('public/stylesheets/sass/_polymer.sass')
       end
 
       it 'should set a custom value' do
         dsl { config.sass 'custom' }.sass.should ==
-          path_to_file('custom')
+          path_to_file('custom/_polymer.sass')
       end
 
       it 'should permit false' do

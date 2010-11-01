@@ -87,6 +87,10 @@ module Polymer
       @css       = extract_path :css,   options
       @cachefile = extract_path :cache, options
 
+      if @sass and @sass.to_s[-5..-1] != '.sass'
+        @sass = @sass + '_polymer.sass'
+      end
+
       # Sprites which are to be saved as a data URI need to have a save
       # path explicitly set.
       @data_uri_sprites = @sprites.select do |sprite|

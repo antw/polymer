@@ -29,7 +29,7 @@ Gem::Specification.new do |s|
   s.executables  = ['polymer']
   s.require_path = 'lib'
 
-  s.add_runtime_dependency     'chunky_png', '>= 1.0.0.beta2'
+  s.add_runtime_dependency     'chunky_png', '>= 0.12'
   s.add_runtime_dependency     'thor',       '>= 0.14.0'
   s.add_development_dependency 'rspec',      '>= 2.0.0.beta.19'
   s.add_development_dependency 'cucumber',   '>= 0.8.5'

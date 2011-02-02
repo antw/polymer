@@ -4,7 +4,12 @@ require 'pathname'
 require 'yaml'
 
 # Gems.
-require 'chunky_png'
+
+begin
+  require 'oily_png' # Load the C version of ChunkyPNG when available.
+rescue LoadError
+  require 'chunky_png' # Fall back to pure-Ruby.
+end
 
 # On with the library...
 require 'polymer/cache'

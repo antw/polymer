@@ -21,7 +21,7 @@ end
 
 desc 'Build the gem, and push to Github'
 task :release => :build do
-  unless system('git branch') =~ /^\* master$/
+  unless `git branch` =~ /^\* master$/
     puts "You must be on the master branch to release!"
     exit!
   end

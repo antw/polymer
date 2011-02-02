@@ -4,6 +4,9 @@ v1.0.0 / HEAD (Unreleased)
 * Montage has been renamed to Polymer and is now released under the BSD
   three-clause license.
 
+* RMagick has been replaced with ChunkyPNG; any GIF or JPEG source files
+  should be converted to PNG.
+
 * The Polymer configuration must now be located at the project root and
   should be named either ".polymer" or, for Windows users, "polymer.yml".
   You should rename your existing ".montage" file to ".polymer", and

@@ -66,7 +66,7 @@ module Polymer
         @positions = {}
         @sources.inject(0) do |offset, src|
           @positions[src.name] = offset
-          offset + src.image.rows + @padding
+          offset + src.image.height + @padding
         end
       end
 
@@ -107,34 +107,31 @@ module Polymer
         ERROR
       end
 
-      list = Magick::ImageList.new
+      width, height = @sources.inject([1, 0]) do |dimensions, source|
+        # Determine the width of the sprite by finding the widest source.
+        source_width = source.image.width
+        dimensions[0] = source_width if source_width > dimensions[0]
 
+        # Determine the height of the sprite by summing the height of each
+        # source.
+        dimensions[1] += source.image.height
+
+        dimensions
+      end
+
+      if @padding and @padding > 0
+        # Adjust the height to account for padding.
+        height += (@sources.length - 1) * @padding
+      end
+
+      canvas = ChunkyPNG::Canvas.new(width, height)
+
+      # Add each source to the canvas.
       @sources.each do |source|
-        list << source.image
-
-        if @padding and @padding > 0
-          list << Magick::Image.new(1, @padding) do
-            self.background_color = '#F000'
-          end
-        end
+        canvas.compose(source.image, 0, position_of(source))
       end
 
-      # RMagick uses instance_eval, @set isn't available in the block below.
-      sources_length = @sources.length
-
-      montage = list.montage do
-        self.gravity = Magick::NorthWestGravity
-        # Transparent background.
-        self.background_color = '#FFF0'
-        # Allow each image to take up as much space as it needs.
-        self.geometry = '+0+0'
-        # columns=1, rows=Sources plus padding.
-        self.tile = Magick::Geometry.new(1, sources_length * 2)
-      end
-
-      # Remove the blank space from the bottom of the image.
-      montage.crop!(0, 0, 0, (montage.first.rows) - @padding)
-      montage.write("PNG32:#{@save_path}")
+      canvas.save(@save_path, :best_compression)
 
       true
     end

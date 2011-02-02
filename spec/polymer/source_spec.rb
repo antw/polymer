@@ -15,7 +15,7 @@ describe Polymer::Source do
   describe '#image' do
     it 'should return the Image instance path when the source file exists' do
       source = Polymer::Source.new(path_to_source('sprite_one/one'))
-      source.image.should be_a(Magick::Image)
+      source.image.should be_a(ChunkyPNG::Image)
     end
 
     it 'should raise an error when the source file does not exist' do

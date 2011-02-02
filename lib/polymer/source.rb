@@ -19,13 +19,13 @@ module Polymer
       @name = @path.basename(@path.extname).to_s
     end
 
-    # Returns the RMagick image instance representing the source.
+    # Returns the Image instance representing the source.
     #
-    # @return [Magick::Image]
+    # @return [ChunkyPNG::Image]
     #
     def image
       assert_file!
-      @image ||= Magick::Image.read(@path).first
+      @image ||= ChunkyPNG::Image.from_file(@path)
     end
 
     # Returns a digest which represents the sprite name and file contents.

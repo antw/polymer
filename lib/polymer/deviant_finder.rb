@@ -21,13 +21,13 @@ module Polymer
       return false if sprite.sources.size < 2
 
       mean, std_dev = standard_deviation(sprite.sources.map do |source|
-        source.image.columns
+        source.image.width
       end)
 
       return false if std_dev < 100 # Skip images with a < 100px deviation.
 
       deviants = sprite.sources.select do |source|
-        width = source.image.columns
+        width = source.image.width
         width > mean + std_dev || width < mean - std_dev
       end
 

@@ -10,14 +10,7 @@ shared_examples_for 'saving a sprite' do
       change(&lambda { @output.file? })
   end
 
-  it 'should save an 8-bit PNG with transparency' do
-    @sprite.write
-    image = Magick::Image.ping(@output).first
-    image.format.should == 'PNG'
-    image.quantum_depth.should == 8 # 8-bits per channel.
-  end
-
-  it 'should overwrite an existingn file' do
+  it 'should overwrite an existing file' do
     FileUtils.touch(@output)
     orig_size = @output.size
     @sprite.write

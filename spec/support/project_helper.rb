@@ -182,9 +182,7 @@ module Polymer
         # Create the sources directory.
         path.dirname.mkpath
 
-        Magick::Image.new(width, height) do
-          self.background_color = '#CCC'
-        end.write(path)
+        ChunkyPNG::Image.new(width, height).save(path)
 
         unless path.file?
           raise "Image '#{path}' was not successfully saved"

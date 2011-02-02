@@ -86,8 +86,7 @@ module Polymer
       # @return [Array<Integer, Integer>]
       #
       def dimensions_of(name)
-        info = Magick::Image.ping path_to_sprite(name)
-        [info.first.columns, info.first.rows]
+        ChunkyPNG::Image.from_file(path_to_sprite(name)).size
       end
 
     end # CommandRunner

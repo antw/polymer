@@ -29,12 +29,13 @@ Gem::Specification.new do |s|
   s.executables  = ['polymer']
   s.require_path = 'lib'
 
-  s.add_runtime_dependency     'rmagick',  '>= 2.13'
-  s.add_runtime_dependency     'thor',     '>= 0.14.0'
-  s.add_development_dependency 'rspec',    '>= 2.0.0.beta.19'
-  s.add_development_dependency 'cucumber', '>= 0.8.5'
-  s.add_development_dependency 'haml',     '>= 3.0.18'
-  s.add_development_dependency 'ronn',     '>= 0.7.3'
+  s.add_runtime_dependency     'rmagick',    '>= 2.13'
+  s.add_runtime_dependency     'chunky_png', '>= 1.0.0.beta2'
+  s.add_runtime_dependency     'thor',       '>= 0.14.0'
+  s.add_development_dependency 'rspec',      '>= 2.0.0.beta.19'
+  s.add_development_dependency 'cucumber',   '>= 0.8.5'
+  s.add_development_dependency 'haml',       '>= 3.0.18'
+  s.add_development_dependency 'ronn',       '>= 0.7.3'
 
   # The manifest is created by the "gemspec" rake task. Do not edit it
   # directly; your changes will be wiped out when you next run the task.

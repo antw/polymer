@@ -7,9 +7,6 @@ $LOAD_PATH.unshift File.expand_path('../../../spec', __FILE__)
 # also the Polymer library itself.
 require 'spec_helper'
 
-# Cucumber helpers.
-require File.expand_path('../command_runner', __FILE__)
-
 # This Cucumber world wraps around the CommandRunner in order to provide
 # some useful helper method.
 class Polymer::Spec::CucumberWorld

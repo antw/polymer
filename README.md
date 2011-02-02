@@ -26,15 +26,10 @@ The recommended way to install Polymer is with Rubygems:
 
     $ [sudo] gem install polymer
 
-Polymer currently uses RMagick/ImageMagick in order to read and write
-images. Eventually, I want to offer support for ChunkyPNG also, which
-should substantially ease installation.
-
-Most Linux and BSD distributions include ImageMagick in their packaging
-system; while Mac OS X users can install it with [Homebrew][homebrew]:
-
-    $ brew install ghostscript
-    $ brew install imagemagick
+Polymer uses ChunkyPNG to read source files, and write the final
+sprites; as a pure-Ruby library it is much easier to install than
+RMagick, while not being so much slower as to pose a problem
+(optimisation with PNGOut takes far longer than creating the sprite).
 
 If you wish to install Polymer from source:
 
@@ -60,7 +55,7 @@ running `polymer init`.
    supported options. `polymer init` also places some example source
    images into your project.
 
-2. Run `polymer bond`: this is the main task which converts the source
+2. Run `polymer bon)`: this is the main task which converts the source
    images into the final sprites. If you have PNGOUT, OptiPNG, or
    PNGCrush installed, Polymer will also optimise the generates sprites
    to reduce them to the smallest possible filesize.

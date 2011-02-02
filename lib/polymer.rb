@@ -4,7 +4,6 @@ require 'pathname'
 require 'yaml'
 
 # Gems.
-require 'rmagick'
 require 'chunky_png'
 
 # On with the library...

@@ -38,7 +38,7 @@ module Polymer
     #
     # @example
     #
-    #   Polymer::DSL.build do
+    #   Polymer::DSL.build('/path/to/project') do
     #     sprite 'sources/lurrr/*' => 'sprites/lurrr.png'
     #   end
     #

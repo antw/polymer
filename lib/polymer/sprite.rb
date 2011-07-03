@@ -98,6 +98,8 @@ module Polymer
     # @return [Boolean]
     #
     def save
+      return false if @sources.empty?
+
       @save_path.dirname.mkpath
 
       unless @save_path.dirname.writable?

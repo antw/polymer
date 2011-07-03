@@ -123,6 +123,14 @@ describe Polymer::Sprite do
 
   it { should have_public_method_defined(:save) }
 
-  # tested in the generate sprite features
+  # also tested in the generate sprite features
+
+  describe '#save' do
+    it 'should return false with no sources present' do
+      sprite = Polymer::Sprite.new('<name>', [], '<save_path>', 0, '<url>')
+      sprite.sources.should == []
+      sprite.save.should == false
+    end
+  end
 
 end

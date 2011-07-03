@@ -22,8 +22,7 @@ module Polymer
     #
     # @return [Integer]
     #   Returns the number of bytes by which the filesize was reduced.
-    # @return [false]
-    #   Returns false if the current machine has no optimisers available.
+    #   Returns zero if the current machine has no optimisers available.
     #
     def self.optimise_file(path)
       return 0 if optimisers.empty?

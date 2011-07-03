@@ -26,7 +26,7 @@ module Polymer
     #   Returns false if the current machine has no optimisers available.
     #
     def self.optimise_file(path)
-      return false if optimisers.empty?
+      return 0 if optimisers.empty?
 
       reduction = 0
       skip = []

@@ -26,6 +26,13 @@ describe Polymer::Optimisation, :optimisation => true do
   end
 
   describe '.optimise_file' do
+    context 'when called with no supported optimisers' do
+      it 'should return 0' do
+        Polymer::Optimisation.instance_variable_set('@optimizers', [])
+        Polymer::Optimisation.optimise_file(@unoptimised_png).should == 0
+      end
+    end # when given an optimised image
+
     context 'when given an optimised image' do
       it 'should return 0' do
         Polymer::Optimisation.optimise_file(@optimised_png).should == 0

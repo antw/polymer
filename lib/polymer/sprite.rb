@@ -130,7 +130,7 @@ module Polymer
 
       # Add each source to the canvas.
       @sources.each do |source|
-        canvas.compose(source.image, 0, position_of(source))
+        canvas.compose!(source.image, 0, position_of(source))
       end
 
       canvas.save(@save_path, :best_compression)
